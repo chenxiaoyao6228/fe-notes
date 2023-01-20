@@ -1,0 +1,212 @@
+---
+title: Javascript正则表达式速查笔记
+tags:
+  - javascript
+  - regex
+date: 2020-11-17
+permalink: 2020-11-17-javascript-regex-cheatsheet
+---
+
+## 前言
+
+印象中正则表达式总是难学难记,学了忘,忘了又学, 这次痛定思痛, 决定这么操作:
+
+1. 写一篇文章总结 Javascript 中正则的基本概念, 不涉及太多的细枝末节, 方便回顾
+2. 准备一个练习库(常用的正则表达式), 提供基本的对照, 方便后续短时间内强化,毕竟熟能生巧
+
+希望文章能对大家有帮助.
+
+## 构建与使用
+
+### 字面量还是构造函数
+
+一句话: **当正则表达式在开发环境是明确的,推荐优先使用字面量语法;当需要在运行时动态创建字符串来构建正则表达式时,则使用构造函数的方式。**
+
+比如要判断一个元素的className中是否包含名为active的类
+
+```js
+function isActive(ele){
+    let regex  = /active/
+    return regex.test(elem.className)
+}
+
+```
+
+如果要抽象为一个判断某个元素是否含有某个类
+
+```js
+function hasClass(className, ele) {
+  const regex = new RegExp('(^|\\s)' + className + '(\\s|$)'); => className在构建的时候才知道
+  return regex.test(elem.className)
+}
+```
+
+### 字符串和正则表达式的常用方法
+
+1. regex.match
+
+2. str.replace
+
+更多用法请看:
+
+- 正则表达式: test, match, matchAll, exec
+- 字符串: replace, split, search
+
+其中, 最常用的是 regex.test,
+
+## 匹配字符
+
+匹配字符: 有横向匹配, 范围, 用**`[]`**,纵向匹配, 数量, 用`**{}**`, **可以想象成一个固定长度的密码锁**
+
+横向匹配: 正反以及缩略形式
+
+正向使用`[要匹配的内容]`,反向形式为使用`[^不要匹配的内容]`
+
+- [abc], [^abc], 非 abc 其中的一个
+- [a-zA-Z0-9]
+
+纵向匹配 v
+
+- ?, \*, +, {}
+
+## 匹配位置
+
+ps: 位置相当于空字符
+
+1.开头和结尾
+
+```js
+/test/
+/^test$/
+```
+
+2.边界
+
+- 单词边界与非单词边界: ^, \$, \w, \W
+
+## 前瞻与后顾
+
+提供了前后相关的条件,但是**匹配结果不包含条件中的内容**
+
+### x(?=y)
+
+含义:  找到x, 看看后面是不是y, 是的话返回x(无y)，(当然也可以按照先查找Y, 然后看前面是不是X来理解）
+
+#### 基本
+
+例子:
+
+```js
+let str = '肾6 售价为 5000RMB'
+console.log(str.match(/\d+(?=RMB)/)[0]) // 5000
+```
+
+`/\d+(?=RMB)/`匹配的是**任意多个数字,后面紧跟RMB**, 5000满足条件, `RMB`是条件内容,因此不返回. 6后面没有跟`RMB`, 没有符合条件
+
+#### 稍微复杂的例子
+
+另一个更加复杂的例子:  **X(?=Y)(?=Z)**
+
+匹配模式是这样的：
+
+1. 找到X
+2. 检测X后面是不是Y，如果不是就跳过
+3. 检测X后面是不是Z， 如果不是就跳过
+
+也就是说X后面要同时跟上模式Y和模式Z， 这怎么可能？唯一的可能是模式Y和Z并不是**互斥的**
+
+比如 \d+(?=\s)(?=.*5000), 匹配的是**一个或多个数字，后面紧跟着一个空格，然后在字符后面的某处有个5000的数字**
+
+```js
+let str = '肾6 售价为 5000RMB'
+console.log(str.match(/\d+(?=\s)(?=.*5000)/)[0]) // 6
+```
+
+有比如，我们希望写一个简单的检查密码的正则， 密码格式为： 6-12位，至少一个为数字，其余为字母
+
+```js
+let regex = /(?=\w{6,12})(?=\D*\d)/
+console.log(regex.test('xiaoyao666')) // true
+console.log(regex.test('xiaoyao')) // false
+```
+
+### x(?!y)
+
+与上面类似，就返回后面不是Y的X
+
+```
+let str = '肾6 售价为 5000RMB'
+console.log(str.match(/\d+(?!RMB)/)[0]) // 6
+```
+
+### (?<=y)x
+
+找到X，看前面是不是Y，还是上面的例子
+
+```js
+let str = '肾6 售价为 $5000' // 换成$
+console.log(str.match(/(?<=\$)\d+/)[0]) // 5000
+```
+
+### (?<!y)x
+
+```js
+let str = '肾6 售价为 $5000'
+console.log(str.match(/(?<!\$)\d+/)[0]) // 6
+```
+
+
+
+## 括号
+
+分组与捕获
+
+由于捕获与分组都使用圆括号表示,对于正则表达式处理器来说, 无法区分所添加的是捕获还是分组
+
+括号的功能: 分组分支, 捕获以及引用
+
+### 分支(或)
+
+### 分组捕获
+
+#### 分组引用
+
+在 Javascript 中已用, 使用**$**符
+
+```js
+let res = "Xiao Yao".replace(/(\w+)\s(\w+)/, '$2 $1') // Yao Xiao
+```
+
+#### 反向引用
+
+ 在正则表达式中使用，使用 \\符
+
+```js
+let repeatStr = "regex regex";
+let repeatRegex = /(\w+)\s\1/;
+repeatRegex.test(repeatStr);  // true
+```
+
+### 非捕获
+
+```js
+(?:)
+```
+
+## 修饰符
+
+i
+g
+m
+
+## 注意事项
+
+## 正则训练
+
+## 参考
+
+### 符号速查
+
+[cheetsheet](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions/Cheatsheet)
+
+### 工具&&书籍推荐
