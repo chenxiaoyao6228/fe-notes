@@ -1,6 +1,7 @@
-@ -0,0 +1,205 @@
 ---
 title: 十分钟用JS实现一个简单的依赖注入框架
+categories:
+  - tech
 tags:
   - javascript
 date: 2019-12-16

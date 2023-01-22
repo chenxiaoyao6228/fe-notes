@@ -3,7 +3,7 @@ permalink:  2023-01-20-git-submodule
 title: git-submodule
 date: 2023-01-20
 categories: 
-  - git
+  - tech
 tags:
   - git
 ---

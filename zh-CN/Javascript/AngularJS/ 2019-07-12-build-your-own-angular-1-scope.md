@@ -1,6 +1,8 @@
 ---
 title: '实现angular手记[一]scope和digest'
 date: 2019-07-12
+categories:
+  - tech
 tags:
   - angular
 permalink: 2019-07-12-build-your-own-angular-1-scope

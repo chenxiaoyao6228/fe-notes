@@ -2,7 +2,10 @@
 
 title: "underscore源码学习笔记(四)collction相关方法"
 date: 2019-06-28T16:26:44.000Z
-tags: null
+categories:
+  - tech
+tags:
+  - underscore
 permalink: 2019-06-28-underscore-analysis-4-collection-related-method
 ---
 

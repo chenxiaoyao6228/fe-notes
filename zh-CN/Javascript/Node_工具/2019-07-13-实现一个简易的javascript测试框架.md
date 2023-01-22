@@ -2,6 +2,8 @@
 
 title: 实现一个简易的javascript测试框架
 date: 2019-07-13T13:45:11.000Z
+categories:
+  - tech
 tags:
   - javascript
   - test

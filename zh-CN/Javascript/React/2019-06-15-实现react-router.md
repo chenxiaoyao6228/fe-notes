@@ -1,9 +1,9 @@
 ---
 title: 实现react-router
 date: 2019-06-15T06:10:48.000Z
+categories:
+  - tech
 tags:
-  - 代码
-  - 前端
   - react
 permalink: 2019-06-15-implement-react-router
 ---

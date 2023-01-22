@@ -1,7 +1,9 @@
 ---
 title: 理解angularJS中的transclusion
+categories:
+  - tech
 tags:
-  - javascript
+  - angular
 date: 2020-12-22
 permalink:  2020-12-22-understand-transclusion-in-angularJS
 ---

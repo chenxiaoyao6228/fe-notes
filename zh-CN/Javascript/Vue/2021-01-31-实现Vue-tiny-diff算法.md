@@ -1,7 +1,9 @@
 ---
 title: 实现Vue-tiny-dom-diff算法
+categories:
+  - tech
 tags:
-  - javascript
+  - vue
 date: 2021-01-31
 permalink:  2021-01-31-vue-tiny-diff-algorithm
 ---

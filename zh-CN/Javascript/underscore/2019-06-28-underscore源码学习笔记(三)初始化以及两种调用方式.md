@@ -2,7 +2,10 @@
 
 title: "underscore源码学习笔记(三)初始化以及两种调用方式"
 date: 2019-06-28T16:25:49.000Z
-tags: null
+categories:
+  - tech
+tags:
+  - underscore
 permalink: 2019-06-28-underscore-analysis-3-initialization
 ---
 

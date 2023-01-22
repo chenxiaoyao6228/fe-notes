@@ -1,7 +1,10 @@
 ---
 title: React中的fiber架构
 date: 2019-11-28T02:23:22.000Z
-tags: null
+categories:
+  - tech
+tags:
+  - react
 permalink: 2019-11-28-react-fiber
 ---
 

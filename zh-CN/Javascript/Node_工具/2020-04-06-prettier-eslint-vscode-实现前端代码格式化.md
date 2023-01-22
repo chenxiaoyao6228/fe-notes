@@ -1,5 +1,7 @@
 ---
 title: prettier-eslint-vscode-实现前端代码格式化
+categories:
+  - tech
 tags:
   - javascript
 date: 2020-04-06

@@ -1,5 +1,7 @@
 ---
 title: Javascript正则表达式速查笔记
+categories:
+  - tech
 tags:
   - javascript
   - regex

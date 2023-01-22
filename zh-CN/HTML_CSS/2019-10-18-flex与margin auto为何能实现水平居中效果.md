@@ -1,9 +1,10 @@
 ---
 title: flex与margin auto为何能实现水平居中效果
 date: 2019-10-18
+categories:
+  - tech
 tags:
   - css
-  - 水平垂直居中
 permalink: 2019-10-18-flex-and-margin-auto
 ---
 

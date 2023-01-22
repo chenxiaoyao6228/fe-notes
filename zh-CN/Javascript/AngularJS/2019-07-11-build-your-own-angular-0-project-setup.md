@@ -1,6 +1,8 @@
 ---
 title: '实现angular手记[零]项目初始化'
 date: 2019-07-11
+categories:
+  - tech
 tags:
   - angular
 permalink: 2019-07-11-build-your-own-angular-0-project-setup

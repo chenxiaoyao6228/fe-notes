@@ -1,5 +1,7 @@
 ---
 title: 理解Javascript中的继承
+categories:
+  - tech
 tags:
   - javascript
 date: 2021-01-05

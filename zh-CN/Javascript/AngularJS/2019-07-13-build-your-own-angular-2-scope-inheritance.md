@@ -1,6 +1,8 @@
 ---
 title: '实现angular手记[二]scope继承'
 date: 2019-07-13
+categories:
+  - tech
 tags:
   - angular
 permalink: 2019-07-13-build-your-own-angular-2-scope-inheritance

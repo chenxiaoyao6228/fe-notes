@@ -2,6 +2,8 @@
 
 title: Javascript位操作符运用实例
 date: 2019-09-21T23:39:50.000Z
+categories:
+  - tech
 tags:
   - Javascript
 permalink: 2019-09-21-javascript-bitwise-operator-in-real-life
