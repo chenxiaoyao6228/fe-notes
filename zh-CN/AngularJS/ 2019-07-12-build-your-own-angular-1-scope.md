@@ -12,7 +12,7 @@ permalink: 2019-07-12-build-your-own-angular-1-scope
 
 `Vue`和`AngularJS`一样, 都采用了观察者模式来实现自己的检测模型, **在模板编译的时候进行数据的依赖收集, 构建 watcher, 绑定相应的 updateView 函数**
 
-![vue](https://012.vuejs.org/images/mvvm.png)
+![](https://012.vuejs.org/images/mvvm.png)
 
 `angularJS` 使用的是"脏检查"机制来实现数据的双向绑定, 第一章要实现的 Scope 充当着重要的角色, 主要功能有:
 

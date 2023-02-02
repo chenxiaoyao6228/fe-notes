@@ -166,7 +166,7 @@ add the following script to your `package.json`
 }
 ```
 
-### Setup git hooks
+## Setup git hooks
 
 Install
 
