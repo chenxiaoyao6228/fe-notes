@@ -20,7 +20,7 @@ If you happen to come across a situation like this, the _Git submodule_ comes in
 git submodule add git@github.com:chenxiaoyao6228/fe-notes.git blog
 ```
 
-###Check Submodule
+### Check Submodule
 
 ```sh
 git submodule

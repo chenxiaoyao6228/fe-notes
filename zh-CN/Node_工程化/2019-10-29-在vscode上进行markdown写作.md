@@ -20,7 +20,7 @@ markdown 编辑器一般会集成几个功能: 快速编辑, 实时预览, 图�
 
 加粗, 下划线, 插入链接, 插入图片等是常用的功能, 可以通过[markdown shortcut 插件](https://marketplace.visualstudio.com/items?itemName=mdickin.markdown-shortcuts)
 
-![2019-10-29-13-33-36](http://blog.chenxiaoyao.cn/image/2019/10/2019-10-29-13-33-36.png)
+![2019-10-29-13-33-36](https://cdn.jsdelivr.net/gh/chenxiaoyao6228/cloudimg@main/2019//10/2019-10-29-13-33-36.png)
 
 ## emoji😸
 
@@ -55,7 +55,7 @@ markdown 编辑器一般会集成几个功能: 快速编辑, 实时预览, 图�
 - 同步到云盘设备, 如百度云
 
 因为自己现有的图床是七牛, picGo 文档太长....因此找了 vscode 的插件, [paste-image-to-qiniu](https://marketplace.visualstudio.com/items?itemName=favers.paste-image-to-qiniu), 支持**截图上传,并生成本地文件**,功能对我来说, 够了.
-![](https://github.com/favers/vscode-qiniu-upload-image/raw/master/screenshot/screenshot.gif)
+![](https://github.com/favers/vscode-qiniu-upload-2019/raw/master/screenshot/screenshot.gif)
 
 ## 文章预览
 

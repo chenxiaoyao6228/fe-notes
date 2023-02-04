@@ -21,7 +21,7 @@ permalink: 2019-07-16-build-your-own-angular-literal-expressions
 
 想要实现一个完整的 parser, 我们需要了解模板解析的几个步骤: **词法分析-生成 ast 树-生成可执行代码**, 对应的三个工具为`Lexer`, `AST Builder`以及`AST Compiler`. 我们以`a + b`为例, 大致了解一下这三个部分分别是怎样的.
 
-![](http://blog.chenxiaoyao.cn/image/build-your-own-angular/expression-parsing-pipeline.png)
+![](https://cdn.jsdelivr.net/gh/chenxiaoyao6228/cloudimg@main/2019/build-your-own-angular-expression-parsing-pipeline.png)
 
 ## 语法图
 
