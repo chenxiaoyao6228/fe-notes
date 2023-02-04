@@ -54,8 +54,36 @@ markdown 编辑器一般会集成几个功能: 快速编辑, 实时预览, 图�
 - 图片文件夹按照年/月的方式进行管理
 - 同步到云盘设备, 如百度云
 
-因为自己现有的图床是七牛, picGo 文档太长....因此找了 vscode 的插件, [paste-image-to-qiniu](https://marketplace.visualstudio.com/items?itemName=favers.paste-image-to-qiniu), 支持**截图上传,并生成本地文件**,功能对我来说, 够了.
-![](https://github.com/favers/vscode-qiniu-upload-2019/raw/master/screenshot/screenshot.gif)
+~~因为自己现有的图床是七牛, picGo 文档太长....因此找了 vscode 的插件, [paste-image-to-qiniu](https://marketplace.visualstudio.com/items?itemName=favers.paste-image-to-qiniu), 支持**截图上传,并生成本地文件**,功能对我来说, 够了.
+![](https://github.com/favers/vscode-qiniu-upload-2019/raw/master/screenshot/screenshot.gif)~~
+
+> 域名备案失效，导致七牛的图床无法访问
+
+
+### Github + jsdelivr.net
+
+这个没什么好说的, 图片地址: https://github.com/chenxiaoyao6228/cloudimg
+
+使用格式: https://raw.githubusercontent.com/chenxiaoyao6228/cloudimg/main/2021/logo-small.png, 经过测试,在掘金等平台上也是可以访问的, 开发的时候可以使用 snippet 完成这个工作
+
+测试如下
+![](https://raw.githubusercontent.com/chenxiaoyao6228/cloudimg/main/2021/logo-small.png)
+
+在使用之后发现图片在国内的网络环境下无法访问, 去搜索了一下, 发现可以通过`cdn.jsdelivr.net`来解决这个问题
+
+替换前
+> https://raw.githubusercontent.com/chenxiaoyao6228/cloudimg/main/2021/logo-small.png
+
+
+替换后
+> https://cdn.jsdelivr.net/gh/chenxiaoyao6228/cloudimg@main/2021/logo-small.png,
+
+注意除了域名前缀, 相应的要把git的仓库分支名改动一下
+
+
+可以使用alfred等工具制作一个snippet添加图片的前缀, 相比后面的方案, 少了插件的安装, 也还算是不错的选择
+![](https://cdn.jsdelivr.net/gh/chenxiaoyao6228/cloudimg@main/2022/alfred-pic-snippet.png)
+
 
 ## 文章预览
 
