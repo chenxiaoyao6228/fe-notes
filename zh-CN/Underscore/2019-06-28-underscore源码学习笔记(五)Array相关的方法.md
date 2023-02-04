@@ -1,5 +1,4 @@
 ---
-
 title: "underscore源码学习笔记(五)Array相关的方法"
 date: 2019-06-28T16:27:16.000Z
 categories:
@@ -12,7 +11,7 @@ permalink: 2019-06-28-underscore-analysis-5-array-related-method
 获取数组的后 n 个元素
 
 ```js
-_.initial = function(array, n, guard) {
+_.initial = function (array, n, guard) {
   return slice.call(
     array,
     0,
@@ -24,25 +23,31 @@ _.initial = function(array, n, guard) {
 获取数组前 n 个元素,调用了 initial 方法,当然,直接调用 slice 是更高效的
 
 ```js
-_.first = _.head = _.take = function(array, n, guard) {
-  if (array == null || array.length < 1) return n == null ? void 0 : [];
-  if (n == null || guard) return array[0];
-  return _.initial(array, array.length - n); //slice.call(array, 0 , n)
-};
+_.first =
+  _.head =
+  _.take =
+    function (array, n, guard) {
+      if (array == null || array.length < 1) return n == null ? void 0 : [];
+      if (n == null || guard) return array[0];
+      return _.initial(array, array.length - n); //slice.call(array, 0 , n)
+    };
 ```
 
 获取数组的非前 n 个元素
 
 ```js
-_.rest = _.tail = _.drop = function(array, n, guard) {
-  return slice.call(array, n == null || guard ? 1 : n);
-};
+_.rest =
+  _.tail =
+  _.drop =
+    function (array, n, guard) {
+      return slice.call(array, n == null || guard ? 1 : n);
+    };
 ```
 
 获取数组的后 n 个元素
 
 ```js
-_.last = function(array, n, guard) {
+_.last = function (array, n, guard) {
   if (array == null || array.length < 1) return n == null ? void 0 : [];
   if (n == null || guard) return array[array.length - 1];
   return _.rest(array, Math.max(0, array.length - n));
@@ -55,7 +60,7 @@ _.last = function(array, n, guard) {
 ```js
 var array = [
   [1, 2, 3],
-  [4, 5, 6]
+  [4, 5, 6],
 ]; //期待[1,4]
 ```
 
@@ -78,7 +83,7 @@ _.map(array, _.first);
 
 ```js
 例子: _.compact([0, 1, false, 2, "", 3]); //[1,2,3]
-源码: _.compact = function(array) {
+源码: _.compact = function (array) {
   return _.filter(array, Boolean);
 };
 ```
@@ -112,7 +117,7 @@ _.uniq([1, 2, 1, 4, 1, 3]);
 源码:
 
 ```js
-_.uniq = _.unique = function(array, isSorted, iteratee, context) {
+_.uniq = _.unique = function (array, isSorted, iteratee, context) {
   if (!_.isBoolean(isSorted)) {
     //对不定参数进行处理,从后往前
     context = iteratee;
@@ -152,7 +157,7 @@ _.union([1, 2, 3], [101, 2, 1, 10], [2, 1]);
 源码:
 
 ```js
-_.union = restArguments(function(arrays) {
+_.union = restArguments(function (arrays) {
   return _.uniq(flatten(arrays, true, true));
 });
 ```
@@ -199,10 +204,10 @@ var chunkArr = _.chunk(arr, 2)
 源码:flatten\_.flatten(array, [shallow]) :将多维数组拍平,估计用了递归
 
 ```js
-_.flatten = function(array, shallow) {
+_.flatten = function (array, shallow) {
   return flatten(array, shallow, false);
 };
-var flatten = function(input, shallow, strict, output) {
+var flatten = function (input, shallow, strict, output) {
   output = output || [];
   var idx = output.length;
   for (var i = 0, length = getLength(input); i < length; i++) {
@@ -277,7 +282,7 @@ _.findIndex(array, predicate, [context]) 和 _.findLastIndex(array, predicate, [
 例子:
 
 ```js
-var isOdd = function(num) {
+var isOdd = function (num) {
   return num % 2 == 1;
 };
 _.findIndex([4, 6, 8, 12], isOdd); // -1, not found
@@ -290,8 +295,8 @@ _.findLastIndex([1, 4, 6, 8, 9], isOdd); //4
 ```js
 _.findIndex = createPredicateIndexFinder(1);
 _.findLastIndex = createPredicateIndexFinder(-1);
-var createPredicateIndexFinder = function(dir) {
-  return function(array, predicate, context) {
+var createPredicateIndexFinder = function (dir) {
+  return function (array, predicate, context) {
     predicate = cb(predicate, context);
     var length = getLength(array);
     var index = dir > 0 ? 0 : length - 1;
@@ -319,8 +324,8 @@ _.lastIndexOf([1, 2, 3, 1, 2, 3], 2);  // 4
 ```js
 _.indexOf = createIndexFinder(1, _.findIndex, _.sortedIndex);
 _.lastIndexOf = createIndexFinder(-1, _.findLastIndex);
-var createIndexFinder = function(dir, predicateFind, sortedIndex) {
-  return function(array, item, idx) {
+var createIndexFinder = function (dir, predicateFind, sortedIndex) {
+  return function (array, item, idx) {
     //被查找的数组,被查找的对象,开始位置
     var i = 0,
       length = getLength(array);
@@ -349,7 +354,7 @@ var createIndexFinder = function(dir, predicateFind, sortedIndex) {
 range:
 
 ```js
-_.range = function(start, stop, step) {
+_.range = function (start, stop, step) {
   if (stop == null) {
     stop = start || 0;
     start = 0;

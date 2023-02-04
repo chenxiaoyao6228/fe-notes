@@ -1,12 +1,14 @@
-@ -1,367 +0,0 @@
----
-title: '实现angluar手记[八]过滤器'
+## @ -1,367 +0,0 @@
+
+title: '实现 angluar 手记[八]过滤器'
 date: 2019-07-20T09:15:32.000Z
 categories:
-  - tech
-tags:
-  - angular
-permalink: 2019-07-20-build-your-own-angular-cp8-filters
+
+- tech
+  tags:
+- angular
+  permalink: 2019-07-20-build-your-own-angular-cp8-filters
+
 ---
 
 ## 前言
@@ -39,18 +41,18 @@ increment 函数要从哪里拿呢？将函数声明硬编码进内部？显然�
 
 ```js
 function anonymous(filter) {
-var v0 = filter('myNumbers'); // 通过filter函数工厂来动态获取filter函数
-var fn = function (s, l) {
-var v1;
-if (l && 'aString' in l) {
-v1 = l.aString;
-}
-if (!(l && 'aString' in l) && s) {
-v1 = s.aString;
-}
-return v0(v1);
-};
-return fn;
+  var v0 = filter("myNumbers"); // 通过filter函数工厂来动态获取filter函数
+  var fn = function (s, l) {
+    var v1;
+    if (l && "aString" in l) {
+      v1 = l.aString;
+    }
+    if (!(l && "aString" in l) && s) {
+      v1 = s.aString;
+    }
+    return v0(v1);
+  };
+  return fn;
 }
 ```
 
@@ -64,9 +66,9 @@ let filters = {};
 
 // 注册
 const register = (name, factory) => {
-let filter = factory(); // 为什么要使用factory呢？
-filters[name] = filter;
-return filter;
+  let filter = factory(); // 为什么要使用factory呢？
+  filters[name] = filter;
+  return filter;
 };
 
 // 提取
@@ -78,10 +80,10 @@ const filter = (name) => filters[name];
 简单的 test case 如下
 
 ```js
-it('can parse filter expressions', () => {
-register('upcase', () => (str) => str.toUpperCase());
-let fn = parse('aString | upcase');
-expect(fn({ aString: 'Hello' })).toEqual('HELLO');
+it("can parse filter expressions", () => {
+  register("upcase", () => (str) => str.toUpperCase());
+  let fn = parse("aString | upcase");
+  expect(fn({ aString: "Hello" })).toEqual("HELLO");
 });
 ```
 
@@ -106,25 +108,25 @@ filter: true
 
 ```js
 (function anonymous(
-ensureSafeMemberName,
-ensureSafeObject,
-ensureSafeFunction,
-ifDefined,
-filter
+  ensureSafeMemberName,
+  ensureSafeObject,
+  ensureSafeFunction,
+  ifDefined,
+  filter
 ) {
-var v0 = filter('upcase');
-var fn = function (s, l) {
-var v1;
-if (l && 'aString' in l) {
-v1 = l.aString;
-}
-if (!(l && 'aString' in l) && s) {
-v1 = s.aString;
-}
-ensureSafeObject(v1);
-return v0(v1);
-};
-return fn;
+  var v0 = filter("upcase");
+  var fn = function (s, l) {
+    var v1;
+    if (l && "aString" in l) {
+      v1 = l.aString;
+    }
+    if (!(l && "aString" in l) && s) {
+      v1 = s.aString;
+    }
+    ensureSafeObject(v1);
+    return v0(v1);
+  };
+  return fn;
 });
 ```
 
@@ -132,16 +134,16 @@ AST 的构建就是将左边的值作为自己的参数
 
 ```js
 AST.prototype.filter = function () {
-var left = this.assignment();
-if (this.expect('|')) {
-left = {
-type: AST.CallExpression,
-callee: this.identifier(),
-arguments: [left],
-filter: true, // 标记是否为filter， filter不需要callContext
-};
-}
-return left;
+  var left = this.assignment();
+  if (this.expect("|")) {
+    left = {
+      type: AST.CallExpression,
+      callee: this.identifier(),
+      arguments: [left],
+      filter: true, // 标记是否为filter， filter不需要callContext
+    };
+  }
+  return left;
 };
 ```
 
@@ -166,49 +168,49 @@ filter 函数使用 ID 来替代函数名
 
 ```js
 ASTCompiler.prototype.filter = function (name) {
-var filterId = this.nextId();
-this.state.filters[name] = filterId; // filter存到了state中
-return filterId;
+  var filterId = this.nextId();
+  this.state.filters[name] = filterId; // filter存到了state中
+  return filterId;
 };
 ```
 
 ## 链式调用
 
 ```js
-it('can parse filter chain expressions', () => {
-register('upcase', () => (s) => s.toUpperCase());
-register('exclamate', () => (s) => s + '!');
-let fn = parse('"hello" | upcase | exclamate');
-expect(fn()).toEqual('HELLO!');
+it("can parse filter chain expressions", () => {
+  register("upcase", () => (s) => s.toUpperCase());
+  register("exclamate", () => (s) => s + "!");
+  let fn = parse('"hello" | upcase | exclamate');
+  expect(fn()).toEqual("HELLO!");
 });
 ```
 
 ```js
 tokens = [
-{ value: 'hello', text: '"hello"' },
-{ text: '|' },
-{ text: 'upcase', identifier: true },
-{ text: '|' },
-{ text: 'exclamate', identifier: true },
+  { value: "hello", text: '"hello"' },
+  { text: "|" },
+  { text: "upcase", identifier: true },
+  { text: "|" },
+  { text: "exclamate", identifier: true },
 ];
 
 ast = {
-type: 'Program',
-body: [
-{
-type: 'CallExpression',
-callee: { type: 'Identifier', name: 'exclamate' },
-arguments: [
-{
-type: 'CallExpression',
-callee: { type: 'Identifier', name: 'upcase' },
-arguments: [{ type: 'Literal', value: 'hello' }],
-filter: true,
-},
-],
-filter: true,
-},
-],
+  type: "Program",
+  body: [
+    {
+      type: "CallExpression",
+      callee: { type: "Identifier", name: "exclamate" },
+      arguments: [
+        {
+          type: "CallExpression",
+          callee: { type: "Identifier", name: "upcase" },
+          arguments: [{ type: "Literal", value: "hello" }],
+          filter: true,
+        },
+      ],
+      filter: true,
+    },
+  ],
 };
 
 fnString = `var v0=filter('exclamate'),v1=filter('upcase');
@@ -279,53 +281,53 @@ return v0('hello','*','!');
 ## 内置的 Filter 过滤器
 
 ```js
-it('can filter an array with a predicate function', () => {
-let fn = parse('[1, 2, 3, 4] | filter:isOdd');
-let scope = {
-isOdd: function (n) {
-return n % 2 !== 0;
-},
-};
-expect(fn(scope)).toEqual([1, 3]);
+it("can filter an array with a predicate function", () => {
+  let fn = parse("[1, 2, 3, 4] | filter:isOdd");
+  let scope = {
+    isOdd: function (n) {
+      return n % 2 !== 0;
+    },
+  };
+  expect(fn(scope)).toEqual([1, 3]);
 });
 
 tokens = [
-{ text: '[' },
-{ text: '1', value: 1 },
-{ text: ',' },
-{ text: '2', value: 2 },
-{ text: ',' },
-{ text: '3', value: 3 },
-{ text: ',' },
-{ text: '4', value: 4 },
-{ text: ']' },
-{ text: '|' },
-{ text: 'filter', identifier: true },
-{ text: ':' },
-{ text: 'isOdd', identifier: true },
+  { text: "[" },
+  { text: "1", value: 1 },
+  { text: "," },
+  { text: "2", value: 2 },
+  { text: "," },
+  { text: "3", value: 3 },
+  { text: "," },
+  { text: "4", value: 4 },
+  { text: "]" },
+  { text: "|" },
+  { text: "filter", identifier: true },
+  { text: ":" },
+  { text: "isOdd", identifier: true },
 ];
 
 ast = {
-type: 'Program',
-body: [
-{
-type: 'CallExpression',
-callee: { type: 'Identifier', name: 'filter' },
-arguments: [
-{
-type: 'ArrayExpression',
-elements: [
-{ type: 'Literal', value: 1 },
-{ type: 'Literal', value: 2 },
-{ type: 'Literal', value: 3 },
-{ type: 'Literal', value: 4 },
-],
-},
-{ type: 'Identifier', name: 'isOdd' },
-],
-filter: true,
-},
-],
+  type: "Program",
+  body: [
+    {
+      type: "CallExpression",
+      callee: { type: "Identifier", name: "filter" },
+      arguments: [
+        {
+          type: "ArrayExpression",
+          elements: [
+            { type: "Literal", value: 1 },
+            { type: "Literal", value: 2 },
+            { type: "Literal", value: 3 },
+            { type: "Literal", value: 4 },
+          ],
+        },
+        { type: "Identifier", name: "isOdd" },
+      ],
+      filter: true,
+    },
+  ],
 };
 
 fnString = `
@@ -343,16 +345,16 @@ ensureSafeObject(v1);
 return v0([1,2,3,4],v1);
 `;
 fn.toString = function (s, l) {
-var v1;
+  var v1;
 
-if (l && 'isOdd' in l) {
-v1 = l.isOdd;
-}
-if (!(l && 'isOdd' in l) && s) {
-v1 = s.isOdd;
-}
-ensureSafeObject(v1);
-return v0([1, 2, 3, 4], v1);
+  if (l && "isOdd" in l) {
+    v1 = l.isOdd;
+  }
+  if (!(l && "isOdd" in l) && s) {
+    v1 = s.isOdd;
+  }
+  ensureSafeObject(v1);
+  return v0([1, 2, 3, 4], v1);
 };
 ```
 

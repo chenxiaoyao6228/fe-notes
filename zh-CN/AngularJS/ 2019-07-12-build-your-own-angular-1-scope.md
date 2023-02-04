@@ -1,5 +1,5 @@
 ---
-title: '实现angular手记[一]scope和digest'
+title: "实现angular手记[一]scope和digest"
 date: 2019-07-12
 categories:
   - tech
@@ -93,7 +93,7 @@ Scope.prototype.$digest = function () {
   do {
     dirty = this.$$digestOnce();
     if (dirty && !ttl--) {
-      throw '10 digest iterations reached';
+      throw "10 digest iterations reached";
     }
   } while (dirty);
 };
@@ -171,7 +171,7 @@ Scope.prototype.$digest = function () {
 
 ## scopePhase
 
-目前的方案存在一个问题, 就是异步队列中函数的执行依赖的是$digest的周期, 但是digest周期是由其他外在因素确定的(脏值), $evalAsync 本身并不会触发 digest 过程, **我们希望的是\$evalAsync 本身可以检测 digest 周期是否正在进行,如果没有的话主动触发一个**, 为了解决这个问题, 我们使用一个 phase 标志来标记当前的状态
+目前的方案存在一个问题, 就是异步队列中函数的执行依赖的是$digest 的周期, 但是 digest 周期是由其他外在因素确定的(脏值), $evalAsync 本身并不会触发 digest 过程, **我们希望的是\$evalAsync 本身可以检测 digest 周期是否正在进行,如果没有的话主动触发一个**, 为了解决这个问题, 我们使用一个 phase 标志来标记当前的状态
 
 ```javascript
 function Scope() {
@@ -184,7 +184,7 @@ function Scope() {
 ```javascript
 Scope.prototype.$beginPhase = function (phase) {
   if (this.$$phase) {
-    throw this.$$phase + ' already in progress';
+    throw this.$$phase + " already in progress";
   }
   this.$$phase = phase;
 };
@@ -199,7 +199,7 @@ Scope.prototype.$clearPhase = function () {
 ```javascript
 Scope.prototype.$apply = function (expr) {
   try {
-    this.$beginPhase('apply');
+    this.$beginPhase("apply");
   } finally {
     this.$clearPhase();
   }
@@ -237,7 +237,7 @@ Scope 里面添加一个新的队列
 this.$$postDigestQueue = [];
 ```
 
-在digest的最后触发执行
+在 digest 的最后触发执行
 
 ```js
 Scope.prototype.$digest = function () {

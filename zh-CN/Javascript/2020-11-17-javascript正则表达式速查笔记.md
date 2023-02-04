@@ -18,20 +18,25 @@ permalink: 2020-11-17-javascript-regex-cheatsheet
 
 希望文章能对大家有帮助.
 
+### 工具
+
+[正则解析：regex101](https://regex101.com/)
+[正则可视化：regexper](https://regexper.com/)
+[正则速查符号速查](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions/Cheatsheet)
+
 ## 构建与使用
 
 ### 字面量还是构造函数
 
 一句话: **当正则表达式在开发环境是明确的,推荐优先使用字面量语法;当需要在运行时动态创建字符串来构建正则表达式时,则使用构造函数的方式。**
 
-比如要判断一个元素的className中是否包含名为active的类
+比如要判断一个元素的 className 中是否包含名为 active 的类
 
 ```js
-function isActive(ele){
-    let regex  = /active/
-    return regex.test(elem.className)
+function isActive(ele) {
+  let regex = /active/;
+  return regex.test(elem.className);
 }
-
 ```
 
 如果要抽象为一个判断某个元素是否含有某个类
@@ -54,7 +59,7 @@ function hasClass(className, ele) {
 - 正则表达式: test, match, matchAll, exec
 - 字符串: replace, split, search
 
-其中, 最常用的是 regex.test,
+其中, 最常用的是 regex.test, regex.match
 
 ## 匹配字符
 
@@ -92,49 +97,49 @@ ps: 位置相当于空字符
 
 ### x(?=y)
 
-含义:  找到x, 看看后面是不是y, 是的话返回x(无y)，(当然也可以按照先查找Y, 然后看前面是不是X来理解）
+含义: 找到 x, 看看后面是不是 y, 是的话返回 x(无 y)，(当然也可以按照先查找 Y, 然后看前面是不是 X 来理解）
 
 #### 基本
 
 例子:
 
 ```js
-let str = '肾6 售价为 5000RMB'
-console.log(str.match(/\d+(?=RMB)/)[0]) // 5000
+let str = "肾6 售价为 5000RMB";
+console.log(str.match(/\d+(?=RMB)/)[0]); // 5000
 ```
 
-`/\d+(?=RMB)/`匹配的是**任意多个数字,后面紧跟RMB**, 5000满足条件, `RMB`是条件内容,因此不返回. 6后面没有跟`RMB`, 没有符合条件
+`/\d+(?=RMB)/`匹配的是**任意多个数字,后面紧跟 RMB**, 5000 满足条件, `RMB`是条件内容,因此不返回. 6 后面没有跟`RMB`, 没有符合条件
 
 #### 稍微复杂的例子
 
-另一个更加复杂的例子:  **X(?=Y)(?=Z)**
+另一个更加复杂的例子: **X(?=Y)(?=Z)**
 
 匹配模式是这样的：
 
-1. 找到X
-2. 检测X后面是不是Y，如果不是就跳过
-3. 检测X后面是不是Z， 如果不是就跳过
+1. 找到 X
+2. 检测 X 后面是不是 Y，如果不是就跳过
+3. 检测 X 后面是不是 Z， 如果不是就跳过
 
-也就是说X后面要同时跟上模式Y和模式Z， 这怎么可能？唯一的可能是模式Y和Z并不是**互斥的**
+也就是说 X 后面要同时跟上模式 Y 和模式 Z， 这怎么可能？唯一的可能是模式 Y 和 Z 并不是**互斥的**
 
-比如 \d+(?=\s)(?=.*5000), 匹配的是**一个或多个数字，后面紧跟着一个空格，然后在字符后面的某处有个5000的数字**
+比如 \d+(?=\s)(?=.\*5000), 匹配的是**一个或多个数字，后面紧跟着一个空格，然后在字符后面的某处有个 5000 的数字**
 
 ```js
-let str = '肾6 售价为 5000RMB'
-console.log(str.match(/\d+(?=\s)(?=.*5000)/)[0]) // 6
+let str = "肾6 售价为 5000RMB";
+console.log(str.match(/\d+(?=\s)(?=.*5000)/)[0]); // 6
 ```
 
-有比如，我们希望写一个简单的检查密码的正则， 密码格式为： 6-12位，至少一个为数字，其余为字母
+有比如，我们希望写一个简单的检查密码的正则， 密码格式为： 6-12 位，至少一个为数字，其余为字母
 
 ```js
-let regex = /(?=\w{6,12})(?=\D*\d)/
-console.log(regex.test('xiaoyao666')) // true
-console.log(regex.test('xiaoyao')) // false
+let regex = /(?=\w{6,12})(?=\D*\d)/;
+console.log(regex.test("xiaoyao666")); // true
+console.log(regex.test("xiaoyao")); // false
 ```
 
 ### x(?!y)
 
-与上面类似，就返回后面不是Y的X
+与上面类似，就返回后面不是 Y 的 X
 
 ```
 let str = '肾6 售价为 5000RMB'
@@ -143,21 +148,19 @@ console.log(str.match(/\d+(?!RMB)/)[0]) // 6
 
 ### (?<=y)x
 
-找到X，看前面是不是Y，还是上面的例子
+找到 X，看前面是不是 Y，还是上面的例子
 
 ```js
-let str = '肾6 售价为 $5000' // 换成$
-console.log(str.match(/(?<=\$)\d+/)[0]) // 5000
+let str = "肾6 售价为 $5000"; // 换成$
+console.log(str.match(/(?<=\$)\d+/)[0]); // 5000
 ```
 
 ### (?<!y)x
 
 ```js
-let str = '肾6 售价为 $5000'
-console.log(str.match(/(?<!\$)\d+/)[0]) // 6
+let str = "肾6 售价为 $5000";
+console.log(str.match(/(?<!\$)\d+/)[0]); // 6
 ```
-
-
 
 ## 括号
 
@@ -176,17 +179,17 @@ console.log(str.match(/(?<!\$)\d+/)[0]) // 6
 在 Javascript 中已用, 使用**$**符
 
 ```js
-let res = "Xiao Yao".replace(/(\w+)\s(\w+)/, '$2 $1') // Yao Xiao
+let res = "Xiao Yao".replace(/(\w+)\s(\w+)/, "$2 $1"); // Yao Xiao
 ```
 
 #### 反向引用
 
- 在正则表达式中使用，使用 \\符
+在正则表达式中使用，使用 \\符
 
 ```js
 let repeatStr = "regex regex";
 let repeatRegex = /(\w+)\s\1/;
-repeatRegex.test(repeatStr);  // true
+repeatRegex.test(repeatStr); // true
 ```
 
 ### 非捕获
@@ -206,9 +209,3 @@ m
 ## 正则训练
 
 ## 参考
-
-### 符号速查
-
-[cheetsheet](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions/Cheatsheet)
-
-### 工具&&书籍推荐

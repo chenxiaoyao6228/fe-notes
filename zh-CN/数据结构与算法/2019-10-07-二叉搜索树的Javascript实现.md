@@ -1,10 +1,9 @@
 ---
-
 title: 二叉搜索树的Javascript实现
 date: 2019-10-07T08:53:46.000Z
 categories:
   - tech
-tags: 
+tags:
   - leetcode
 permalink: 2019-10-07-data-structure-binary-search-tree
 ---
@@ -21,7 +20,7 @@ function BST() {
   this.root = null;
 }
 
-BST.prototype.insertRecursively = function(value) {
+BST.prototype.insertRecursively = function (value) {
   if (!this.root) {
     this.root = new Node(value);
     return;
@@ -49,7 +48,7 @@ BST.prototype.insertRecursively = function(value) {
     }
   }
 };
-BST.prototype.insert = function(value) {
+BST.prototype.insert = function (value) {
   let node = new Node(value);
   if (!this.root) {
     this.root = node;
@@ -76,7 +75,7 @@ BST.prototype.insert = function(value) {
   }
 };
 
-BST.prototype.inOrderTraverse = function(callback) {
+BST.prototype.inOrderTraverse = function (callback) {
   inOrder(this.root, callback);
   function inOrder(node, callback) {
     if (node) {
@@ -87,7 +86,7 @@ BST.prototype.inOrderTraverse = function(callback) {
   }
 };
 
-BST.prototype.preOrderTraverse = function(callback) {
+BST.prototype.preOrderTraverse = function (callback) {
   preOrder(this.root, callback);
   function preOrder(node, callback) {
     if (node) {
@@ -97,7 +96,7 @@ BST.prototype.preOrderTraverse = function(callback) {
     }
   }
 };
-BST.prototype.postOrderTraverse = function(callback) {
+BST.prototype.postOrderTraverse = function (callback) {
   preOrder(this.root, callback);
   function preOrder(node, callback) {
     if (node) {
@@ -108,14 +107,14 @@ BST.prototype.postOrderTraverse = function(callback) {
   }
 };
 
-BST.prototype.getMin = function() {
+BST.prototype.getMin = function () {
   let node = this.root;
   while (node.left) {
     node = node.left;
   }
   return node.value;
 };
-BST.prototype.getMinRecursively = function() {
+BST.prototype.getMinRecursively = function () {
   return getMin(this.root);
   function getMin(node) {
     if (!node.left) {
@@ -125,14 +124,14 @@ BST.prototype.getMinRecursively = function() {
   }
 };
 
-BST.prototype.getMax = function() {
+BST.prototype.getMax = function () {
   let node = this.root;
   while (node.right) {
     node = node.right;
   }
   return node.value;
 };
-BST.prototype.getMaxRecursively = function() {
+BST.prototype.getMaxRecursively = function () {
   return getMax(this.root);
   function getMax(node) {
     if (!node.right) {
@@ -141,7 +140,7 @@ BST.prototype.getMaxRecursively = function() {
     return getMax(node.right); //递归函数的调用要有返回值,不然上一个调用函数无法调用
   }
 };
-BST.prototype.find = function(value) {
+BST.prototype.find = function (value) {
   let node = this.root;
   while (node) {
     if (value < node.value) {
@@ -157,7 +156,7 @@ BST.prototype.find = function(value) {
 
 // return node or -1
 // 有两种baseCase
-BST.prototype.findRecursively = function(value) {
+BST.prototype.findRecursively = function (value) {
   return findRecursively(this.root, value);
   function findRecursively(node, value) {
     if (value === node.value) return node;

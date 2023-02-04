@@ -5,10 +5,10 @@ categories:
 tags:
   - angular
 date: 2020-12-22
-permalink:  2020-12-22-understand-transclusion-in-angularJS
+permalink: 2020-12-22-understand-transclusion-in-angularJS
 ---
 
-## transclusion是什么
+## transclusion 是什么
 
 在字典中并没有找到相应的词汇，维基百科上有一条关于此的解释。
 
@@ -16,7 +16,7 @@ permalink:  2020-12-22-understand-transclusion-in-angularJS
 
 ![transclusion](https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/Transclusion_simple.svg/250px-Transclusion_simple.svg.png)
 
-类比一下Vue的slot(插槽)就很容易理解它的使用场景了, modal, layout, tabbar，grid自定义组件等都需要用到插槽，这些组件只是作为一个基本的wrapper, 内容由用户提供。
+类比一下 Vue 的 slot(插槽)就很容易理解它的使用场景了, modal, layout, tabbar，grid 自定义组件等都需要用到插槽，这些组件只是作为一个基本的 wrapper, 内容由用户提供。
 
 ```vue
 // 简单的base-layout组件
@@ -50,15 +50,15 @@ permalink:  2020-12-22-understand-transclusion-in-angularJS
 
 可以看到，我们需要有允许用户选择在不同的地方放置不同内容的能力。
 
-## tranclude的基本用法
+## tranclude 的基本用法
 
-来看下AngularJS中对应的方法使用
+来看下 AngularJS 中对应的方法使用
 
-### 用法1.transclude: true
+### 用法 1.transclude: true
 
 #### ng-transclude
 
-定义container指令， template中定义的ng-transclude对应我们的slot, 也就是内容被填充的地方
+定义 container 指令， template 中定义的 ng-transclude 对应我们的 slot, 也就是内容被填充的地方
 
 ```js
 .directive("foo", function() {
@@ -71,12 +71,10 @@ permalink:  2020-12-22-understand-transclusion-in-angularJS
 ```
 
 ```html
-<div foo>
-  Some Content Here
-</div>
+<div foo>Some Content Here</div>
 ```
 
-最终生成的html是这样的, foo之中的内容被搬到了ng-transclude标记的位置
+最终生成的 html 是这样的, foo 之中的内容被搬到了 ng-transclude 标记的位置
 
 ```html
 <div foo>
@@ -87,7 +85,7 @@ permalink:  2020-12-22-understand-transclusion-in-angularJS
 
 #### transclude: element + ng-transclude
 
-与transclude: true不同， transclude:element会把ng-transclude所在的块也换掉
+与 transclude: true 不同， transclude:element 会把 ng-transclude 所在的块也换掉
 
 ```html
 <div>
@@ -98,13 +96,13 @@ permalink:  2020-12-22-understand-transclusion-in-angularJS
 </div>
 ```
 
- ```html
+```html
 <div>
-   <!-- transcluded -->
+  <!-- transcluded -->
 </div>
- ```
+```
 
-另外一个常见的例子是ng-repeat
+另外一个常见的例子是 ng-repeat
 
 ```html
 <ul>
@@ -134,19 +132,21 @@ permalink:  2020-12-22-understand-transclusion-in-angularJS
 
 ```html
 <script>
-angular.module('transcludeFallbackContentExample', [])
-.directive('myButton', function(){
-            return {
-              restrict: 'E',
-              transclude: true,
-              scope: true,
-              template: '<button style="cursor: pointer;">' +
-                          '<ng-transclude>' +
-                            '<b style="color: red;">Button1</b>' +
-                          '</ng-transclude>' +
-                        '</button>'
-            };
-        });
+  angular
+    .module("transcludeFallbackContentExample", [])
+    .directive("myButton", function () {
+      return {
+        restrict: "E",
+        transclude: true,
+        scope: true,
+        template:
+          '<button style="cursor: pointer;">' +
+          "<ng-transclude>" +
+          '<b style="color: red;">Button1</b>' +
+          "</ng-transclude>" +
+          "</button>",
+      };
+    });
 </script>
 <!-- fallback button content -->
 <my-button id="fallback"></my-button>
@@ -158,51 +158,48 @@ angular.module('transcludeFallbackContentExample', [])
 
 #### 多插槽
 
-像上面的vue container的例子，我们有时候希望能在不同的地方插入节点, 而angularJS1.5开始支持multi-slot多插槽机制, 现在的transclude拥有三种值，true, element, object对象
+像上面的 vue container 的例子，我们有时候希望能在不同的地方插入节点, 而 angularJS1.5 开始支持 multi-slot 多插槽机制, 现在的 transclude 拥有三种值，true, element, object 对象
 
 ```html
-angular.module('multiSlotTranscludeExample', [])
- .directive('pane', function(){
-    return {
-      restrict: 'E',
-      transclude: {
-        'title': '?pane-title',
-        'body': 'pane-body',
-        'footer': '?pane-footer'
-      },
-      template: '<div style="border: 1px solid black;">' +
-                  '<div class="title" ng-transclude="title">Fallback Title</div>' +
-                  '<div ng-transclude="body"></div>' +
-                  '<div class="footer" ng-transclude="footer">Fallback Footer</div>' +
-                '</div>'
-    };
-})
+angular.module('multiSlotTranscludeExample', []) .directive('pane', function(){
+return { restrict: 'E', transclude: { 'title': '?pane-title', 'body':
+'pane-body', 'footer': '?pane-footer' }, template: '
+<div style="border: 1px solid black;">
+  ' + '
+  <div class="title" ng-transclude="title">Fallback Title</div>
+  ' + '
+  <div ng-transclude="body"></div>
+  ' + '
+  <div class="footer" ng-transclude="footer">Fallback Footer</div>
+  ' + '
+</div>
+' }; })
 ```
 
 #### 作用域插槽
 
-插槽要注意作用域的问题，见[vue文档的编译作用域](https://cn.vuejs.org/v2/guide/components-slots.html#%E7%BC%96%E8%AF%91%E4%BD%9C%E7%94%A8%E5%9F%9F)
+插槽要注意作用域的问题，见[vue 文档的编译作用域](https://cn.vuejs.org/v2/guide/components-slots.html#%E7%BC%96%E8%AF%91%E4%BD%9C%E7%94%A8%E5%9F%9F)
 
 > 父级模板里的所有内容都是在父级作用域中编译的；子模板里的所有内容都是在子作用域中编译的。
 
-### 用法2. tranclude()与transclude(cb)
+### 用法 2. tranclude()与 transclude(cb)
 
-在有些情况下(比如内部的ng-repeat指令)，你需要对同一片模板进行复制，填充不同的数据，angularJS官方在link,compile以及controller都提供了transclude参数
+在有些情况下(比如内部的 ng-repeat 指令)，你需要对同一片模板进行复制，填充不同的数据，angularJS 官方在 link,compile 以及 controller 都提供了 transclude 参数
 
-1）不带cb的情况
+1）不带 cb 的情况
 
 ```js
-directive("foo", function() {
+directive("foo", function () {
   return {
     template: "<div>the template</div>",
-    transclude:true,
-    link: function(scope, element, attrs, ctrl, transclude) {
+    transclude: true,
+    link: function (scope, element, attrs, ctrl, transclude) {
       element.append(transclude());
       element.append(transclude());
       element.append(transclude());
-    }
+    },
   };
-})
+});
 ```
 
 ```html
@@ -212,13 +209,11 @@ directive("foo", function() {
     <div>Some Content Here</div>
   </div>
 </div>
-
-
 ```
 
-在这种情况下，插槽的内容只会复制一次，因此每次进行append操作的时候, 操作的都是同一个dom结构
+在这种情况下，插槽的内容只会复制一次，因此每次进行 append 操作的时候, 操作的都是同一个 dom 结构
 
-2）带cb的情况
+2）带 cb 的情况
 
 ```js
 .directive("foo", function() {
@@ -240,7 +235,7 @@ directive("foo", function() {
 })
 ```
 
-最终填充出来的HTML是这样的
+最终填充出来的 HTML 是这样的
 
 ```html
 <div foo>
@@ -251,22 +246,21 @@ directive("foo", function() {
     <div>Some Content Here</div>
   </div>
 </div>
-
 ```
 
 和上面不同的是，模板被进行了三次复制。
 
-## Transclusion与scope作用域
+## Transclusion 与 scope 作用域
 
-在AngularJS 1.3或更高版本中，默认情况下，被插入的内容的作用域范围将是该指令范围的子范围(在上面的例子中就是我们的foo, 而不是在ng-transclude的范围下面)。
+在 AngularJS 1.3 或更高版本中，默认情况下，被插入的内容的作用域范围将是该指令范围的子范围(在上面的例子中就是我们的 foo, 而不是在 ng-transclude 的范围下面)。
 
-当然,transclude还提供了scope参数，方便我们修改scope的值
+当然,transclude 还提供了 scope 参数，方便我们修改 scope 的值
 
 ```js
-tranclude(scope,function(clone){})
+tranclude(scope, function (clone) {});
 ```
 
-关于作用域的的具体请看[这里翻译的官方的wiki](2020-12-22-understand-scope-in-angularJS)
+关于作用域的的具体请看[这里翻译的官方的 wiki](2020-12-22-understand-scope-in-angularJS)
 
 ## 参考资料
 

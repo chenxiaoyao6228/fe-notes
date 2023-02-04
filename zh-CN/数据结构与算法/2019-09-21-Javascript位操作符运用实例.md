@@ -1,5 +1,4 @@
 ---
-
 title: Javascript位操作符运用实例
 date: 2019-09-21T23:39:50.000Z
 categories:
@@ -30,7 +29,7 @@ const myObject = {
   foo1: false,
   foo2: true,
   foo3: false,
-  foo4: true
+  foo4: true,
 };
 ```
 
@@ -123,7 +122,7 @@ const myObject = {
   foo1: false,
   foo2: true,
   foo3: false,
-  foo4: true
+  foo4: true,
 };
 // 我们还设置一些常量以使代码更易于后续阅读。
 

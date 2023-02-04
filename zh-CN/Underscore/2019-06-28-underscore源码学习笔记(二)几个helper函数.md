@@ -1,5 +1,4 @@
 ---
-
 title: "underscore源码学习笔记(二)几个helper函数"
 date: 2019-06-28T16:24:59.000Z
 categories:
@@ -18,15 +17,15 @@ permalink: 2019-06-28-underscore-analysis-2-some-helper-functions
 underscore 中提供了一种检测是否为类数组的方法
 
 ```js
-var shallowProperty = function(key) {
-  return function(obj) {
+var shallowProperty = function (key) {
+  return function (obj) {
     return obj == null ? void 0 : obj[key];
   };
 };
 
 var MAX_ARRAY_INDEX = Math.pow(2, 53) - 1;
 var getLength = shallowProperty("length");
-var isArrayLike = function(collection) {
+var isArrayLike = function (collection) {
   var length = getLength(collection);
   return typeof length == "number" && length >= 0 && length <= MAX_ARRAY_INDEX;
 };
@@ -84,9 +83,10 @@ F("allen", 18); //["allen", 18]
 4. **\_.toArray(list)作者使用了正则表达式进行匹配**
 
 ```js
-var reStrSymbol = /[^\ud800-\udfff]|[\ud800-\udbff][\udc00-\udfff]|[\ud800-\udfff]/g;
+var reStrSymbol =
+  /[^\ud800-\udfff]|[\ud800-\udbff][\udc00-\udfff]|[\ud800-\udfff]/g;
 // Safely create a real, live array from anything iterable.
-_.toArray = function(obj) {
+_.toArray = function (obj) {
   if (!obj) return [];
   if (_.isArray(obj)) return slice.call(obj);
   if (_.isString(obj)) {
@@ -101,7 +101,7 @@ _.toArray = function(obj) {
 ##### 二. \_.isObject: 判断参数是否为对象,返回布尔值,对象包含但不限于 Array, Function, Number, Date...
 
 ```js
-_.isObject = function(obj) {
+_.isObject = function (obj) {
   var type = typeof obj;
   return type === "function" || (type === "object" && !!obj);
 };
@@ -130,10 +130,10 @@ var ObjProto = Object.prototype;
       "Map",
       "WeakMap",
       "Set",
-      "WeakSet"
+      "WeakSet",
     ],
-    function(name) {
-      _["is" + name] = function(obj) {
+    function (name) {
+      _["is" + name] = function (obj) {
         return toString.call(obj) === "[object " + name + "]";
       };
     }
@@ -146,7 +146,7 @@ _.isArray([]); //"[object Array]"
 #### 四\_.keys:
 
 ```js
-_.keys = function(obj) {
+_.keys = function (obj) {
   if (!_.isObject(obj)) return [];
   if (nativeKeys) return nativeKeys(obj); //ES6中新增了Object.keys()
   var keys = [];
@@ -178,7 +178,7 @@ var nonEnumerableProps = [
   "toString",
   "propertyIsEnumerable",
   "hasOwnProperty",
-  "toLocalString"
+  "toLocalString",
 ];
 
 //给keys添加本该枚举的属性
@@ -230,7 +230,7 @@ Returns a function that will return the specified property of any passed-in obje
 Inverse of \_.property. Takes an object and returns a function which will return the value of a provided property.
 
 ```js
-var deepGet = function(obj, path) {
+var deepGet = function (obj, path) {
   var length = path.length;
   for (var i = 0; i < length; i++) {
     if (obj == null) return void 0;
@@ -239,11 +239,11 @@ var deepGet = function(obj, path) {
   return length ? obj : void 0;
 };
 
-_.property = function(path) {
+_.property = function (path) {
   if (!_.isArray(path)) {
     return shallowProperty(path);
   }
-  return function(obj) {
+  return function (obj) {
     return deepGet(obj, path);
   };
 };

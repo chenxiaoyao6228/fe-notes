@@ -1,5 +1,5 @@
 ---
-title: '实现angular[手记五]编译字面量表达式'
+title: "实现angular[手记五]编译字面量表达式"
 date: 2019-07-16T07:28:20.000Z
 categories:
   - tech
@@ -66,14 +66,14 @@ Lexer.prototype.lex = function (text) {
     // 数字
     if (
       this.isNumber(this.ch) ||
-      (this.is('.') && this.isNumber(this.peek()))
+      (this.is(".") && this.isNumber(this.peek()))
     ) {
       this.readNumber();
       // 引号
-    } else if (this.is('\'"')) {
+    } else if (this.is("'\"")) {
       this.readString(this.ch);
       // 对象, 数组, 函数调用
-    } else if (this.is('[],{}:.()=')) {
+    } else if (this.is("[],{}:.()=")) {
       this.tokens.push({
         text: this.ch,
       });
@@ -85,7 +85,7 @@ Lexer.prototype.lex = function (text) {
     } else if (this.isWhitespace(this.ch)) {
       this.index++;
     } else {
-      throw 'Unexpected next character: ' + this.ch;
+      throw "Unexpected next character: " + this.ch;
     }
   }
 
@@ -98,31 +98,31 @@ Lexer.prototype.lex = function (text) {
 
 ```javascript
 Lexer.prototype.readNumber = function () {
-  var number = '';
+  var number = "";
   while (this.index < this.text.length) {
     // 普通整数和小数
     var ch = this.text.charAt(this.index).toLowerCase();
-    if (ch === '.' || this.isNumber(ch)) {
+    if (ch === "." || this.isNumber(ch)) {
       number += ch;
     } else {
       // 科学计数法法
       var nextCh = this.peek();
       var prevCh = number.charAt(number.length - 1);
-      if (ch === 'e' && this.isExpOperator(nextCh)) {
+      if (ch === "e" && this.isExpOperator(nextCh)) {
         number += ch;
       } else if (
         this.isExpOperator(ch) &&
-        prevCh === 'e' &&
+        prevCh === "e" &&
         nextCh &&
         this.isNumber(nextCh)
       ) {
         number += ch;
       } else if (
         this.isExpOperator(ch) &&
-        prevCh === 'e' &&
+        prevCh === "e" &&
         (!nextCh || !this.isNumber(nextCh))
       ) {
-        throw 'Invalid exponent';
+        throw "Invalid exponent";
       } else {
         break;
       }
@@ -178,15 +178,15 @@ primary 方法内部采用 array.shift 逐个对 token 队列进行处理,主要
 ```javascript
 AST.prototype.arrayDeclaration = function () {
   var elements = [];
-  if (!this.peek(']')) {
+  if (!this.peek("]")) {
     do {
-      if (this.peek(']')) {
+      if (this.peek("]")) {
         break;
       }
       elements.push(this.primary());
-    } while (this.expect(','));
+    } while (this.expect(","));
   }
-  this.consume(']');
+  this.consume("]");
   return { type: AST.ArrayExpression, elements: elements };
 };
 ```
@@ -196,7 +196,7 @@ AST.prototype.arrayDeclaration = function () {
 ```javascript
 AST.prototype.object = function () {
   var properties = [];
-  if (!this.peek('}')) {
+  if (!this.peek("}")) {
     do {
       var property = { type: AST.Property };
       // constant和primary都会去token列表中进行处理
@@ -205,12 +205,12 @@ AST.prototype.object = function () {
       } else {
         property.key = this.constant();
       }
-      this.consume(':');
+      this.consume(":");
       property.value = this.primary();
       properties.push(property);
-    } while (this.expect(','));
+    } while (this.expect(","));
   }
-  this.consume('}');
+  this.consume("}");
   return { type: AST.ObjectExpression, properties: properties };
 };
 ```
@@ -230,7 +230,7 @@ AST.prototype.expect = function (e) {
 AST.prototype.consume = function (e) {
   var token = this.expect(e);
   if (!token) {
-    throw 'Unexpected.  Expecting ' + e;
+    throw "Unexpected.  Expecting " + e;
   }
   return token;
 };
@@ -251,9 +251,9 @@ AST.prototype.peek = function (e) {
 // AST的主体处理
 AST.prototype.primary = function () {
   var primary;
-  if (this.expect('[')) {
+  if (this.expect("[")) {
     primary = this.arrayDeclaration();
-  } else if (this.expect('{')) {
+  } else if (this.expect("{")) {
     primary = this.object();
   } else if (this.constants.hasOwnProperty(this.tokens[0].text)) {
     primary = this.constants[this.consume().text];
@@ -262,7 +262,7 @@ AST.prototype.primary = function () {
   } else {
     primary = this.constant();
   }
-  while (this.expect('.')) {
+  while (this.expect(".")) {
     primary = {
       type: AST.MemberExpression,
       object: primary,
@@ -296,7 +296,7 @@ ASTCompile 类的主要职责是将 AST 生成函数字符串, 再通过 new Fun
 > new Function ([arg1[, arg2[, ...argN]],] functionBody)
 
 ```javascript
-var sum = new Function('a', 'b', 'return a + b');
+var sum = new Function("a", "b", "return a + b");
 
 console.log(sum(2, 6));
 // expected output: 8
@@ -309,7 +309,7 @@ ASTCompiler.prototype.compile = function (text) {
   var ast = this.astBuilder.ast(text);
   this.state = { body: [] };
   this.recurse(ast);
-  return new Function('s', this.state.body.join(''));
+  return new Function("s", this.state.body.join(""));
 };
 ```
 
@@ -322,7 +322,7 @@ ASTCompiler.prototype.recurse = function (ast) {
   switch (ast.type) {
     case AST.Program:
       // 递归调用
-      this.state.body.push('return ', this.recurse(ast.body), ';');
+      this.state.body.push("return ", this.recurse(ast.body), ";");
       break;
     case AST.Literal:
       return this.escape(ast.value);
@@ -330,7 +330,7 @@ ASTCompiler.prototype.recurse = function (ast) {
       var elements = _.map(ast.elements, function (element) {
         return self.recurse(element);
       });
-      return '[' + elements.join(',') + ']';
+      return "[" + elements.join(",") + "]";
     case AST.ObjectExpression:
       var properties = _.map(ast.properties, function (property) {
         var key =
@@ -338,15 +338,15 @@ ASTCompiler.prototype.recurse = function (ast) {
             ? property.key.name
             : self.escape(property.key.value);
         var value = self.recurse(property.value);
-        return key + ':' + value;
+        return key + ":" + value;
       });
-      return '{' + properties.join(',') + '}';
+      return "{" + properties.join(",") + "}";
     case AST.Identifier:
       intoId = this.nextId();
-      this.if_('s', this.assign(intoId, this.nonComputedMember('s', ast.name)));
+      this.if_("s", this.assign(intoId, this.nonComputedMember("s", ast.name)));
       return intoId;
     case AST.ThisExpresssion:
-      return 's';
+      return "s";
     case AST.MemberExpression:
       intoId = this.nextId();
       var left = this.recurse(ast.object);

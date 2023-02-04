@@ -5,65 +5,65 @@ categories:
 tags:
   - javascript
 date: 2021-01-05
-permalink:  2021-01-05-javascript-inheritance-all-in-one
+permalink: 2021-01-05-javascript-inheritance-all-in-one
 ---
 
 ## 前言
 
-ES6中带来了class支持，方便了调用，实际上只是基于原型继承的语法糖，要了解ES6的class就要深入理解JS的原型继承机制
+ES6 中带来了 class 支持，方便了调用，实际上只是基于原型继承的语法糖，要了解 ES6 的 class 就要深入理解 JS 的原型继承机制
 
-本文目标：了解Javascript中的原型继承机制， 并模拟实现class继承
+本文目标：了解 Javascript 中的原型继承机制， 并模拟实现 class 继承
 
-## JS中的类支持
+## JS 中的类支持
 
 ### 类的基本用法
 
 ```js
 class Person {
-   static TYPE = 'PERSON' // 静态属性
-    #privateMsg // 私有属性, ES2020 实验草案
-    constructor(name, age) {
-    this.#privateMsg = 'private variable'
+  static TYPE = "PERSON"; // 静态属性
+  #privateMsg; // 私有属性, ES2020 实验草案
+  constructor(name, age) {
+    this.#privateMsg = "private variable";
     this.name = name;
     this.age = age;
-    }
-    say(){
-      console.log(privateMsg) // 函数内部可以访问私有变量
-    }
-    introduce (){
-      return 'name: ' + this.name + ' age: ' + this.age
-    }
-}
-var person = new Person('allen', 12) //对象创建
-person.say() // private variable
-person.#privateMsg // 访问私有属性,报SyntaxErroE
-
-class Employee extends Person {
-  constructor(name, age, salary){
-    super(name, age)
-    this.salary = salary
+  }
+  say() {
+    console.log(privateMsg); // 函数内部可以访问私有变量
+  }
+  introduce() {
+    return "name: " + this.name + " age: " + this.age;
   }
 }
-let employee = new Employee('allen', 12, 2000)
-employee.salary // 2000
+var person = new Person("allen", 12); //对象创建
+person.say(); // private variable
+person.#privateMsg; // 访问私有属性,报SyntaxErroE
+
+class Employee extends Person {
+  constructor(name, age, salary) {
+    super(name, age);
+    this.salary = salary;
+  }
+}
+let employee = new Employee("allen", 12, 2000);
+employee.salary; // 2000
 ```
 
 类的特点主要有以下
 
-* 对象构建
-* 静态属性/方法(如Math.random())
-* 私有属性
-* 可以通过extends实现继承
+- 对象构建
+- 静态属性/方法(如 Math.random())
+- 私有属性
+- 可以通过 extends 实现继承
 
-### ES6前类的定义
+### ES6 前类的定义
 
-在ES6之前是没有类的，只有函数，按照用法可以分为普通函数和构造函数
+在 ES6 之前是没有类的，只有函数，按照用法可以分为普通函数和构造函数
 
 普通函数没什么好说的
 
 ```js
-function person(){
- console.log('I am a person')
+function person() {
+  console.log("I am a person");
 }
 ```
 
@@ -71,52 +71,50 @@ function person(){
 
 ```js
 function Person(name, age) {
-  var privateMsg = 'private variable' // 私有属性
+  var privateMsg = "private variable"; // 私有属性
   this.name = name;
   this.age = age;
-  this.say = function(){
-    console.log(privateMsg)
-  }
-  this.introduce = function(){
-    return 'name: ' + this.name + ' age: ' + this.age
-  }
+  this.say = function () {
+    console.log(privateMsg);
+  };
+  this.introduce = function () {
+    return "name: " + this.name + " age: " + this.age;
+  };
 }
-var person = new Person('allen', 12) //对象创建
-Person.TYPE = 'PERSON' // 静态属性
-person.say() // private variable
-person.privateMsg // undefined
+var person = new Person("allen", 12); //对象创建
+Person.TYPE = "PERSON"; // 静态属性
+person.say(); // private variable
+person.privateMsg; // undefined
 ```
 
-有时候我们希望"类"的方法能被重用, 比如上面的introduce方法, 每次创建对象的时候都会重新定义一遍, 在JS中,每个构造函数都有一个对应的Prototype对象,可以用来保存共用的方法和属性,还是上面的例子
+有时候我们希望"类"的方法能被重用, 比如上面的 introduce 方法, 每次创建对象的时候都会重新定义一遍, 在 JS 中,每个构造函数都有一个对应的 Prototype 对象,可以用来保存共用的方法和属性,还是上面的例子
 
 ```js
 function Person(name, age) {
   this.name = name;
   this.age = age;
 }
-Person.prototype.introduce = function(){
-    return 'name: ' + this.name + ', age: ' + this.age
- }
-var p1 = new Person('allen', 12) //对象创建
-p1.introduce() // name: allen, age: 12
-var p2 = new Person('bob', 12) //对象创建
-p2.introduce() // name: bob, age: 12
+Person.prototype.introduce = function () {
+  return "name: " + this.name + ", age: " + this.age;
+};
+var p1 = new Person("allen", 12); //对象创建
+p1.introduce(); // name: allen, age: 12
+var p2 = new Person("bob", 12); //对象创建
+p2.introduce(); // name: bob, age: 12
 ```
 
-对于实例p(p1和p2), 找不到introduce方法,因此会到根据\__proto__属性Person的prototype对象里面去寻找. 用图表示是这样的
+对于实例 p(p1 和 p2), 找不到 introduce 方法,因此会到根据\_\_proto\_\_属性 Person 的 prototype 对象里面去寻找. 用图表示是这样的
 
 ![](https://note.youdao.com/yws/public/resource/a859c7ffd63e9f5c905a9d71d446d2e0/xmlnote/C31298E69652450BAF2A0516C5F63132/67723.png)
 
-这个\__proto__是什么?  new的时候发生了什么?
+这个\_\_proto\_\_是什么? new 的时候发生了什么?
 
-## new的时候发生了什么
+## new 的时候发生了什么
 
 new Person()的时候做了以下几件事：
-  1. 创建一个新的对象instance
-  2. instance.\__proto__ = instanceClass.prototype
-  3. 将 this 关键字指向新创建的对象，this = instance
-4. 使用新创建的对象执行构造器函数, 获得返回值res
-5. 判断res的返回值，如果为Object，Array等复合数据类型，则返回res，否则返回这个instance
+  1. 创建一个新的对象 instance
+  2. instance.\_\_proto\_\_ = instanceClass.prototype
+  3. 将 this 关键字指向新创建的对象，this = instance 4. 使用新创建的对象执行构造器函数, 获得返回值 res 5. 判断 res 的返回值，如果为 Object，Array 等复合数据类型，则返回 res，否则返回这个 instance
 
 用代码表示如下
 
@@ -125,15 +123,15 @@ function Person(name, age) {
   this.name = name;
   this.age = age;
 }
-function isCompoundData(target){
-  return target !== null && typeof target === 'object'
+function isCompoundData(target) {
+  return target !== null && typeof target === "object";
 }
 
 function New(f) {
-  return function() {
+  return function () {
     var o = { __proto__: f.prototype }; // 1,2
     var res = f.apply(o, arguments); // 3, 4
-    return isCompoundData(res) ? res : o;  //5
+    return isCompoundData(res) ? res : o; //5
   };
 }
 var p = New(Person)("allen", "21");
@@ -141,27 +139,28 @@ p.name; //"allen"
 p.age; //"21"
 ```
 
-由于查找是根据\__proto__, 而\__proto__在new的时候确定,因此在对象实例化之后, 再更改构造no函数的prototype的指向是不会影响原来的
+由于查找是根据\_\_proto**, 而\_\_proto**在 new 的时候确定,因此在对象实例化之后, 再更改构造 no 函数的 prototype 的指向是不会影响原来的
 
 ```js
 function Person() {}
-Person.prototype.xxx = 'xxx'
-var p = new Person()
-Person.prototype = { // 对prototype对象进行更改
-  xxx: 'yyy'
-}
-p.xxx // 'xxx'
+Person.prototype.xxx = "xxx";
+var p = new Person();
+Person.prototype = {
+  // 对prototype对象进行更改
+  xxx: "yyy",
+};
+p.xxx; // 'xxx'
 ```
 
-这种原型链查找的方式正式JS中的继承机制, 假设我们有这个一个类结构
+这种原型链查找的方式正式 JS 中的继承机制, 假设我们有这个一个类结构
 
 ```
 p <- Parent <- GrandParent
 ```
 
-当我们从p中查找某个属性 y时, 会沿着\__proto__逐级向上查找, 和下文提到的instanceOf一致
+当我们从 p 中查找某个属性 y 时, 会沿着\_\_proto\_\_逐级向上查找, 和下文提到的 instanceOf 一致
 
-## instanceOf与原型链查找
+## instanceOf 与原型链查找
 
 在 JS 中，判断数据主要依赖下面两种方式：
 
@@ -177,11 +176,11 @@ d instanceof Date // true
 d instanceof Object // true
 ```
 
-我们知道, 在JavaScript中, Date, Array等都**继承**于Object, 因此d也是Object的实例.
+我们知道, 在 JavaScript 中, Date, Array 等都**继承**于 Object, 因此 d 也是 Object 的实例.
 
-### instanceOf的基本原理
+### instanceOf 的基本原理
 
-instanceOf的实现原理是: 判断 L 内部的**\__proto__**属性（如果 L.**\__proto__**.**\__proto__**不为空，则沿着原型链一直使用**\__proto__**进行查找比较）是否和构造函数 R 的 prototype 相等, 代码表示如下:
+instanceOf 的实现原理是: 判断 L 内部的**\_\_proto\_\_**属性（如果 L.**\_\_proto\_\_**.**\_\_proto\_\_**不为空，则沿着原型链一直使用**\_\_proto\_\_**进行查找比较）是否和构造函数 R 的 prototype 相等, 代码表示如下:
 
 ```js
 function instance_of(L, R) {
@@ -200,9 +199,9 @@ function instance_of(L, R) {
 }
 ```
 
-### instanceOf理解一切皆对象
+### instanceOf 理解一切皆对象
 
-你可能听过JS中一切皆对象,我们可以通过原型链来解释.
+你可能听过 JS 中一切皆对象,我们可以通过原型链来解释.
 
 ![](https://note.youdao.com/yws/public/resource/a859c7ffd63e9f5c905a9d71d446d2e0/xmlnote/WEBRESOURCE122f4b50402cbcd652ddafcebacb4b10/67727.png)
 
@@ -266,14 +265,14 @@ alert(instance2.colors); //"red,blue,green,black"
 来自高程的例子：
 
 ```js
-var Person = function() {};
+var Person = function () {};
 Person.prototype = {
   name: "Nicholas",
   age: 29,
   job: "Software Engineer",
-  sayName: function() {
+  sayName: function () {
     alert(this.name);
-  }
+  },
 };
 
 var friend = new Person();
@@ -294,13 +293,13 @@ alert(friend.constructor == Object); //true
 ```js
 Object.defineProperty(Person.prototype, "constructor", {
   enumerable: false,
-  value: Person
+  value: Person,
 });
 ```
 
 ## 继承
 
-讲完了new和instanceOf, 让我们回到类的一个最重要的一个部分上: **继承**, JS 的new关键字让刚上手JavaScript的熟悉传统类继承的程序员直接蒙了, Javascript并没有提供相应的继承机制, 因此广大JS程序员各显神通,发明了各种模拟继承的方法, 主要分为拷贝继承和基于原型链的继承.
+讲完了 new 和 instanceOf, 让我们回到类的一个最重要的一个部分上: **继承**, JS 的 new 关键字让刚上手 JavaScript 的熟悉传统类继承的程序员直接蒙了, Javascript 并没有提供相应的继承机制, 因此广大 JS 程序员各显神通,发明了各种模拟继承的方法, 主要分为拷贝继承和基于原型链的继承.
 
 ### 基于原型链的继承
 
@@ -310,7 +309,7 @@ Object.defineProperty(Person.prototype, "constructor", {
 function SuperType() {
   this.colors = ["red", "blue", "green"];
 }
-SuperType.prototype.Fun = function() {};
+SuperType.prototype.Fun = function () {};
 function SubType() {}
 //继承了SuperType
 SubType.prototype = new SuperType();
@@ -370,7 +369,7 @@ function SuperType(name) {
   this.name = name;
   this.colors = ["red", "blue", "green"];
 }
-SuperType.prototype.sayName = function() {
+SuperType.prototype.sayName = function () {
   alert(this.name);
 };
 function SubType(name, age) {
@@ -379,7 +378,7 @@ function SubType(name, age) {
 }
 SubType.prototype = new SuperType(); //借用原型链继承方法，一次调用
 SubType.prototype.constructor = SubType;
-SubType.prototype.sayAge = function() {
+SubType.prototype.sayAge = function () {
   alert(this.age);
 };
 var instance1 = new SubType("Nicholas", 29);
@@ -398,7 +397,7 @@ instance2.sayAge(); //27
 
 #### 四、原型式继承
 
-ES5中内置的Object.create就是基于此
+ES5 中内置的 Object.create 就是基于此
 
 ```js
 function object(o) {
@@ -415,7 +414,7 @@ function object(o) {
 ```js
 function createAnother(original) {
   var clone = object(original); //通过调用函数创建一个新对象
-  clone.sayHi = function() {
+  clone.sayHi = function () {
     //以某种方式来增强这个对象
     alert("hi");
   };
@@ -423,7 +422,7 @@ function createAnother(original) {
 }
 var person = {
   name: "Nicholas",
-  friends: ["Shelby", "Court", "Van"]
+  friends: ["Shelby", "Court", "Van"],
 };
 var anotherPerson = createAnother(person);
 anotherPerson.sayHi(); //"hi"
@@ -443,7 +442,7 @@ function SuperType(name) {
   this.name = name;
   this.colors = ["red", "blue", "green"];
 }
-SuperType.prototype.sayName = function() {
+SuperType.prototype.sayName = function () {
   alert(this.name);
 };
 function SubType(name, age) {
@@ -451,7 +450,7 @@ function SubType(name, age) {
   this.age = age;
 }
 inheritPrototype(SubType, SuperType); //实现继承
-SubType.prototype.sayAge = function() {
+SubType.prototype.sayAge = function () {
   alert(this.age);
 };
 ```
@@ -473,12 +472,12 @@ var person = {
   name: "allen",
   address: {
     home: "home address",
-    school: "school address"
-  }
+    school: "school address",
+  },
 };
 
 var student = {
-  age: 21
+  age: 21,
 };
 
 extend(person, student);
@@ -518,12 +517,12 @@ var person = {
   name: "allen",
   address: {
     home: "home address",
-    school: "school address"
-  }
+    school: "school address",
+  },
 };
 
 var student = {
-  age: 21
+  age: 21,
 };
 
 extendDeeply(person, student);
@@ -538,62 +537,64 @@ person.address.home; //home address
 
 ## 类工厂的实现
 
-上面介绍了几种常见的继承模型各有优点，但如果我们需要将这些类方法封装一下，供别人使用的时候，就要考虑更多的功能了, 社区的实现有很多,  这里挑了个人认为最简单的一种实现
+上面介绍了几种常见的继承模型各有优点，但如果我们需要将这些类方法封装一下，供别人使用的时候，就要考虑更多的功能了, 社区的实现有很多, 这里挑了个人认为最简单的一种实现
 
 ### JS.Class
 
 ```js
-Class = function(classDefinition) {
-    //返回目标类的真正构造器
-    function getClassBase() {
-        return function() {
-            //它在里面执行用户传入的构造器construct
-            //preventJSBaseConstructorCall是为了防止在createClassDefinition辅助方法中执行父类的construct
-            if (typeof this['construct'] === 'function' && preventJSBaseConstructorCall === false) {
-                this.construct.apply(this, arguments);
-            }
-        };
-    }
-    //为目标类添加类成员与原型成员
-    function createClassDefinition(classDefinition) {
-        //此对象用于保存父类的同名方法
-        var parent = this.prototype["parent"] || (this.prototype["parent"] = {});
-        for (var prop in classDefinition) {
-            if (prop === 'statics') {
-                for (var sprop in classDefinition.statics) {
-                    this[sprop] = classDefinition.statics[sprop];
-                }
-            } else {
-                //为目标类添加原型成员，如果是函数，那么检测它还没有同名的超类方法，如果有
-                if (typeof this.prototype[prop] === 'function') {
-                    var parentMethod = this.prototype[prop];
-                    parent[prop] = parentMethod;
-                }
-                this.prototype[prop] = classDefinition[prop];
-            }
+Class = function (classDefinition) {
+  //返回目标类的真正构造器
+  function getClassBase() {
+    return function () {
+      //它在里面执行用户传入的构造器construct
+      //preventJSBaseConstructorCall是为了防止在createClassDefinition辅助方法中执行父类的construct
+      if (
+        typeof this["construct"] === "function" &&
+        preventJSBaseConstructorCall === false
+      ) {
+        this.construct.apply(this, arguments);
+      }
+    };
+  }
+  //为目标类添加类成员与原型成员
+  function createClassDefinition(classDefinition) {
+    //此对象用于保存父类的同名方法
+    var parent = this.prototype["parent"] || (this.prototype["parent"] = {});
+    for (var prop in classDefinition) {
+      if (prop === "statics") {
+        for (var sprop in classDefinition.statics) {
+          this[sprop] = classDefinition.statics[sprop];
         }
+      } else {
+        //为目标类添加原型成员，如果是函数，那么检测它还没有同名的超类方法，如果有
+        if (typeof this.prototype[prop] === "function") {
+          var parentMethod = this.prototype[prop];
+          parent[prop] = parentMethod;
+        }
+        this.prototype[prop] = classDefinition[prop];
+      }
     }
+  }
 
-    var preventJSBaseConstructorCall = true;
-    var Base = getClassBase();
+  var preventJSBaseConstructorCall = true;
+  var Base = getClassBase();
+  preventJSBaseConstructorCall = false;
+
+  createClassDefinition.call(Base, classDefinition);
+
+  //用于创建当前类的子类
+  Base.extend = function (classDefinition) {
+    preventJSBaseConstructorCall = true;
+    var SonClass = getClassBase();
+    SonClass.prototype = new this(); //将一个父类的实例当作子类的原型
     preventJSBaseConstructorCall = false;
 
-    createClassDefinition.call(Base, classDefinition);
+    createClassDefinition.call(SonClass, classDefinition);
+    SonClass.extend = this.extend;
 
-    //用于创建当前类的子类
-    Base.extend = function(classDefinition) {
-
-        preventJSBaseConstructorCall = true;
-        var SonClass = getClassBase();
-        SonClass.prototype = new this();//将一个父类的实例当作子类的原型
-        preventJSBaseConstructorCall = false;
-
-        createClassDefinition.call(SonClass, classDefinition);
-        SonClass.extend = this.extend;
-
-        return SonClass;
-    };
-    return Base;
+    return SonClass;
+  };
+  return Base;
 };
 ```
 
@@ -601,57 +602,59 @@ Class = function(classDefinition) {
 
 ```js
 Class({
-    construct: function(name) {
-        this.name = name;
-    },
-    say: function(s) {
-        console.log(s);
-    }
+  construct: function (name) {
+    this.name = name;
+  },
+  say: function (s) {
+    console.log(s);
+  },
 });
 
 var animal = new Animal();
-animal.say('animal'); // animal
+animal.say("animal"); // animal
 
 var Dog = Animal.extend({
-    construct: function(name, age) {
-        //调用父类构造器
-        this.parent.construct.apply(this, arguments);
-        this.age = age;
-    },
-    run: function(s) {
-        console.log(s);
-    }
+  construct: function (name, age) {
+    //调用父类构造器
+    this.parent.construct.apply(this, arguments);
+    this.age = age;
+  },
+  run: function (s) {
+    console.log(s);
+  },
 });
 var dog = new Dog("dog", 4);
 console.log(dog.name);
 dog.say("dog"); // dog
 dog.run("run"); // run
-console.log(dog.constructor + "")
+console.log(dog.constructor + "");
 var Shepherd = Dog.extend({
-    statics: {//静态成员
-        TYPE: "Shepherd"
-    },
-    run: function() {//方法链,调用超类同名方法
-        this.parent.run.call(this, "fast");
-    }
+  statics: {
+    //静态成员
+    TYPE: "Shepherd",
+  },
+  run: function () {
+    //方法链,调用超类同名方法
+    this.parent.run.call(this, "fast");
+  },
 });
-console.log(Shepherd.TYPE);//Shepherd
+console.log(Shepherd.TYPE); //Shepherd
 var shepherd = new Shepherd("shepherd", 5);
-shepherd.run();//fast
+shepherd.run(); //fast
 
 var a = new Animal("xx");
-console.log(a.run)
+console.log(a.run);
 ```
 
 ### 其他的实现
 
-* [def.js](https://github.com/RubyLouvre/def.js)
+- [def.js](https://github.com/RubyLouvre/def.js)
 
-* [Simple-inheritance](https://johnresig.com/blog/simple-javascript-inheritance/)
+- [Simple-inheritance](https://johnresig.com/blog/simple-javascript-inheritance/)
 
-## ES6中的类
+## ES6 中的类
 
-有了前面的基础,我们就能理解为什么说ES6的class是语法糖了, 以最开始的Person的例子, 我们可以借Babel来一窥究竟
+有了前面的基础,我们就能理解为什么说 ES6 的 class 是语法糖了, 以最开始的 Person 的例子, 我们可以借 Babel 来一窥究竟
 
 ### 类的定义
 
@@ -661,7 +664,7 @@ function _defineProperties(target, props) {
     var descriptor = props[i];
     descriptor.enumerable = descriptor.enumerable || false;
     descriptor.configurable = true;
-    if ('value' in descriptor) descriptor.writable = true;
+    if ("value" in descriptor) descriptor.writable = true;
     Object.defineProperty(target, descriptor.key, descriptor);
   }
 }
@@ -671,15 +674,14 @@ function _createClass(Constructor, protoProps, staticProps) {
   if (staticProps) _defineProperties(Constructor, staticProps);
   return Constructor;
 }
-
 ```
 
 ### 继承实现
 
 ```js
 function _inherits(subClass, superClass) {
-  if (typeof superClass !== 'function' && superClass !== null) {
-    throw new TypeError('Super expression must either be null or a function');
+  if (typeof superClass !== "function" && superClass !== null) {
+    throw new TypeError("Super expression must either be null or a function");
   }
   subClass.prototype = Object.create(superClass && superClass.prototype, {
     constructor: { value: subClass, writable: true, configurable: true },
@@ -690,42 +692,139 @@ function _inherits(subClass, superClass) {
 
 ### 类的特点
 
-1. class的本质还是函数
-2. 基于Object.defineProperty
-3. 类中所有的函数定义在Prototype上面
-4. 类中定义的方法,都是不可遍历的(enumerable为false)
+1. class 的本质还是函数
+2. 基于 Object.defineProperty
+3. 类中所有的函数定义在 Prototype 上面
+4. 类中定义的方法,都是不可遍历的(enumerable 为 false)
 5. 变量不可提升
-6. 和ES5一样, Class内部可以使用get和set关键字
-7. ES6的静态方法可以被子类继承
+6. 和 ES5 一样, Class 内部可以使用 get 和 set 关键字
+7. ES6 的静态方法可以被子类继承
 
 ## 附录
 
-### Babel转译完整代码
+### Babel 转译完整代码
 
 ```js
 "use strict";
 
-function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+function _typeof(obj) {
+  "@babel/helpers - typeof";
+  if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") {
+    _typeof = function _typeof(obj) {
+      return typeof obj;
+    };
+  } else {
+    _typeof = function _typeof(obj) {
+      return obj &&
+        typeof Symbol === "function" &&
+        obj.constructor === Symbol &&
+        obj !== Symbol.prototype
+        ? "symbol"
+        : typeof obj;
+    };
+  }
+  return _typeof(obj);
+}
 
-function _instanceof(left, right) { if (right != null && typeof Symbol !== "undefined" && right[Symbol.hasInstance]) { return !!right[Symbol.hasInstance](left); } else { return left instanceof right; } }
+function _instanceof(left, right) {
+  if (
+    right != null &&
+    typeof Symbol !== "undefined" &&
+    right[Symbol.hasInstance]
+  ) {
+    return !!right[Symbol.hasInstance](left);
+  } else {
+    return left instanceof right;
+  }
+}
 
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+function _inherits(subClass, superClass) {
+  if (typeof superClass !== "function" && superClass !== null) {
+    throw new TypeError("Super expression must either be null or a function");
+  }
+  subClass.prototype = Object.create(superClass && superClass.prototype, {
+    constructor: { value: subClass, writable: true, configurable: true },
+  });
+  if (superClass) _setPrototypeOf(subClass, superClass);
+}
 
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+function _setPrototypeOf(o, p) {
+  _setPrototypeOf =
+    Object.setPrototypeOf ||
+    function _setPrototypeOf(o, p) {
+      o.__proto__ = p;
+      return o;
+    };
+  return _setPrototypeOf(o, p);
+}
 
-function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+function _createSuper(Derived) {
+  var hasNativeReflectConstruct = _isNativeReflectConstruct();
+  return function _createSuperInternal() {
+    var Super = _getPrototypeOf(Derived),
+      result;
+    if (hasNativeReflectConstruct) {
+      var NewTarget = _getPrototypeOf(this).constructor;
+      result = Reflect.construct(Super, arguments, NewTarget);
+    } else {
+      result = Super.apply(this, arguments);
+    }
+    return _possibleConstructorReturn(this, result);
+  };
+}
 
-function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+function _possibleConstructorReturn(self, call) {
+  if (call && (_typeof(call) === "object" || typeof call === "function")) {
+    return call;
+  }
+  return _assertThisInitialized(self);
+}
 
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+function _assertThisInitialized(self) {
+  if (self === void 0) {
+    throw new ReferenceError(
+      "this hasn't been initialised - super() hasn't been called"
+    );
+  }
+  return self;
+}
 
-function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+function _isNativeReflectConstruct() {
+  if (typeof Reflect === "undefined" || !Reflect.construct) return false;
+  if (Reflect.construct.sham) return false;
+  if (typeof Proxy === "function") return true;
+  try {
+    Date.prototype.toString.call(Reflect.construct(Date, [], function () {}));
+    return true;
+  } catch (e) {
+    return false;
+  }
+}
 
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+function _getPrototypeOf(o) {
+  _getPrototypeOf = Object.setPrototypeOf
+    ? Object.getPrototypeOf
+    : function _getPrototypeOf(o) {
+        return o.__proto__ || Object.getPrototypeOf(o);
+      };
+  return _getPrototypeOf(o);
+}
 
-function _classCallCheck(instance, Constructor) { if (!_instanceof(instance, Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+function _classCallCheck(instance, Constructor) {
+  if (!_instanceof(instance, Constructor)) {
+    throw new TypeError("Cannot call a class as a function");
+  }
+}
 
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+function _defineProperties(target, props) {
+  for (var i = 0; i < props.length; i++) {
+    var descriptor = props[i];
+    descriptor.enumerable = descriptor.enumerable || false;
+    descriptor.configurable = true;
+    if ("value" in descriptor) descriptor.writable = true;
+    Object.defineProperty(target, descriptor.key, descriptor);
+  }
+}
 
 function _createClass(Constructor, protoProps, staticProps) {
   if (protoProps) _defineProperties(Constructor.prototype, protoProps);
@@ -733,7 +832,7 @@ function _createClass(Constructor, protoProps, staticProps) {
   return Constructor;
 }
 
-var Person = /*#__PURE__*/function () {
+var Person = /*#__PURE__*/ (function () {
   function Person(name, age) {
     _classCallCheck(this, Person);
 
@@ -741,22 +840,25 @@ var Person = /*#__PURE__*/function () {
     this.age = age;
   }
 
-  _createClass(Person, [{
-    key: "say",
-    value: function say() {
-      console.log(privateMsg); // 函数内部可以访问私有变量
-    }
-  }, {
-    key: "introduce",
-    value: function introduce() {
-      return 'name: ' + this.name + ' age: ' + this.age;
-    }
-  }]);
+  _createClass(Person, [
+    {
+      key: "say",
+      value: function say() {
+        console.log(privateMsg); // 函数内部可以访问私有变量
+      },
+    },
+    {
+      key: "introduce",
+      value: function introduce() {
+        return "name: " + this.name + " age: " + this.age;
+      },
+    },
+  ]);
 
   return Person;
-}();
+})();
 
-var Employee = /*#__PURE__*/function (_Person) {
+var Employee = /*#__PURE__*/ (function (_Person) {
   _inherits(Employee, _Person);
 
   var _super = _createSuper(Employee);
@@ -772,14 +874,14 @@ var Employee = /*#__PURE__*/function (_Person) {
   }
 
   return Employee;
-}(Person);
+})(Person);
 ```
 
 ## 参考
 
-* JavaScript高级程序设计4
-* JavaScript框架设计
-* [where-can-i-find-a-complete-description-of-javascript-dom-class-hierarchy](https://stackoverflow.com/questions/55924114/where-can-i-find-a-complete-description-of-javascript-dom-class-hierarchy)
-* [Details_of_the_Object_Model](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Guide/Details_of_the_Object_Model)
-* [Details_of_the_Object_Model](https://developers.google.com/web/fundamentals/performance/critical-rendering-path/constructing-the-object-model)
-* [Classes](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Classes)
+- JavaScript 高级程序设计 4
+- JavaScript 框架设计
+- [where-can-i-find-a-complete-description-of-javascript-dom-class-hierarchy](https://stackoverflow.com/questions/55924114/where-can-i-find-a-complete-description-of-javascript-dom-class-hierarchy)
+- [Details_of_the_Object_Model](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Guide/Details_of_the_Object_Model)
+- [Details_of_the_Object_Model](https://developers.google.com/web/fundamentals/performance/critical-rendering-path/constructing-the-object-model)
+- [Classes](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Classes)

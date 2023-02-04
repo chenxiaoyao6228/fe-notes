@@ -1,5 +1,4 @@
 ---
-
 title: "underscore源码学习笔记(六)实现bind,call, apply"
 date: 2019-06-28T16:27:31.000Z
 categories:
@@ -18,15 +17,15 @@ bind 做了什么? 创建并返回一个函数,该函数被调用的时候 this 
 因此我们很容易想到用 apply 来模拟实现之
 
 ```js
-Function.prototype.myBind = function(context) {
+Function.prototype.myBind = function (context) {
   var self = this;
-  return function() {
+  return function () {
     self.apply(context, arguments);
   };
 };
 //测试
 var person = { name: "allen" };
-var logName = function() {
+var logName = function () {
   console.log(this.name);
 };
 var newLogName = logName.bind(person);
@@ -42,10 +41,10 @@ newLogName(); //'allen'
 因此我们要对我们的代码进行修改
 
 ```js
-Function.prototype.myBind = function(context) {
+Function.prototype.myBind = function (context) {
   var self = this;
   var preArgs = Array.prototype.slice.call(arguments, 1); //也可以用for循环
-  return function() {
+  return function () {
     var args = Array.prototype.slice.call(arguments);
     self.apply(context, preArgs.concat(args));
   };
@@ -53,10 +52,10 @@ Function.prototype.myBind = function(context) {
 //测试
 var person = {
   breakfast: "banner",
-  lunch: "fish"
+  lunch: "fish",
 };
 
-var meal = function(dinner) {
+var meal = function (dinner) {
   return "daily meal: " + this.breakfast + ", " + this.lunch + ", " + dinner;
 };
 
@@ -79,7 +78,7 @@ console.log(new threeMeals("beef")); //daily meal: undefined, undefined, beef
 
 ```js
 if (!Function.prototype.bind) {
-  Function.prototype.bind = function(oThis) {
+  Function.prototype.bind = function (oThis) {
     if (typeof this !== "function") {
       // closest thing possible to the ECMAScript 5
       // internal IsCallable function
@@ -90,8 +89,8 @@ if (!Function.prototype.bind) {
 
     var aArgs = Array.prototype.slice.call(arguments, 1),
       fToBind = this,
-      fNOP = function() {},
-      fBound = function() {
+      fNOP = function () {},
+      fBound = function () {
         // this instanceof fNOP === true时,说明返回的fBound被当做new的构造函数调用
         return fToBind.apply(
           this instanceof fNOP ? this : oThis,
@@ -149,7 +148,7 @@ eval("2 + 2"); // returns 4
 有了上面的思路,我们可以来改进我们的代码
 
 ```js
-Function.prototype.myCall = function(context) {
+Function.prototype.myCall = function (context) {
   context[this.name] = this; //通过函数的name属性可以拿到函数名
   var args = [];
   for (var i = 1, len = arguments.length; i < len; i++) {
@@ -162,7 +161,7 @@ Function.prototype.myCall = function(context) {
 
 //测试
 var person = { firstName: "Allen", lastName: "Iverson" };
-var logName = function() {
+var logName = function () {
   console.log(this.firstName + " " + this.lastName);
 };
 logName.myCall(person); // 'Allen Iverson'
@@ -173,7 +172,7 @@ logName.myCall(person); // 'Allen Iverson'
 > call 方法的作用和 apply() 方法类似，只有一个区别，就是 call()方法接受的是若干个参数的列表，而 apply()方法接受的是一个包含多个参数的数组。
 
 ```js
-Function.prototype.myApply = function(context, arr) {
+Function.prototype.myApply = function (context, arr) {
   context[this.name] = this; //通过函数的name属性可以拿到函数名
   var args = [];
   for (var i = 0, len = arr.length; i < len; i++) {

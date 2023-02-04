@@ -22,11 +22,11 @@ permalink: 2019-06-15-implement-react-router
 
 ```js
 function hashHandler() {
-  console.log('The hash has changed!');
+  console.log("The hash has changed!");
   // 进行其他操作...
 }
 
-window.addEventListener('hashchange', hashHandler, false);
+window.addEventListener("hashchange", hashHandler, false);
 ```
 
 ### History Api
@@ -40,13 +40,13 @@ window.addEventListener('hashchange', hashHandler, false);
 ```js
 window.onpopstate = function (event) {
   alert(
-    'location: ' + document.location + ', state: ' + JSON.stringify(event.state)
+    "location: " + document.location + ", state: " + JSON.stringify(event.state)
   );
 };
 
-history.pushState({ page: 1 }, 'title 1', '?page=1');
-history.pushState({ page: 2 }, 'title 2', '?page=2');
-history.replaceState({ page: 3 }, 'title 3', '?page=3');
+history.pushState({ page: 1 }, "title 1", "?page=1");
+history.pushState({ page: 2 }, "title 2", "?page=2");
+history.replaceState({ page: 3 }, "title 3", "?page=3");
 history.back(); // alerts "location: http://example.com/example.html?page=1, state: {"page":1}"
 history.back(); // alerts "location: http://example.com/example.html, state: null
 history.go(2); // alerts "location: http://example.com/example.html?page=3, state: {"page":3}
@@ -67,28 +67,28 @@ history.go(2); // alerts "location: http://example.com/example.html?page=3, stat
 ## React-router 的简易实现
 
 ```js
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useState, useContext, useEffect } from "react";
 
 let HistoryContext = React.createContext();
 
 export const HashRouter = ({ children }) => {
   const [record, setRecord] = useState({
     location: {
-      pathname: window.location.hash.slice(1) || '/',
+      pathname: window.location.hash.slice(1) || "/",
     },
   });
   useEffect(() => {
-    window.location.hash = window.location.hash || '/';
-    window.addEventListener('hashchange', handleHashChange, false);
+    window.location.hash = window.location.hash || "/";
+    window.addEventListener("hashchange", handleHashChange, false);
     return () => {
-      window.removeEventListener('hashchange', handleHashChange, false);
+      window.removeEventListener("hashchange", handleHashChange, false);
     };
   }, []);
   function handleHashChange() {
     setRecord({
       location: {
         ...record.location,
-        pathname: window.location.hash.slice(1) || '/',
+        pathname: window.location.hash.slice(1) || "/",
       },
     });
   }
@@ -101,10 +101,10 @@ export const HashRouter = ({ children }) => {
 
 // link组件: 触发路由跳转
 export const Link = ({ to, children }) => {
-  return <a href={'#' + to}>{children}</a>;
+  return <a href={"#" + to}>{children}</a>;
 };
 
-const { pathToRegexp } = require('path-to-regexp');
+const { pathToRegexp } = require("path-to-regexp");
 
 export const Route = ({ path, children }) => {
   // 根据路由是否匹配进行展示,使用正则进行匹配, 默认为不精确匹配

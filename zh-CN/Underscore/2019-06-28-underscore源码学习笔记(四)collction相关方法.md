@@ -1,5 +1,4 @@
 ---
-
 title: "underscore源码学习笔记(四)collction相关方法"
 date: 2019-06-28T16:26:44.000Z
 categories:
@@ -15,7 +14,7 @@ permalink: 2019-06-28-underscore-analysis-4-collection-related-method
 
 ```js
 // Return the first value which passes a truth test. Aliased as `detect`.
-_.find = _.detect = function(obj, predicate, context) {
+_.find = _.detect = function (obj, predicate, context) {
   var keyFinder = isArrayLike(obj) ? _.findIndex : _.findKey;
   var key = keyFinder(obj, predicate, context);
   if (key !== void 0 && key !== -1) return obj[key];
@@ -26,8 +25,8 @@ _.findIndex = createPredicateIndexFinder(1);
 _.findLastIndex = createPredicateIndexFinder(-1);
 
 // Generator function to create the findIndex and findLastIndex functions.
-var createPredicateIndexFinder = function(dir) {
-  return function(array, predicate, context) {
+var createPredicateIndexFinder = function (dir) {
+  return function (array, predicate, context) {
     predicate = cb(predicate, context);
     var length = getLength(array);
     var index = dir > 0 ? 0 : length - 1;
@@ -39,7 +38,7 @@ var createPredicateIndexFinder = function(dir) {
 };
 
 // Returns the first key on an object that passes a predicate test.
-_.findKey = function(obj, predicate, context) {
+_.findKey = function (obj, predicate, context) {
   predicate = cb(predicate, context);
   var keys = _.keys(obj),
     key;
@@ -55,10 +54,10 @@ _.findKey = function(obj, predicate, context) {
 ##### 2. filter: 利用 each 方法简化循环,将每次循环的参数用 predicate 进行判断,如果满足条件就 push 到返回的 result 数组中
 
 ```js
-_.filter = _.select = function(obj, predicate, context) {
+_.filter = _.select = function (obj, predicate, context) {
   var results = [];
   predicate = cb(predicate, context);
-  _.each(obj, function(value, index, list) {
+  _.each(obj, function (value, index, list) {
     if (predicate(value, index, list)) results.push(value);
   });
   return results;
@@ -68,20 +67,20 @@ _.filter = _.select = function(obj, predicate, context) {
 ##### 3.\_.findWhere(list, properties): 内部调用 find 方法,遍历所有的列表,返回列表中第一个包含 properties 的值
 
 ```js
-_.findWhere = function(obj, attrs) {
+_.findWhere = function (obj, attrs) {
   return _.find(obj, _.matcher(attrs));
 };
 
-_.matcher = _.matches = function(attrs) {
+_.matcher = _.matches = function (attrs) {
   attrs = _.extendOwn({}, attrs); //由于是引用传值,这里不修改传入的参数
-  return function(obj) {
+  return function (obj) {
     return _.isMatch(obj, attrs);
   };
 };
 _.extendOwn = _.assign = createAssigner(_.keys);
 
-var createAssigner = function(keysFunc, defaults) {
-  return function(obj) {
+var createAssigner = function (keysFunc, defaults) {
+  return function (obj) {
     var length = arguments.length; //
     if (defaults) obj = Object(obj);
     if (length < 2 || obj == null) return obj;
@@ -105,7 +104,7 @@ var createAssigner = function(keysFunc, defaults) {
 
 ```js
 // Return all the elements for which a truth test fails.
-_.reject = function(obj, predicate, context) {
+_.reject = function (obj, predicate, context) {
   return _.filter(obj, _.negate(cb(predicate)), context);
 };
 ```
@@ -133,7 +132,7 @@ _.negate = function(predicate) {
 ##### 5._.every(list, [predicate], [context])和_.some(list, [predicate], [context]): 两者的区别就和他们的名字一样, every 是全真才返回真, some 是有真就返回
 
 ```js
-_.every = _.all = function(obj, predicate, context) {
+_.every = _.all = function (obj, predicate, context) {
   predicate = cb(predicate, context); //callback处理
   var keys = !isArrayLike(obj) && _.keys(obj),
     length = (keys || obj).length;
@@ -146,7 +145,7 @@ _.every = _.all = function(obj, predicate, context) {
 
 // Determine if at least one element in the object matches a truth test.
 // Aliased as `any`.
-_.some = _.any = function(obj, predicate, context) {
+_.some = _.any = function (obj, predicate, context) {
   predicate = cb(predicate, context);
   var keys = !isArrayLike(obj) && _.keys(obj),
     length = (keys || obj).length;
@@ -161,18 +160,21 @@ _.some = _.any = function(obj, predicate, context) {
 ##### 6\_.contains(list, value, [fromIndex]): 判断数组中是否存在某个元素,内部使用的是二分查找的方式,因此如果明确知道传入的数组是已经排好序的话,可以传入一个 guard 为 true 的值,提高查找的效率
 
 ```js
-_.contains = _.includes = _.include = function(obj, item, fromIndex, guard) {
-  if (!isArrayLike(obj)) obj = _.values(obj); //如果是数组的话,对所有的value值进行排序
-  if (typeof fromIndex != "number" || guard) fromIndex = 0;
-  return _.indexOf(obj, item, fromIndex) >= 0;
-};
+_.contains =
+  _.includes =
+  _.include =
+    function (obj, item, fromIndex, guard) {
+      if (!isArrayLike(obj)) obj = _.values(obj); //如果是数组的话,对所有的value值进行排序
+      if (typeof fromIndex != "number" || guard) fromIndex = 0;
+      return _.indexOf(obj, item, fromIndex) >= 0;
+    };
 
 _.indexOf = createIndexFinder(1, _.findIndex, _.sortedIndex);
 //_.lastIndexOf = createIndexFinder(-1, _.findLastIndex);
 
 // Generator function to create the indexOf and lastIndexOf functions.
-var createIndexFinder = function(dir, predicateFind, sortedIndex) {
-  return function(array, item, idx) {
+var createIndexFinder = function (dir, predicateFind, sortedIndex) {
+  return function (array, item, idx) {
     var i = 0,
       length = getLength(array);
     if (typeof idx == "number") {
@@ -203,7 +205,7 @@ var createIndexFinder = function(dir, predicateFind, sortedIndex) {
 
 ##### 7.min*.min(list, [iteratee], [context]) 和 max*.max(list, [iteratee], [context])
 
-```js
+````js
 invoke_.invoke(list, methodName, *arguments)
 
 
@@ -215,11 +217,11 @@ sortBy*.sortBy(list, iteratee, [context])和 groupBy*.groupBy(list, iteratee, [c
 
 indexBy*.indexBy(list, iteratee, [context])和*.countBy(list, iteratee, [context])
 
-```
+````
 
-_.sample(list, [n])
+\_.sample(list, [n])
 
-```
+````
 
 size\_.size(list): 用于判断数组长度或者对象的属性个数
 
@@ -228,12 +230,12 @@ _.size = function(obj) {
   if (obj == null) return 0;
   return isArrayLike(obj) ? obj.length : _.keys(obj).length;
 };
-```
+````
 
 \_.partition(list, predicate) : 根据传入 predicate 将 list 拆分为满足和不满足的部分
 
 ```js
-_.partition = group(function(result, value, pass) {
+_.partition = group(function (result, value, pass) {
   result[pass ? 0 : 1].push(value);
 }, true);
 ```

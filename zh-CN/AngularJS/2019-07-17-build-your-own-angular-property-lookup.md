@@ -1,12 +1,14 @@
-@ -1,341 +0,0 @@
----
-title: '实现angluar手记[六]属性查找和函数调用'
+## @ -1,341 +0,0 @@
+
+title: '实现 angluar 手记[六]属性查找和函数调用'
 date: 2019-07-17T12:49:55.000Z
 categories:
-  - tech
-tags:
-  - angular
-permalink: 2019-07-17-build-your-own-angular-property-lookup
+
+- tech
+  tags:
+- angular
+  permalink: 2019-07-17-build-your-own-angular-property-lookup
+
 ---
 
 ## 前言
@@ -20,14 +22,14 @@ permalink: 2019-07-17-build-your-own-angular-property-lookup
 最简单的 test case 如下
 
 ```js
-let fn = parse('aKey');
+let fn = parse("aKey");
 expect(fn({ aKey: 42 })).toEqual(42);
 ```
 
 如何能让函数接受参数?
 
 ```js
-new Function('s', this.state.body.join(''));
+new Function("s", this.state.body.join(""));
 ```
 
 ast-builder 添加处理
@@ -61,7 +63,7 @@ function(s){
 
 ```javascript
 ASTCompiler.prototype.if_ = function (test, consequent) {
-  this.state.body.push('if(', test, '){', consequent, '}');
+  this.state.body.push("if(", test, "){", consequent, "}");
 };
 ```
 
@@ -71,7 +73,7 @@ ASTCompiler.prototype.if_ = function (test, consequent) {
 this.state = { body: [], nextId: 0 };
 
 ASTCompiler.prototype.nextId = function () {
-  var id = 'v' + this.state.nextId++;
+  var id = "v" + this.state.nextId++;
   return id;
 };
 ```
@@ -94,7 +96,7 @@ case AST.ThisExpresssion:
 先看 test
 
 ```js
-var fn = parse('aKey.anotherKey');
+var fn = parse("aKey.anotherKey");
 expect(fn({ aKey: { anotherKey: 42 } })).toBe(42);
 ```
 
@@ -143,10 +145,10 @@ function(s) {
 function anonymous(s, l) {
   let v0, v1;
 
-  if (l && 'aKey' in l) {
+  if (l && "aKey" in l) {
     v1 = l.aKey;
   }
-  if (!(l && 'aKey' in l) && s) {
+  if (!(l && "aKey" in l) && s) {
     v1 = s.aKey;
   }
   if (v1) {
@@ -163,7 +165,7 @@ function anonymous(s, l) {
 最简单的 test case
 
 ```js
-let fn = parse('aFunction(37, n, argFn())');
+let fn = parse("aFunction(37, n, argFn())");
 expect(
   fn({
     n: 3,
@@ -179,16 +181,16 @@ tokens
 
 ```js
 [
-  { text: 'aFunction', identifier: true },
-  { text: '(' },
-  { text: '37', value: 37 },
-  { text: ',' },
-  { text: 'n', identifier: true },
-  { text: ',' },
-  { text: 'argFn', identifier: true },
-  { text: '(' },
-  { text: ')' },
-  { text: ')' },
+  { text: "aFunction", identifier: true },
+  { text: "(" },
+  { text: "37", value: 37 },
+  { text: "," },
+  { text: "n", identifier: true },
+  { text: "," },
+  { text: "argFn", identifier: true },
+  { text: "(" },
+  { text: ")" },
+  { text: ")" },
 ];
 ```
 
@@ -253,22 +255,22 @@ case AST.CallExpression: {
 function anonymous(s, l) {
   var v0, v1, v2;
 
-  if (l && 'aFunction' in l) {
+  if (l && "aFunction" in l) {
     v0 = l.aFunction;
   }
-  if (!(l && 'aFunction' in l) && s) {
+  if (!(l && "aFunction" in l) && s) {
     v0 = s.aFunction;
   }
-  if (l && 'n' in l) {
+  if (l && "n" in l) {
     v1 = l.n;
   }
-  if (!(l && 'n' in l) && s) {
+  if (!(l && "n" in l) && s) {
     v1 = s.n;
   }
-  if (l && 'argFn' in l) {
+  if (l && "argFn" in l) {
     v2 = l.argFn;
   }
-  if (!(l && 'argFn' in l) && s) {
+  if (!(l && "argFn" in l) && s) {
     v2 = s.argFn;
   }
   return v0 && v0(37, v1, v2 && v2());
@@ -280,8 +282,8 @@ function anonymous(s, l) {
 ## 赋值
 
 ```js
-it('can assign a nested object property', () => {
-  let fn = parse('anArray[0].anAttribute = 42');
+it("can assign a nested object property", () => {
+  let fn = parse("anArray[0].anAttribute = 42");
   let scope = { anArray: [{}] };
   fn(scope);
   expect(scope.anArray[0].anAttribute).toBe(42);
@@ -290,14 +292,14 @@ it('can assign a nested object property', () => {
 
 ```js
 [
-  { text: 'anArray', identifier: true },
-  { text: '[' },
-  { text: '0', value: 0 },
-  { text: ']' },
-  { text: '.' },
-  { text: 'anAttribute', identifier: true },
-  { text: '=' },
-  { text: '42', value: 42 },
+  { text: "anArray", identifier: true },
+  { text: "[" },
+  { text: "0", value: 0 },
+  { text: "]" },
+  { text: "." },
+  { text: "anAttribute", identifier: true },
+  { text: "=" },
+  { text: "42", value: 42 },
 ];
 ```
 
@@ -325,10 +327,10 @@ it('can assign a nested object property', () => {
 function anonymous(s, l) {
   var v0, v1, v2;
 
-  if (l && 'anArray' in l) {
+  if (l && "anArray" in l) {
     v2 = l.anArray;
   }
-  if (!(l && 'anArray' in l) && s) {
+  if (!(l && "anArray" in l) && s) {
     v2 = s.anArray;
   }
   if (v2) {

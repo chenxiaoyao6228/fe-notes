@@ -1,5 +1,4 @@
 ---
-
 title: "underscore源码学习笔记(一)如何读underscore源码"
 date: 2019-06-28T16:23:57.000Z
 categories:
@@ -24,7 +23,7 @@ permalink: 2019-06-28-underscore-analysis-1
 源码:
 
 ```js
-_.map = _.collect = function(obj, iteratee, context) {
+_.map = _.collect = function (obj, iteratee, context) {
   iteratee = cb(iteratee, context); //这里返回的就是我们传入的 function(num){ return num * 3;}
   var keys = !isArrayLike(obj) && _.keys(obj), //工具方法,区分varray和object
     length = (keys || obj).length,
@@ -40,7 +39,8 @@ _.map = _.collect = function(obj, iteratee, context) {
 map 有两种调用的方式,一种是传入 context(上下文),一种是不传上下文,对于前者我们拿官网的例子测试一下
 
 ```js
-_.map([1, 2, 3], function(num) {v
+_.map([1, 2, 3], function (num) {
+  v;
   return num * 3;
 });
 ```
@@ -51,10 +51,10 @@ _.map([1, 2, 3], function(num) {v
 ```js
 function basket() {
   this.items = [];
-  this.addItem = function(item) {
+  this.addItem = function (item) {
     this.items.push(item);
   };
-  this.show = function() {
+  this.show = function () {
     console.log("items: ", this.items);
   };
 }
@@ -88,27 +88,27 @@ case3: 适用于 map,each 等迭代器函数
 case4: 适用于 reduce,reduceRight 等函数
 
 ```js
-var optimizeCb = function(func, context, argCount) {
+var optimizeCb = function (func, context, argCount) {
   if (context === void 0) return func;
   switch (argCount == null ? 3 : argCount) {
     case 1:
-      return function(value) {
+      return function (value) {
         return func.call(context, value);
       };
     case 2:
-      return function(value, other) {
+      return function (value, other) {
         return func.call(context, value, other);
       };
     case 3:
-      return function(value, index, collection) {
+      return function (value, index, collection) {
         return func.call(context, value, index, collection);
       };
     case 4:
-      return function(accumulator, value, index, collection) {
+      return function (accumulator, value, index, collection) {
         return func.call(context, accumulator, value, index, collection);
       };
   }
-  return function() {
+  return function () {
     return func.apply(context, arguments);
   };
 };
@@ -117,7 +117,7 @@ var optimizeCb = function(func, context, argCount) {
 ##### \* cb
 
 ```js
-var cb = function(value, context, argCount) {
+var cb = function (value, context, argCount) {
   if (value == null) return _.identity;
   if (_.isFunction(value)) return optimizeCb(value, context, argCount);
   if (_.isObject(value)) return _.matcher(value);
@@ -155,10 +155,10 @@ _.sortedIndex([10, 20, 30, 40, 50], 35);
 #### 3.reduce
 
 ```js
-var createReduce = function(dir) {
+var createReduce = function (dir) {
   // Wrap code that reassigns argument variables in a separate function than
   // the one that accesses `arguments.length` to avoid a perf hit. (#1991)
-  var reducer = function(obj, iteratee, memo, initial) {
+  var reducer = function (obj, iteratee, memo, initial) {
     var keys = !isArrayLike(obj) && _.keys(obj),
       length = (keys || obj).length,
       index = dir > 0 ? 0 : length - 1;
@@ -173,7 +173,7 @@ var createReduce = function(dir) {
     return memo;
   };
 
-  return function(obj, iteratee, memo, context) {
+  return function (obj, iteratee, memo, context) {
     //真正传值的函数
     var initial = arguments.length >= 3;
     return reducer(obj, optimizeCb(iteratee, context, 4), memo, initial);

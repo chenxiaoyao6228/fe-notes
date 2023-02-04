@@ -1,5 +1,4 @@
 ---
-
 title: 实现一个简易的javascript测试框架
 date: 2019-07-13T13:45:11.000Z
 categories:
@@ -29,9 +28,9 @@ permalink: 2019-07-13-what-is-a-javascript-test
 我们先从为一个简单的 math.js 写测试开始
 
 ```js
-const sum = (a, b) => a + b
-const subtract = (a, b) => a - b
-module.exports = {sum, subtract}
+const sum = (a, b) => a + b;
+const subtract = (a, b) => a - b;
+module.exports = { sum, subtract };
 ```
 
 ## 第一步
@@ -61,17 +60,17 @@ if(actual !== expected) {
 
 ```js
 // 1.js
-const {sum, subtract} = require('./math')
-let result, expected
-result = sum(3, 7)
-expected = 10
+const { sum, subtract } = require("./math");
+let result, expected;
+result = sum(3, 7);
+expected = 10;
 if (result !== expected) {
-  throw new Error(`${result} is not equal to ${expected}`)
+  throw new Error(`${result} is not equal to ${expected}`);
 }
-result = subtract(7, 3)
-expected = 4
+result = subtract(7, 3);
+expected = 4;
 if (result !== expected) {
-  throw new Error(`${result} is not equal to ${expected}`)
+  throw new Error(`${result} is not equal to ${expected}`);
 }
 ```
 
@@ -102,15 +101,15 @@ Error: -4 is not equal to 10
 
 ```js
 // 2.js
-const assert = require('assert')
-const {sum, subtract} = require('./math')
-let result, expected
-result = sum(3, 7)
-expected = 10
-assert.strictEqual(result, expected)
-result = subtract(7, 3)
-expected = 4
-assert.strictEqual(result, expected)
+const assert = require("assert");
+const { sum, subtract } = require("./math");
+let result, expected;
+result = sum(3, 7);
+expected = 10;
+assert.strictEqual(result, expected);
+result = subtract(7, 3);
+expected = 4;
+assert.strictEqual(result, expected);
 ```
 
 好极了, 经过重构的测试模块功能一样, 但错误信息却稍微不同
@@ -138,27 +137,26 @@ AssertionError [ERR_ASSERTION]: -4 === 10
 
 ```js
 // 3.js
-const {sum, subtract} = require('./math')
-let result, expected
+const { sum, subtract } = require("./math");
+let result, expected;
 
-result = sum(3, 7)
-expected = 10
-expect(result).toBe(expected)
+result = sum(3, 7);
+expected = 10;
+expect(result).toBe(expected);
 
-result = subtract(7, 3)
-expected = 4
-expect(result).toBe(expected)
+result = subtract(7, 3);
+expected = 4;
+expect(result).toBe(expected);
 
 function expect(actual) {
   return {
     toBe(expected) {
       if (actual !== expected) {
-        throw new Error(`${actual} is not equal to ${expected}`)
+        throw new Error(`${actual} is not equal to ${expected}`);
       }
     },
-  }
+  };
 }
-
 ```
 
 我们可以在 expecet 对象上添加许多断言方法(如 toMatchRegex 或 toHaveLength), 运行上述代码, 得到下列错误信息
@@ -191,25 +189,25 @@ Error: -4 is not equal to 10
 
 ```js
 // 4.js
-const {sum, subtract} = require('./math')
-test('sum adds numbers', () => {
-  const result = sum(3, 7)
-  const expected = 10
-  expect(result).toBe(expected)
-})
-test('subtract subtracts numbers', () => {
-  const result = subtract(7, 3)
-  const expected = 4
-  expect(result).toBe(expected)
-})
+const { sum, subtract } = require("./math");
+test("sum adds numbers", () => {
+  const result = sum(3, 7);
+  const expected = 10;
+  expect(result).toBe(expected);
+});
+test("subtract subtracts numbers", () => {
+  const result = subtract(7, 3);
+  const expected = 4;
+  expect(result).toBe(expected);
+});
 
 function test(title, callback) {
   try {
-    callback()
-    console.log(`✓ ${title}`)
+    callback();
+    console.log(`✓ ${title}`);
   } catch (error) {
-    console.error(`✕ ${title}`)
-    console.error(error)
+    console.error(`✕ ${title}`);
+    console.error(error);
   }
 }
 
@@ -217,10 +215,10 @@ function expect(actual) {
   return {
     toBe(expected) {
       if (actual !== expected) {
-        throw new Error(`${actual} is not equal to ${expected}`)
+        throw new Error(`${actual} is not equal to ${expected}`);
       }
     },
-  }
+  };
 }
 ```
 
@@ -255,17 +253,17 @@ Error: -4 is not equal to 10
 
 ```js
 // 5.js
-const {sum, subtract} = require('./math')
-test('sum adds numbers', () => {
-  const result = sum(3, 7)
-  const expected = 10
-  expect(result).toBe(expected)
-})
-test('subtract subtracts numbers', () => {
-  const result = subtract(7, 3)
-  const expected = 4
-  expect(result).toBe(expected)
-})
+const { sum, subtract } = require("./math");
+test("sum adds numbers", () => {
+  const result = sum(3, 7);
+  const expected = 10;
+  expect(result).toBe(expected);
+});
+test("subtract subtracts numbers", () => {
+  const result = subtract(7, 3);
+  const expected = 4;
+  expect(result).toBe(expected);
+});
 ```
 
 运行上述代码, 会得到下列的错误信息

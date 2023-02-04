@@ -1,5 +1,5 @@
 ---
-title: '实现angular手记[四]事件系统'
+title: "实现angular手记[四]事件系统"
 date: 2019-07-15
 categories:
   - tech
@@ -166,7 +166,7 @@ preventDefault: function() {
 
 ```javascript
 Scope.prototype.$destroy = function () {
-  this.$broadcast('$destroy'); // 添加这一行
+  this.$broadcast("$destroy"); // 添加这一行
   if (this.$parent) {
     var siblings = this.$parent.$$children;
     var indexOfThis = siblings.indexOf(this);

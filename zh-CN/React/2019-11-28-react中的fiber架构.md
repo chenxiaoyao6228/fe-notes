@@ -324,7 +324,7 @@ function reconcileChildren(wipFiber, elements) {
         dom: oldFiber.dom,
         parent: wipFiber,
         alternate: oldFiber,
-        effectTag: 'UPDATE',
+        effectTag: "UPDATE",
       };
     }
 
@@ -336,13 +336,13 @@ function reconcileChildren(wipFiber, elements) {
         dom: null,
         parent: wipFiber,
         alternate: null,
-        effectTag: 'PLACEMENT',
+        effectTag: "PLACEMENT",
       };
     }
 
     // 删除节点
     if (oldFiber && !sameType) {
-      oldFiber.effectTag = 'DELETION';
+      oldFiber.effectTag = "DELETION";
       deletions.push(oldFiber);
     }
 
@@ -402,11 +402,11 @@ function commitWork(fiber) {
   }
   const domParent = domParentFiber.dom;
 
-  if (fiber.effectTag === 'PLACEMENT' && fiber.dom != null) {
+  if (fiber.effectTag === "PLACEMENT" && fiber.dom != null) {
     domParent.appendChild(fiber.dom);
-  } else if (fiber.effectTag === 'DELETION') {
+  } else if (fiber.effectTag === "DELETION") {
     commitDeletion(domParent, fiber);
-  } else if (fiber.effectTag === 'UPDATE' && fiber.dom != null) {
+  } else if (fiber.effectTag === "UPDATE" && fiber.dom != null) {
     updateDom(fiber.dom, fiber.alternate, fiber.props);
   }
   commitWork(fiber.child);

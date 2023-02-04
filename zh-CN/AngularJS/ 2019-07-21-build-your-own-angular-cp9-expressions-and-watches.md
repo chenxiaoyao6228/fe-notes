@@ -1,12 +1,14 @@
-@ -1,161 +0,0 @@
----
-title: '实现angluar手记[九]表达式与watcher结合'
+## @ -1,161 +0,0 @@
+
+title: '实现 angluar 手记[九]表达式与 watcher 结合'
 date: 2019-07-21
 categories:
-  - tech
-tags:
-  - angular
-permalink: 2019-07-21-build-your-own-angular-cp9-expressions-and-watches
+
+- tech
+  tags:
+- angular
+  permalink: 2019-07-21-build-your-own-angular-cp9-expressions-and-watches
+
 ---
 
 ## 表达式与 watcher 结合
@@ -30,11 +32,11 @@ Scope.prototype.$watch = function (watchFn, listenerFn, valueEq) {
 ```js
 function parse(expr) {
   switch (typeof expr) {
-    case 'string':
+    case "string":
       var lexer = new Lexer();
       var parser = new Parser(lexer);
       return parser.parse(expr);
-    case 'function':
+    case "function":
       return expr;
     default:
       return _.noop;
@@ -146,6 +148,7 @@ function constantWatchDelegate(scope, listenerFn, valueEq, watchFn) {
 基本思路： 为数组，对象中的所有非常量建立一个 watchDelegate, 只有当其中的某个发生变化的时候，会触发更新
 
 ```js
+
 ```
 
 ## stateful Filters
@@ -156,9 +159,11 @@ function constantWatchDelegate(scope, listenerFn, valueEq, watchFn) {
 - 特殊情况下过滤器可能是不纯的，比如一个过滤器以当前时间作为输出
 
 ```js
+
 ```
 
 ## External Assignment
 
 ```js
+
 ```

@@ -1,5 +1,4 @@
 ---
-
 title: "underscore源码学习笔记(三)初始化以及两种调用方式"
 date: 2019-06-28T16:25:49.000Z
 categories:
@@ -16,7 +15,7 @@ permalink: 2019-06-28-underscore-analysis-3-initialization
 众所周知,js 在早期是没有模块的,为了实现模块化,机智的前端程序员发明了使用立即执行函数(IIFE)来创建模块的方案,利用函数作用域创建一个类似沙箱的效果,达到仅仅暴露少量的对外接口,避免全局空间被污染的效果,因此你可以这么写
 
 ```js
-(function() {
+(function () {
   var _ = "myUnderscore";
   var v = "innerVariable";
   window._ = _;
@@ -86,7 +85,7 @@ var nativeIsArray = Array.isArray,
 var previousUnderscore = root._;
 
 // 使用noConflict方法返回自身
-_.noConflict = function() {
+_.noConflict = function () {
   root._ = previousUnderscore;
   return this;
 };
@@ -99,13 +98,13 @@ _.noConflict = function() {
 调用的前两步是这样的:
 
 ```js
-_.chain = function(obj) {
+_.chain = function (obj) {
   var instance = _(obj);
   instance._chain = true;
   return instance;
 };
 
-var _ = function(obj) {
+var _ = function (obj) {
   if (obj instanceof _) return obj;
   if (!(this instanceof _)) return new _(obj); //这里的new方法做了什么?
   this._wrapped = obj;
@@ -122,7 +121,7 @@ var _ = function(obj) {
 #### 但是要注意的是构造函数中可以显式地改变函数的返回值.
 
 ```js
-var F = function(name) {
+var F = function (name) {
   this.name = name;
   return { age: 18 };
 };
@@ -138,9 +137,9 @@ console.log(f); // { 'age' : 18}
 // Add all mutator Array functions to the wrapper.
 _.each(
   ["pop", "push", "reverse", "shift", "sort", "splice", "unshift"],
-  function(name) {
+  function (name) {
     var method = ArrayProto[name];
-    _.prototype[name] = function() {
+    _.prototype[name] = function () {
       var obj = this._wrapped; //上述列表中的操作都会改变原来的数组
       method.apply(obj, arguments); //注意求值后的obj已经变成了[3,2,1],并且是个普通的数组
       if ((name === "shift" || name === "splice") && obj.length === 0)
@@ -150,7 +149,7 @@ _.each(
   }
 );
 
-var chainResult = function(instance, obj) {
+var chainResult = function (instance, obj) {
   return instance._chain ? _(obj).chain() : obj; //将[3,2,1]重新生成对象
 };
 ```
@@ -158,7 +157,7 @@ var chainResult = function(instance, obj) {
 value 方法取出结果
 
 ```js
-_.prototype.value = function() {
+_.prototype.value = function () {
   return this._wrapped;
 };
 ```

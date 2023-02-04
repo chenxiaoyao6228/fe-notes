@@ -1,13 +1,14 @@
-@ -1,257 +0,0 @@
----
+## @ -1,257 +0,0 @@
 
-title: "实现angluar手记[十]模块与依赖注入"
+title: "实现 angluar 手记[十]模块与依赖注入"
 date: 2019-07-25T08:45:28.000Z
 categories:
-  - tech
-tags:
-  - angular
-permalink: 2019-07-25-build-your-own-angular-cp10-module-injection
+
+- tech
+  tags:
+- angular
+  permalink: 2019-07-25-build-your-own-angular-cp10-module-injection
+
 ---
 
 angular 中的依赖注入是通过 loader 和 injector 模块来实现的, 可以把 injector 想象成为一个池子,我们可以通过类似 injector.get()的方法来获取内容, 但两者具体是怎么协作的呢? 我们先分别来看看这两个模块
@@ -31,7 +32,7 @@ loader 模块的主要功能就是暴露在 angular 上定义一个 module 函�
 createModule, 可能比较反直觉的是, 我们在注册模块的时候, 使用类似`module.instance('a', 4)`的方法往上面挂在属性的时候, `a`并不是直接挂在我们的 module 上的, 而是通过一个 invokeQueue 来进行保存, `invokeQueue.push(['constant', [key, value]]);`, 在后续创建 injector 实例的时候会遍历这个 invokeQueue, 挂在在 injector 内部的 cache 池上。
 
 ```js
-var createModule = function(name, requires, modules) {
+var createModule = function (name, requires, modules) {
   if (name === "hasOwnProperty") {
     throw "hasOwnProperty is not a valid module name";
   }
@@ -39,10 +40,10 @@ var createModule = function(name, requires, modules) {
   var moduleInstance = {
     name: name,
     requires: requires,
-    constant: function(key, value) {
+    constant: function (key, value) {
       invokeQueue.push(["constant", [key, value]]); // 看这里
     },
-    _invokeQueue: invokeQueue
+    _invokeQueue: invokeQueue,
   };
   modules[name] = moduleInstance;
   return moduleInstance;
@@ -52,7 +53,7 @@ var createModule = function(name, requires, modules) {
 getModule 就不说了, 简单返回模块实例
 
 ```js
-var getModule = function(name, modules) {
+var getModule = function (name, modules) {
   if (modules.hasOwnProperty(name)) {
     return modules[name];
   } else {
@@ -89,7 +90,7 @@ _.forEach(modulesToLoad, function loadModule(moduleName) {
     loadedModules[moduleName] = true;
     var module = window.angular.module(moduleName);
     _.forEach(module.requires, loadModule);
-    _.forEach(module._invokeQueue, function(invokeArgs) {
+    _.forEach(module._invokeQueue, function (invokeArgs) {
       var method = invokeArgs[0];
       var args = invokeArgs[1];
       $provide[method].apply($provide, args);
@@ -147,7 +148,7 @@ expect(injector.has("anotherConstant")).toBe(true);
 
 ```js
 _.forEach(module.requires, loadModule); // 添加这行
-_.forEach(module._invokeQueue, function(invokeArgs) {
+_.forEach(module._invokeQueue, function (invokeArgs) {
   var method = invokeArgs[0];
   var args = invokeArgs[1];
   $provide[method].apply($provide, args);
@@ -172,7 +173,7 @@ var module = angular.module("myModule", []);
 module.constant("a", 1);
 module.constant("b", 2);
 var injector = createInjector(["myModule"]);
-var fn = function(one, two) {
+var fn = function (one, two) {
   return one + two;
 };
 fn.$inject = ["a", "b"];
@@ -183,7 +184,7 @@ expect(injector.invoke(fn)).toBe(3);
 
 ```js
 function invoke(fn) {
-  var args = _.map(fn.$inject, function(token) {
+  var args = _.map(fn.$inject, function (token) {
     return cache[token];
   });
   return fn.apply(null, args);
@@ -199,9 +200,9 @@ function invoke(fn) {
 [
   "a",
   "b",
-  function(one, two) {
+  function (one, two) {
     return one + two;
-  }
+  },
 ];
 ```
 
@@ -227,7 +228,7 @@ function annotate(fn) {
     }
     var source = fn.toString().replace(STRIP_COMMENTS, "");
     var argDeclaration = source.match(FN_ARGS);
-    return _.map(argDeclaration[1].split(","), function(argName) {
+    return _.map(argDeclaration[1].split(","), function (argName) {
       return argName.match(FN_ARG)[2];
     });
   }
