@@ -1,13 +1,14 @@
-## @ -1,367 +0,0 @@
+---
+permalink: 2019-07-20-build-your-own-angular-cp8-filters
+
 
 title: '实现 angluar 手记[八]过滤器'
 date: 2019-07-20T09:15:32.000Z
 categories:
 
 - tech
-  tags:
+tags:
 - angular
-  permalink: 2019-07-20-build-your-own-angular-cp8-filters
 
 ---
 

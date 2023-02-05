@@ -59,7 +59,6 @@ markdown 编辑器一般会集成几个功能: 快速编辑, 实时预览, 图�
 
 > 域名备案失效，导致七牛的图床无法访问
 
-
 ### Github + jsdelivr.net
 
 这个没什么好说的, 图片地址: https://github.com/chenxiaoyao6228/cloudimg
@@ -72,18 +71,17 @@ markdown 编辑器一般会集成几个功能: 快速编辑, 实时预览, 图�
 在使用之后发现图片在国内的网络环境下无法访问, 去搜索了一下, 发现可以通过`cdn.jsdelivr.net`来解决这个问题
 
 替换前
+
 > https://raw.githubusercontent.com/chenxiaoyao6228/cloudimg/main/2021/logo-small.png
 
-
 替换后
+
 > https://cdn.jsdelivr.net/gh/chenxiaoyao6228/cloudimg@main/2021/logo-small.png,
 
-注意除了域名前缀, 相应的要把git的仓库分支名改动一下
+注意除了域名前缀, 相应的要把 git 的仓库分支名改动一下
 
-
-可以使用alfred等工具制作一个snippet添加图片的前缀, 相比后面的方案, 少了插件的安装, 也还算是不错的选择
+可以使用 alfred 等工具制作一个 snippet 添加图片的前缀, 相比后面的方案, 少了插件的安装, 也还算是不错的选择
 ![](https://cdn.jsdelivr.net/gh/chenxiaoyao6228/cloudimg@main/2022/alfred-pic-snippet.png)
-
 
 ## 文章预览
 

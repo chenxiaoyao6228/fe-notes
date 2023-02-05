@@ -1,13 +1,12 @@
-## @ -1,257 +0,0 @@
-
+---
+permalink: 2019-07-25-build-your-own-angular-cp10-module-injection
 title: "实现 angluar 手记[十]模块与依赖注入"
 date: 2019-07-25T08:45:28.000Z
 categories:
-
 - tech
-  tags:
+tags:
 - angular
-  permalink: 2019-07-25-build-your-own-angular-cp10-module-injection
+
 
 ---
 

@@ -4,8 +4,8 @@ categories:
   - tech
 tags:
   - angular
-date: 2020-12-22
-permalink: 2020-12-22-understand-transclusion-in-angularJS
+date: 2019-12-22
+permalink: 2019-12-22-understand-transclusion-in-angularJS
 ---
 
 ## transclusion 是什么
