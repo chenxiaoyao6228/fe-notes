@@ -1,13 +1,11 @@
 ---
 permalink: 2019-07-21-build-your-own-angular-cp9-expressions-and-watches
-title: '实现 angluar 手记[九]表达式与 watcher 结合'
+title: "实现 angluar 手记[九]表达式与 watcher 结合"
 date: 2019-07-21
 categories:
-- tech
+  - tech
 tags:
-- angular
-
-
+  - angular
 ---
 
 ## 表达式与 watcher 结合

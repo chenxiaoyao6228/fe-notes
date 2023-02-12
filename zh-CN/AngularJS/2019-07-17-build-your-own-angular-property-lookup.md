@@ -1,14 +1,12 @@
 ---
 permalink: 2019-07-17-build-your-own-angular-property-lookup
 
-title: '实现 angluar 手记[六]属性查找和函数调用'
+title: "实现 angluar 手记[六]属性查找和函数调用"
 date: 2019-07-17T12:49:55.000Z
 categories:
-
-- tech
+  - tech
 tags:
-- angular
-
+  - angular
 ---
 
 ## 前言
