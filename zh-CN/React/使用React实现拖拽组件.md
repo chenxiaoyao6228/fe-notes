@@ -1,11 +1,11 @@
 ---
+permalink: 2019-10-23-react-dnd-with-hooks
 title: 使用React实现拖拽组件
-date: 2019-10-23T02:23:22.000Z
+date: 2019-10-23
 categories:
   - tech
 tags:
   - react
-permalink: 2019-10-23-react-dnd-with-hooks
 ---
 
 ## 前言

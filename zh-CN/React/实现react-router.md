@@ -1,6 +1,6 @@
 ---
 title: 实现react-router
-date: 2019-06-15T06:10:48.000Z
+date: 2019-06-15
 categories:
   - tech
 tags:

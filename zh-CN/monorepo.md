@@ -2,7 +2,8 @@
 
 ## Why Monorepo?
 
-In my [js-rocks]() projects I have several packages like `lodash-tiny` and `react-tiny`, the folder structure looks like the following. 
+In my [js-rocks]() projects I have several packages like `lodash-tiny` and `react-tiny`, the folder structure looks like the following.
+
 ```
 .
 ├── README.md
@@ -31,10 +32,11 @@ so my goal is:
 - Easy to create a new package, no need to set up complicated config for each package（eg: Eslint, Jest, Typescript, Babel etc.)
 
 ## Pnpm
+
 Pnpm is a new generation of package management tools, known as the most advanced package manager. According to the official website, the two goals of saving disk space, improving installation speed and creating a non-flat node_modules folder can be achieved.
 
-
 ### Installation
+
 ```sh
  npm install -g pnpm
 ```
@@ -51,16 +53,19 @@ find . -name 'node_modules' 'yarn.lock' -type d -prune -exec rm -rf '{}' +
 ### Install dependencies
 
 Install `dependencies` to the root
+
 ```
 pnpm install rollup -w
 ```
 
 Install `devDependencies` to the root
+
 ```sh
 pnpm install rollup -wD
 ```
 
 Install package to be specific package
+
 ```sh
 pnpm add @babel/preset-react --filter @js-rocks/react-tiny
 ```
@@ -68,6 +73,7 @@ pnpm add @babel/preset-react --filter @js-rocks/react-tiny
 ### Only allow Pnpm for dependency management
 
 ### package.json
+
 This is what your `package.json` looks like
 
 ```json
@@ -81,6 +87,7 @@ This is what your `package.json` looks like
 ## eslint && prettier
 
 Install dependencies
+
 ```sh
 
 pnpm i prettier prettier-eslint eslint eslint-config-prettier eslint-plugin-prettier @typescript-eslint/eslint-plugin @typescript-eslint/parser -w
@@ -88,6 +95,7 @@ pnpm i prettier prettier-eslint eslint eslint-config-prettier eslint-plugin-pret
 ```
 
 In your `.eslintrc.js`
+
 ```
 module.exports = {
   extends: ['eslint:recommended', 'plugin:@typescript-eslint/recommended'],
@@ -100,11 +108,11 @@ In your package.json
 
 ```json
 {
- "scripts": {
+  "scripts": {
     "format": "pnpm prettier-write && pnpm eslint-fix",
     "eslint-fix": "turbo run eslint-fix",
-    "prettier-write": "turbo run prettier-write",
- }
+    "prettier-write": "turbo run prettier-write"
+  }
 }
 ```
 
@@ -116,7 +124,6 @@ For your `Vscode`, Install the following packages
 "redjue.git-commit-plugin",
 "dbaeumer.vscode-eslint"
 ```
-
 
 In `.vscode/settings.json`
 
@@ -146,10 +153,14 @@ In `.vscode/settings.json`
     "source.fixAll.eslint": true,
     "source.fixAll.stylelint": true
   },
-  "eslint.validate": ["javascript", "typescript", "reacttypescript", "reactjavascript"]
+  "eslint.validate": [
+    "javascript",
+    "typescript",
+    "reacttypescript",
+    "reactjavascript"
+  ]
 }
 ```
-
 
 ## Babel
 
@@ -184,10 +195,9 @@ module.exports = {
 };
 ```
 
-
 ## commit
 
-use `git-cz` 
+use `git-cz`
 
 ```sh
 npx git-cz
@@ -195,26 +205,17 @@ npx git-cz
 
 ## jest
 
-
-
 ## changeset
-
-
 
 ## Turbo
 
-
 ## Typescript
-
 
 ## bundler(rollup)
 
-
 ## CI
 
-
 ## Reference
-
 
 <https://juejin.cn/post/7098609682519949325>
 
@@ -229,4 +230,3 @@ https://jestjs.io/docs/cli#--selectprojects-project1--projectn
 https://dev.to/mbarzeev/how-to-configure-babel-for-your-monorepo-j3c
 
 https://babeljs.io/docs/config-files
-

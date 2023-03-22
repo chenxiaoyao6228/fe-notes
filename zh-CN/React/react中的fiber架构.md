@@ -1,14 +1,16 @@
 ---
-title: React中的fiber架构
-date: 2019-11-28T02:23:22.000Z
+permalink: 2019-11-28-react-fiber-first-glace
+title: React中的fiber架构初探
+date: 2019-11-28
 categories:
   - tech
 tags:
   - react
-permalink: 2019-11-28-react-fiber
 ---
 
 ## 一.前言
+
+> Update: 这是几年前的旧文，对 React fiber 架构做了简要的介绍，最新的 React 18 的架构分析请翻翻其他的文章
 
 React 作为目前前端三大主流框架之一, 与 Angular,Vue,Backbone 为代表的**依赖收集+双向绑定**框架相比, 开创性地提出了许多新理念, 如单向数据流,vdom, fiber 等, 使得大量的 React 爱好者对其进行深入研究, 加上 Facebook 的 LICENCE 事件, 大量的 React-like 轮子层出不穷,同时,React 在面试中也成为高频考点.
 

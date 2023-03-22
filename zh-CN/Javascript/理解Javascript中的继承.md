@@ -4,8 +4,8 @@ categories:
   - tech
 tags:
   - javascript
-date: 2021-01-05
-permalink: 2021-01-05-javascript-inheritance-all-in-one
+date: 2019-01-01
+permalink: 2019-01-01-javascript-inheritance-all-in-one
 ---
 
 ## 前言
