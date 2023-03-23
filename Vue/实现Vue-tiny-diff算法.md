@@ -1,11 +1,11 @@
 ---
+permalink: 2020-01-31-vue-tiny-diff-algorithm
+date: 2020-01-31
 title: 实现Vue-tiny-dom-diff算法
 categories:
   - tech
 tags:
   - vue
-date: 2021-01-31
-permalink: 2021-01-31-vue-tiny-diff-algorithm
 ---
 
 ## 前言

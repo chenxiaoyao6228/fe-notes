@@ -8,10 +8,6 @@ date: 2019-12-16
 permalink: 2019-12-16-implement-a-di-library-with-javascript-in-ten-mins
 ---
 
-## 前言
-
-## 实现
-
 ### 基本
 
 ```js
@@ -207,5 +203,5 @@ injector.invoke(spaceProgram);
 
 ## 参考
 
-[Build-your-own-angularJS](https://www.youtube.com/watch?v=3ju-32Bcx1Q&ab_channel=ScotlandJS)
-[Dependency-injection-in-JavaScript](https://krasimirtsonev.com/blog/article/Dependency-injection-in-JavaScript)
+- [Build-your-own-angularJS](https://www.youtube.com/watch?v=3ju-32Bcx1Q&ab_channel=ScotlandJS)
+- [Dependency-injection-in-JavaScript](https://krasimirtsonev.com/blog/article/Dependency-injection-in-JavaScript)
