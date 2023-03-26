@@ -5,7 +5,7 @@ title: ChatGPT初体验
 categories: 
   - tech
 tags:
-  - ChatGPT初体验
+  - ChatGPT
 ---
 
 ## 序言

@@ -171,6 +171,11 @@ console.log(str.match(/(?<!\$)\d+/)[0]); // 6
 括号的功能: 分组分支, 捕获以及引用
 
 ### 分支(或)
+分支是指使用 `|` 字符将多个正则表达式连接起来形成一个选择。当正则表达式匹配时，它会优先选择其中的第一个分支，如果第一个分支不能匹配，则会继续尝试下一个分支，直到全部分支都尝试完成。
+
+例如，正则表达式 `(cat|dog|fish)` 匹配包含 `cat`、`dog` 或 `fish` 的字符串。它将先尝试匹配 `cat`，如果不能匹配，则继续尝试 `dog` 和 `fish`。
+
+分支在正则表达式中非常有用，因为它允许我们对多个不同的模式进行选择，提高了匹配的精确性和匹配范围。
 
 ### 分组捕获
 
@@ -199,13 +204,35 @@ repeatRegex.test(repeatStr); // true
 ```
 
 ## 修饰符
+Javascript正则表达式中，一般使用以下五种修饰符：
 
-i
-g
-m
+1. `g`：全局匹配模式，表示匹配所有符合条件的文本，而不是只匹配第一个。
 
-## 注意事项
+2. `i`：忽略大小写匹配模式，表示匹配时不区分大小写。
 
-## 正则训练
+3. `m`：多行匹配模式，表示字符“^”和字符“$”在匹配时会匹配文本中的每一行，而不是只匹配整个文本的开头和结尾。
+
+4. `u`：Unicode匹配模式，用于支持Unicode字符集。
+
+5. `y`：粘附匹配模式，表示从上次匹配的位置开始匹配，而不是从整个文本的开头开始。
+
+在Javascript正则表达式中，修饰符是以字符串的形式放在表达式的末尾，如`/pattern/g`和`/pattern/i`。可以组合使用这些修饰符，例如`/pattern/gi`表示全局匹配、忽略大小写的模式。
+
+当使用修饰符时，可以使用`flags`属性（或`options`属性）来获取这些修饰符，例如：
+
+```js
+let regex = /pattern/gi;
+console.log(regex.flags); // 输出 "gi"
+```
+
+需要注意的是，在Javascript中，只有`g`和`i`修饰符是普遍支持的。其他修饰符需要在支持它们的Javascript引擎上才能正常运行。
+
+
 
 ## 参考
+
+- [阮一峰-正则表达式30分钟入门教程](https://deerchao.cn/tutorials/regex/regex.htm)
+- [MDN 文档](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions)
+- [《JavaScript 正则表达式迷你书》](https://juejin.im/book/5be84a72f265da61684a1bae/intro)
+- [EasyJsBox-一些常用正则](https://easyjs.top/clean-pages.html)
+- [Start Bootstrap - Regular Expressions Cheat Sheet](http://www.gethugothemes.com/docs/regular-expressions-cheat-sheet/)
