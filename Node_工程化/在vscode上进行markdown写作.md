@@ -94,5 +94,5 @@ markdown 编辑器一般会集成几个功能: 快速编辑, 实时预览, 图�
 
 ## 参考资料:
 
-https://code.visualstudio.com/docs/languages/markdown
-https://www.zhihu.com/question/21065229/answer/132993179
+- https://code.visualstudio.com/docs/languages/markdown
+- https://www.zhihu.com/question/21065229/answer/132993179
