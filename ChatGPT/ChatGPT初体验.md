@@ -123,6 +123,10 @@ console.log(listHead);
 
 ## 应用&插件
 
+### [Code GPT](https://marketplace.visualstudio.com/items?itemName=DanielSanMedium.dscodegpt)
+
+chatGPT的vscode集成， 添加API key就能够使用，程序员效率提升的利器
+
 ### [Voice Control for ChatGPT](https://chrome.google.com/webstore/detail/voice-control-for-chatgpt/eollffkcakegifhacjnlnegohfdlidhn/related)
 
 这是我用的第一个插件， 主要目的是为了看看用 chatGPT 练习口语的效果如果， 从实验的结果来看，还是很牛皮的. 相当于有了一个家庭教师。但是前提是**你的发音要相对标准，能够让语音转文字软件准确识别**，才能有相对好的效果.
