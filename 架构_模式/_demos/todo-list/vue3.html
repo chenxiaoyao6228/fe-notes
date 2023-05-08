@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Vue 3 CDN Example</title>
+    <script src="https://unpkg.com/vue@next"></script>
+</head>
+
+<body>
+    <div id="app">
+        <input v-model="newTodoTitle" placeholder="Add Todo" />
+        <button @click="addTodo">Add Todo</button>
+        <div>
+            <div v-for="todo in todos" :key="todo.id">
+                <input type="checkbox" :id="todo.id" :checked="todo.completed" @change="toggleTodo(todo.id)" />
+                <label :for="todo.id">{{ todo.title }}</label>
+                <button @click="removeTodo(todo.id)">Remove</button>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        const { reactive, ref, toRefs, onMounted } = Vue;
+
+        class TodoFetchService {
+            constructor() { }
+            static async fetchTodo() {
+                try {
+                    const response = await fetch(
+                        "https://jsonplaceholder.typicode.com/todos"
+                    );
+                    const todos = await response.json();
+                    return todos.slice(0, 5);
+                } catch (error) {
+                    console.log("error", error);
+                }
+            }
+        }
+
+        class TodoListModel {
+            constructor(fetchService) {
+                this.fetchService = fetchService;
+                this.todos = [];
+            }
+            async fetchTodos() {
+                const todos = await this.fetchService.fetchTodo();
+                // ❗ 不能直接通过赋值的方式添加，因为这样会导致引用丢失
+                this.todos.push(...todos);
+            }
+            getTodos() {
+                return this.todos;
+            }
+            getTodoById(id) {
+                return this.todos.find((todo) => todo.id === id);
+            }
+            addTodo(todo) {
+                this.todos.push(todo);
+            }
+            removeTodoById(id) {
+                const index = this.todos.findIndex((todo) => todo.id === id)
+                this.todos.splice(index, 1);
+            }
+            updateTodoById(id, updatedFields) {
+                const todo = this.todos.find((todo) => todo.id === id);
+                Object.assign(todo, updatedFields);
+            }
+        }
+
+        const App = {
+            setup() {
+                const newTodoTitle = ref('')
+                const todoListModel = reactive(new TodoListModel(TodoFetchService));
+
+
+                const fetchData = async () => {
+                    console.log('Component is mounted!');
+                    await todoListModel.fetchTodos();
+                }
+                onMounted(() => {
+                    fetchData();
+                });
+
+                function addTodo() {
+                    todoListModel.addTodo({ id: Date.now(), title: newTodoTitle.value, completed: false });
+                    newTodoTitle.value = "";
+
+                }
+
+                function removeTodo(id) {
+                    todoListModel.removeTodoById(id);
+                }
+
+                function toggleTodo(id) {
+                    todoListModel.updateTodoById(id);
+                }
+
+                const updateNewTodoTitle = (event) => {
+                    newTodoTitle.value = event.target.value;
+                };
+                return {
+                    todos: todoListModel.todos,
+                    newTodoTitle,
+                    updateNewTodoTitle, // v-model语法糖
+                    addTodo,
+                    removeTodo,
+                    toggleTodo,
+                };
+            },
+        };
+
+
+        Vue.createApp(App).mount("#app");
+    </script>
+</body>
+
+</html>
