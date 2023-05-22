@@ -12,15 +12,31 @@
     <canvas id="canvas" width="300" height="300"></canvas>
     <script crossorigin="anonymous" type="text/javascript" src="https://cdn.jsdelivr.net/npm/fabric"></script>
     <script type="text/javascript">
-        const canvas = new fabric.Canvas('canvas');
-        const rect = new fabric.Rect({
-            top: 100,
+        // create a canvas object
+        var canvas = new fabric.Canvas('c');
+
+        // Add some objects to the canvas
+        var rect = new fabric.Rect({
             left: 100,
-            width: 60,
-            height: 70,
+            top: 100,
             fill: 'red',
+            width: 50,
+            height: 50
         });
-        canvas.add(rect);
+
+        var circle = new fabric.Circle({
+            radius: 20,
+            fill: 'green',
+            left: 50,
+            top: 50
+        });
+
+        canvas.add(rect, circle);
+
+        // To get the JSON representation of the canvas state
+        var json = JSON.stringify(canvas.toJSON());
+
+        console.log(json); // print JSON data to console
     </script>
 </body>
 

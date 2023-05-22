@@ -53,6 +53,9 @@ draw(ctx){
 ## canvas元素
 
 ### canvas中的宽高
+
+=> 参考月影可视化小册
+
 可通过HTML的width和height属性设置Canvas的宽高，也可以通过JavaScript动态设置Canvas的宽高。
 ```js
 // 在HTML中设置Canvas大小
