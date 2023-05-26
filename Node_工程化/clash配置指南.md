@@ -19,6 +19,81 @@ tags:
 * 配置规则中的Proxy-group, LAN config
 * 如何确认配置生效
 
+## 网络代理
+
+### 常见的代理服务器
+
+* 抓包工具(Charles, Proxyman)
+* Nginx代理服务器
+...
+### 代理工具的基本原理
+
+ 以抓包工具为例，当用户打开抓包工具的时候， 抓包工具会做两件事
+
+启动一个代理服务器用来转发网络请求
+
+```js
+const http = require('http');
+const httpProxy = require('http-proxy');
+const PROXY_PORT = 7890;
+
+// 创建代理服务器
+const proxyServer = httpProxy.createServer();
+
+proxyServer.on('error', (err, req, res) => {
+  console.error('Error with proxy server:', err);
+  res.writeHead(500, {
+    'Content-Type': 'text/plain'
+  });
+  res.end('Proxy error');
+});
+
+proxyServer.on('proxyReq', (proxyReq, req, res, options) => {
+  console.log('Proxying request:', options.host + req.url);
+});
+
+proxyServer.on('proxyRes', (proxyRes, req, res) => {
+  console.log('Proxied response:', res.statusCode, req.url);
+});
+
+proxyServer.listen(PROXY_PORT, () => {
+  console.log(`Proxy server listening on port ${PROXY_PORT}`);
+});
+```
+ 
+抓包工具会通过命令行更改网关， 让所有的请求都经过proxy server， 再将请求通过UI的形式展示出来
+
+```js
+const { exec } = require('child_process');
+const proxyServer = '192.168.1.100'; 
+const proxyPort = '7890'; 
+
+// 抓包工具会通过命令行更改网关
+const command = `netsh interface ip set address name="Local Area Connection" gateway=${proxyServer} gwmetric=0`;
+
+// Run the command to set the default gateway
+exec(command, (error, stdout, stderr) => {
+  if (error) {
+    console.error(`Error setting default gateway: ${error.message}`);
+    return;
+  }
+  if (stderr) {
+    console.error(`Error setting default gateway: ${stderr}`);
+    return;
+  }
+  console.log(`Default gateway set to ${proxyServer}`);
+});
+
+```
+### 协议
+
+```
+mixed-port: 8989
+rules:
+  - DOMAIN-KEYWORD,google,vmess,8990
+  - DOMAIN-SUFFIX,company.com,trojan,8991
+  - MATCH,*,shadowsocks
+```
 
 ## clash配置文件
 
@@ -67,13 +142,38 @@ rules:
   - DOMAIN-SUFFIX,ad.com,REJECT
   - GEOIP,CN,DIRECT
   - MATCH,DIRECT
-
 ```
 
+### mixed-port
+
+clash允许使用多个端口进行混合代理模式的方式。当你想要使用多个混合代理端口以避免端口冲突时，这非常有用。
+
+假设你需要从家里访问公司的内部资源，但你公司的网络有严格的防火墙规则。你可以使用Clash设置混合代理，使用不同的协议（如Shadowsocks、Vmess、Trojan）在不同的端口上运行。通过在不同的端口上使用VPN协议而非Shadowsocks（如Vmess或Trojan），可以避免检测并提高VPN连接的稳定性。而在其他协议不可用时，可以使用Shadowsocks。
+
+例如，你可以在端口8989上使用Shadowsocks，在端口8990上使用Vmess，在端口8991上使用Trojan。使用这些值设置mixed-port，你可以根据需要切换协议和端口以访问公司的内部资源。
+
+以下是实现此混合代理场景的示例配置文件：
+
+```
+mixed-port: 8989
+rules:
+  - DOMAIN-KEYWORD,google,vmess,8990
+  - DOMAIN-SUFFIX,company.com,trojan,8991
+  - MATCH,*,shadowsocks
+```
+在此示例中，对于google.com的请求将使用端口8990上的Vmess协议，对于任何以company.com结尾的域的请求将使用端口8991上的Trojan协议，而其他请求将使用端口8989上的Shadowsocks。
+
+
 ### external-controller
-Clash的RESTful API，可用于验证配置是否成功
+
+Clash的RESTful API，可用于验证配置是否成功, 除了 API 之外，还可以使用对应的面板来查看我们的配置项
 
 
+![](../../cloudimg/2013/../2023/clash-3.png)
+
+### allow-lan
+
+allow-lan配置选项在Clash配置文件中确定是否允许局域网连接。当allow-lan设置为true时（默认值），Clash将接受来自本地网络设备的代理连接。如果你想与家庭网络上的其他设备共享代理服务该配置可能很有用。但是，如果allow-lan设置为false，则Clash将仅接受来自运行Clash实例的设备的代理连接。如果你想将对代理服务的访问权限限制为特定设备或网络可能很有用。
 
 ## 全部配置规则
 
