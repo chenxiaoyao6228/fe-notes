@@ -51,7 +51,7 @@ ctx.clearRect(10, 10, 120, 100);
 橡皮擦作为独立的shape进行绘制，当前画布一样的背景色填充覆盖
 
 效果：
-![](../../cloudimg/2023/canvas-eraser-1.png)
+![](https://cdn.jsdelivr.net/gh/chenxiaoyao6228/cloudimg@main/2023/canvas-eraser-1.png)
 
 
 优点：

@@ -13,24 +13,26 @@ tags:
 
 [Clash](https://github.com/Dreamacro/clash/blob/dev/README.md)是一款非常好用的科学上网工具，但是要合理地使用的话需要对其配置有一定的熟悉，希望可以借本文梳理与之相关的概念:
 
-* 科学上网的原理
-* clash配置文件
-* clash配置中的Global, Rule, Direct
-* 配置规则中的Proxy-group, LAN config
-* 如何确认配置生效
+* 网络代理的基本原理
+* clash配置介绍
 
 ## 网络代理
 
-### 常见的代理服务器
+根据被代理对象的不同，网络代理可以分为以下两种类型：
 
-* 抓包工具(Charles, Proxyman)
-* Nginx代理服务器
-...
+Forward Proxy Server（正向代理服务器）,又称为代理服务器，是**客户端**所在内部网络和外部网络之间的一个中转服务器，客户端通过该服务器发送请求到互联网上的服务器，之后代理服务器再将请求结果返回给客户端。这种机制可以有效地提高网络性能，同时保护客户端隐私。
+
+正向代理服务器例子：抓包工具(Charles, Proxyman, Fiddler)，梯子工具(Clash, Shadowsocks, V2ray)。
+
+Reverse Proxy Server（反向代理服务器）则是站在**Web服务器**的角度上，为Web服务器提供安全性、可扩展性、负载均衡、透明性等功能，实现对外部或客户端的转发请求。
+
+反向代理服务器的例子: Nginx、Apache HTTP Server.
+
 ### 代理工具的基本原理
 
- 以抓包工具为例，当用户打开抓包工具的时候， 抓包工具会做两件事
+ 以抓包工具为例，当用户打开抓包工具的时候， 抓包工具会做两件事:
 
-启动一个代理服务器用来转发网络请求
+1. 启动一个代理服务器用来转发网络请求
 
 ```js
 const http = require('http');
@@ -61,7 +63,7 @@ proxyServer.listen(PROXY_PORT, () => {
 });
 ```
  
-抓包工具会通过命令行更改网关， 让所有的请求都经过proxy server， 再将请求通过UI的形式展示出来
+2. 通过命令行更改网关， 让所有的请求都经过proxy server， 再将请求通过UI的形式展示出来
 
 ```js
 const { exec } = require('child_process');
@@ -71,7 +73,6 @@ const proxyPort = '7890';
 // 抓包工具会通过命令行更改网关
 const command = `netsh interface ip set address name="Local Area Connection" gateway=${proxyServer} gwmetric=0`;
 
-// Run the command to set the default gateway
 exec(command, (error, stdout, stderr) => {
   if (error) {
     console.error(`Error setting default gateway: ${error.message}`);
@@ -85,46 +86,29 @@ exec(command, (error, stdout, stderr) => {
 });
 
 ```
-### 协议
 
-```
-mixed-port: 8989
-rules:
-  - DOMAIN-KEYWORD,google,vmess,8990
-  - DOMAIN-SUFFIX,company.com,trojan,8991
-  - MATCH,*,shadowsocks
-```
+当然，对于梯子工具来说，还需要对应的远程代理服务器与加密协议来转发网络请求。
 
-## clash配置文件
+
+## clash配置
+下面详细介绍下clash的配置文件
+### 配置文件
+
+clash的配置文件位于`~/.config/clash`目录下，包含以下文件:
 
 * config.yaml: clash默认的配置文件
 * NEWclash.yaml: 用户的配置文件在中
 * cache.db: 一个数据库文件, 用来缓存 DNS 记录提升性能;
 * Country.mmdb: IP 与国家映射配置文件
 
-![](../../cloudimg/2023/clash-2.png)
+![](https://cdn.jsdelivr.net/gh/chenxiaoyao6228/cloudimg@main/2023/clash-2.png)
 
-### yaml语法
-关于yaml(发音 /ˈjæməl/ )语法可参见阮一峰老师的[YAML 语言教程](https://www.ruanyifeng.com/blog/2016/07/yaml.html)
+clash配置用的是yaml文件，关于yaml(发音 /ˈjæməl/ )语法可参见阮一峰老师的[YAML 语言教程](https://www.ruanyifeng.com/blog/2016/07/yaml.html)
 
-## 模式： Global, Rule, Direct
-
-Clash可以根据配置可以运行不同的模式。
-
-![](../../cloudimg/2023/clash-1.png)
-
-Global：所有的流量将会遵循同一个Proxy规则，即全局代理，所有流量将会被发送到同一个代理服务器，无论请求的目的地址是什么。
-
-Rule：该策略依据自定义的规则进行流量路由，比如可以根据网址、IP地址、或流量类型等来进行分流，对于不同的流量目的地址，可以采用不同的代理策略，包括使用不同的代理协议（如HTTP、Socks5、Shadowsocks等）。
-
-Direct：所有流量将会直接走本地网络，不会被发送到任何代理服务器中转。
-
-## config.yaml
+### config.yaml
 下面看看官方的默认配置文件
 ```yaml
-# (HTTP and SOCKS5 in one port)
 mixed-port: 7890
-# RESTful API for clash
 external-controller: 127.0.0.1:9090
 allow-lan: false
 mode: rule
@@ -169,13 +153,33 @@ rules:
 Clash的RESTful API，可用于验证配置是否成功, 除了 API 之外，还可以使用对应的面板来查看我们的配置项
 
 
-![](../../cloudimg/2013/../2023/clash-3.png)
+![](https://cdn.jsdelivr.net/gh/chenxiaoyao6228/cloudimg@main/2013/../2023/clash-3.png)
+
 
 ### allow-lan
 
 allow-lan配置选项在Clash配置文件中确定是否允许局域网连接。当allow-lan设置为true时（默认值），Clash将接受来自本地网络设备的代理连接。如果你想与家庭网络上的其他设备共享代理服务该配置可能很有用。但是，如果allow-lan设置为false，则Clash将仅接受来自运行Clash实例的设备的代理连接。如果你想将对代理服务的访问权限限制为特定设备或网络可能很有用。
 
-## 全部配置规则
+
+
+### mode： Global, Rule, Direct
+
+Clash可以根据配置可以运行不同的模式。
+
+![](https://cdn.jsdelivr.net/gh/chenxiaoyao6228/cloudimg@main/2023/clash-1.png)
+
+Global：所有的流量将会遵循同一个Proxy规则，即全局代理，所有流量将会被发送到同一个代理服务器，无论请求的目的地址是什么。
+
+Rule：该策略依据自定义的规则进行流量路由，比如可以根据网址、IP地址、或流量类型等来进行分流，对于不同的流量目的地址，可以采用不同的代理策略，包括使用不同的代理协议（如HTTP、Socks5、Shadowsocks等）。
+
+Direct：所有流量将会直接走本地网络，不会被发送到任何代理服务器中转。
+
+
+### Proxy-group(代理组)
+
+"代理组"模式类似于“混合”模式，但允许用户指定每个目的地使用哪些代理服务器。
+
+### rules(规则)
 
 DOMAIN-SUFFIX: 此规则匹配网站的域名后缀，并可用于指定如何处理该网站的请求。处理请求的选项有 "DIRECT"（不使用代理发送请求）、"PROXY"（通过代理发送请求）或 "REJECT"（拒绝请求）。 示例: DOMAIN-SUFFIX,openai.com,DIRECT
 
@@ -192,8 +196,4 @@ Fallback: 此规则指定如果其他规则不匹配时要使用的代理组。 
 MATCH: 此规则匹配代理组中的正则表达式模式，并可用于从该组中选择特定的代理。 示例: MATCH,DIRECT
 
 
-## Proxy-group(代理组)
 
-"代理组"模式类似于“混合”模式，但允许用户指定每个目的地使用哪些代理服务器。
-
-## LAN config
