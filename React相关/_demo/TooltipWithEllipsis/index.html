@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title>TooltipWithEllipsis-文字超出tooltip提示</title>
+    <style>
+        .wrapper {
+            margin: 200px;
+        }
+
+        .text {
+            border: 1px solid red;
+            max-width: 50px;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/antd/dist/antd.min.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.21/lodash.min.js"></script>
+    <script src="https://unpkg.com/react@16.8.0/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@16.8.0/umd/react-dom.development.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/lodash/lodash.min.js"></script>
+    <!-- antd依赖了day.js -->
+    <script src="https://cdn.jsdelivr.net/npm/dayjs/dayjs.min.js"></script> <!-- Add this line for day.js -->
+    <script src="https://cdn.jsdelivr.net/npm/antd/dist/antd.min.js"></script>
+    <script src='https://unpkg.com/babel-standalone@6.26.0/babel.js'></script>
+</head>
+
+<body>
+    <div id="root"></div>
+    <script type="text/babel">
+        // createElement要保留，因为JSX最终会被转换成React.createElement()函数调用形式
+        const { useState, useCallback, useRef, useEffect } = React;
+        const { Button, Tooltip } = antd;
+        const { debounce } = _;
+
+        const isTextOverflow = (element) => element.clientWidth < element.scrollWidth;
+
+        const TooltipWithEllipsis = (props) => {
+            const { visible, children, ...otherProps } = props;
+            const _ref = useRef();
+            const [tooltipVisible, setTooltipVisible] = useState(true);
+
+            const checkOverflow = useCallback(() => {
+                const isOverflow = isTextOverflow(_ref.current);
+                setTooltipVisible(isOverflow);
+            }, [setTooltipVisible]);
+
+            useEffect(() => {
+                if (_ref.current) {
+                    checkOverflow();
+                }
+            }, [children, checkOverflow]);
+
+            useEffect(() => {
+                const debounceHandler = debounce(() => {
+                    checkOverflow();
+                }, 500);
+
+                window.addEventListener("resize", debounceHandler);
+                return () => {
+                    window.removeEventListener("resize", debounceHandler);
+                };
+            }, [checkOverflow]);
+
+            return (
+                <Tooltip
+                    open={visible ? visible : tooltipVisible ? undefined : false}
+                    {...otherProps}>
+                    {React.cloneElement(children, { ref: _ref })}
+                </Tooltip>
+            );
+        }
+
+        // --------------------------------------------------------------------------------------------
+        const { render } = ReactDOM;
+        const { createElement } = React
+        const Demo = () => {
+            const longText =
+                "这是一段长文字这是一段长文字这是一段长文字这是一段长文字这是一段长文字";
+            return (
+                <div className="wrapper">
+                    <h2>长文字长处隐藏，hover通过tooltip显示全部内容</h2>
+                    <TooltipWithEllipsis title={longText} mouseEnterDelay={0}>
+                        <div className="text">{longText}</div>
+                    </TooltipWithEllipsis>
+                </div>
+            );
+        };
+
+        render(<Demo />, document.getElementById("root"));
+    </script>
+</body>

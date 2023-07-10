@@ -10,6 +10,8 @@ tags:
 
 angular 中的依赖注入是通过 loader 和 injector 模块来实现的, 可以把 injector 想象成为一个池子,我们可以通过类似 injector.get()的方法来获取内容, 但两者具体是怎么协作的呢? 我们先分别来看看这两个模块
 
+阅读之前需要了解[angularJS中的模块](https://docs.angularjs.org/guide/module)
+
 ## module 模块(loader.js)
 
 loader 模块的主要功能就是暴露在 angular 上定义一个 module 函数, 这个函数同时充当了 getter 和 setter 的功能, name, requires 分别代表模块名, 依赖, 当只有 name 的时候是查询模块, 有 require 参数的时候是创建模块, modules 参数是一个查询表, 用来判断 name 是否已经存在
