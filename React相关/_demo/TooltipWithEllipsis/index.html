@@ -6,12 +6,16 @@
     <title>TooltipWithEllipsis-文字超出tooltip提示</title>
     <style>
         .wrapper {
-            margin: 200px;
+            margin: 100px;
+        }
+
+        h2:last-of-type {
+            margin-top: 20px;
         }
 
         .text {
             border: 1px solid red;
-            max-width: 50px;
+            max-width: 150px;
             overflow: hidden;
             white-space: nowrap;
             text-overflow: ellipsis;
@@ -78,13 +82,18 @@
         const { render } = ReactDOM;
         const { createElement } = React
         const Demo = () => {
+            const shortText = '一段短文本'
             const longText =
                 "这是一段长文字这是一段长文字这是一段长文字这是一段长文字这是一段长文字";
             return (
                 <div className="wrapper">
-                    <h2>长文字长处隐藏，hover通过tooltip显示全部内容</h2>
+                    <h2>长文字超出最大宽度进行隐藏，hover通过tooltip显示全部内容</h2>
                     <TooltipWithEllipsis title={longText} mouseEnterDelay={0}>
                         <div className="text">{longText}</div>
+                    </TooltipWithEllipsis>
+                    <h2>短文字没有超出，不进行处理</h2>
+                    <TooltipWithEllipsis title={shortText} mouseEnterDelay={0}>
+                        <div className="text">{shortText}</div>
                     </TooltipWithEllipsis>
                 </div>
             );
