@@ -44,10 +44,10 @@
 ```
 
 board没有开启transform的时候
-![](../../cloudimg/2023/position-fixed-1.png)
+![](https://cdn.jsdelivr.net/gh/chenxiaoyao6228/cloudimg@main/2023/position-fixed-1.png)
 
 board开启transform之后, 此时`menu`相对`board`元素进行定位，可以看到menu的位置已经发生了变化
-![](../../cloudimg/2023/position-fixed-2.png)
+![](https://cdn.jsdelivr.net/gh/chenxiaoyao6228/cloudimg@main/2023/position-fixed-2.png)
 
 经查询 MDN [文档](https://developer.mozilla.org/zh-CN/docs/Web/CSS/position)得知
 
