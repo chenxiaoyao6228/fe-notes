@@ -16,6 +16,10 @@ React之中使用的jsx, 且不自带运行时的编译器， 浏览器并不能
     <title>ReactJS Example</title>
     <script crossorigin src="https://unpkg.com/react@16.8.0/umd/react.development.js"></script>
     <script crossorigin src="https://unpkg.com/react-dom@16.8.0/umd/react-dom.development.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/lodash/lodash.min.js"></script>
+    <!-- antd依赖了day.js -->
+    <script src="https://cdn.jsdelivr.net/npm/dayjs/dayjs.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/antd/dist/antd.min.js"></script>
     <script src='https://unpkg.com/babel-standalone@6.26.0/babel.js'></script>
 </head>
 
@@ -58,6 +62,21 @@ React之中使用的jsx, 且不自带运行时的编译器， 浏览器并不能
 ### Babel
 ```html
  <script src='https://unpkg.com/babel-standalone@6.26.0/babel.js'></script>
+```
+
+
+### Lodash
+
+```html
+<script src="https://cdn.jsdelivr.net/npm/lodash/lodash.min.js"></script>
+```
+
+###  Antd
+
+```html
+<!-- antd依赖了day.js -->
+    <script src="https://cdn.jsdelivr.net/npm/dayjs/dayjs.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/antd/dist/antd.min.js"></script>
 ```
 
 
