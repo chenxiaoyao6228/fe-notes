@@ -20,7 +20,7 @@ ps：本文基于mac系统，windows用户可以根据思路来进行调整
 修改host+charles正向代理+nginx方向代理的模式
 
 原理图如下：
-![image](../../cloudimg/2019/debug-wechat-through-nginx.png)
+![image](https://cdn.jsdelivr.net/gh/chenxiaoyao6228/cloudimg@main/2019/debug-wechat-through-nginx.png)
 
 ### 基本步骤
 
@@ -185,6 +185,6 @@ http {
 ### 踩坑汇总
 
 把server文件夹下的东西作为配置文件了，所以无法识别
-![image.png](../../cloudimg/2019/debug-wechat-with-nginx-2.png)
+![image.png](https://cdn.jsdelivr.net/gh/chenxiaoyao6228/cloudimg@main/2019/debug-wechat-with-nginx-2.png)
 
 <https://stackoverflow.com/questions/46127025/nginx-https-server-barfing-on-crt-and-key-files>
