@@ -1,13 +1,4 @@
----
-title: prettier-eslint-vscode-实现前端代码格式化
-categories:
-  - tech
-tags:
-  - javascript
-date: 2020-04-06
-permalink: 2020-04-06-prettier-eslint-vscode-for-code-formatting
----
-
+# prettier-eslint-vscode-实现前端代码格式化
 ## 前言
 
 随着前端开发工程化的日渐成熟, eslint, prettier 等工具已成为前端代码规范化的必备工具, 本文主要记录两者的基本概念以及相应的配置, 方便后续回顾的时候可以直接参考 🎸

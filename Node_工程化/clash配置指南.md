@@ -1,10 +1,4 @@
----
-date: 2023-05-25
-permalink: clash-configuration-handbook
-title: clash配置指南
-categories:
-  - tech
----
+# clash配置指南
 
 ## 前言
 

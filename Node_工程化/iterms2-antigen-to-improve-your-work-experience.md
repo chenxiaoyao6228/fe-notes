@@ -1,15 +1,3 @@
----
-permalink: 2020-01-08-iterms2-antigen-to-improve-your-work-experience
-title: 使用iterms2与zsh来改善工作体验
-date: 2020-4-31
-categories:
-  - tech
-tags:
-  - iterms
-  - zsh
-  - shell
----
-
 ## 前言
 
 终端作为程序员工作中打交道比较多一块, 进行改造以改进工作效率是很有必要的

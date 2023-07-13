@@ -1,13 +1,4 @@
----
-title: koa源码学习笔记
-date: 2019-06-02T23:44:41.000Z
-categories:
-  - tech
-tags:
-  - node
-  - koa
-permalink: 2019-06-02-koa-source-code-analysis
----
+# koa源码学习笔记
 
 我们的 koa 程序可以简化为以下三步
 

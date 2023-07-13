@@ -1,12 +1,4 @@
----
-title: 在vscode上进行markdown写作
-date: 2019-10-29T12:45:18.000Z
-categories:
-  - tech
-tags:
-  - markdown
-permalink: 2019-10-29-markdown-with-vscode
----
+# 在vscode上进行markdown写作
 
 ## markdown 编辑器比对
 
