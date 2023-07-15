@@ -29,7 +29,7 @@
 
 ### 子元素 transform 后父元素依然占据空间:
 
-![](../../cloudimg/2023/transform-left.png)
+![](https://cdn.jsdelivr.net/gh/chenxiaoyao6228/cloudimg@main/2023/transform-left.png)
 
 这个可以通过`height: 0`解决:
 
