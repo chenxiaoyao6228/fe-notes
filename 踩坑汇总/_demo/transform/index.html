@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>transform</title>
+    <style>
+        html,
+        body {
+            margin: 0;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        /* 调用方， 通过position参数进行组件的调用 */
+        .toolBarWrapper {
+            position: fixed;
+            border: 1px solid rgb(0, 98, 255);
+        }
+
+        .toolBarWrapper.top {
+            top: 10px;
+            transform: translateX(-50%);
+            left: 50%;
+            /* margin-top: 10px; */
+        }
+
+        .toolBarWrapper.left {
+            top: 50%;
+            transform: translateY(-50%);
+            left: 10px;
+            /* left: 0; */
+        }
+
+        .toolBarWrapper.bottom {
+            left: 50%;
+            bottom: 10px;
+            transform: translateX(-50%);
+            /* bottom: 0; */
+        }
+
+        /* 工具栏组件 */
+        .toolBar {
+            position: relative;
+            height: 0;
+        }
+
+        .toolBar.left {
+            transform: translateX(calc(-50% + 60px)) rotate(90deg);
+        }
+
+        .toolBar.top {
+            /* height: 0; */
+        }
+
+        .toolBar.bottom {
+            margin-top: -60px;
+        }
+
+        .toolBarBtns {
+            padding: 10px;
+            border: 1px solid rgb(255, 0, 195);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .toolBarBtn {
+            border: 1px solid red;
+            width: 40px;
+            line-height: 40px;
+            text-align: center;
+        }
+
+        .toolBar.left .toolBarBtns .toolBarBtn {
+            transform: rotate(-90deg);
+        }
+
+        .toolBarBtn:not(:last-of-type) {
+            margin-right: 10px;
+        }
+
+        /* 二级工具栏 */
+
+        .subToolBar {
+            position: absolute;
+            height: 30px;
+            line-height: 30px;
+            width: 100px;
+            border: 1px solid rgb(0, 255, 204);
+        }
+
+        .subToolBar.top {
+            margin-top: 10px;
+        }
+
+        .subToolBar.bottom {
+            bottom: calc(100% + 10px)
+        }
+
+        .subToolBar.left {
+            bottom: calc(100% + 10px)
+        }
+    </style>
+</head>
+
+<body>
+    <div class="toolBarWrapper top">
+        <div class="toolBar top">
+            <div class="toolBarBtns">
+                <div class="toolBarBtn">1</div>
+                <div class="toolBarBtn">2</div>
+                <div class="toolBarBtn">3</div>
+                <div class="toolBarBtn">4</div>
+                <div class="toolBarBtn">5</div>
+                <div class="toolBarBtn">6</div>
+                <div class="toolBarBtn">7</div>
+            </div>
+            <div class="subToolBar top">二级菜单</div>
+        </div>
+    </div>
+    <div class="toolBarWrapper left">
+        <div class="toolBar left">
+            <div class="toolBarBtns">
+                <div class="toolBarBtn">1</div>
+                <div class="toolBarBtn">2</div>
+                <div class="toolBarBtn">3</div>
+                <div class="toolBarBtn">4</div>
+                <div class="toolBarBtn">5</div>
+                <div class="toolBarBtn">6</div>
+                <div class="toolBarBtn">7</div>
+            </div>
+            <div class="subToolBar left">二级菜单</div>
+        </div>
+    </div>
+    <div class="toolBarWrapper bottom">
+        <div class="toolBar bottom">
+            <div class="toolBarBtns">
+                <div class="toolBarBtn">1</div>
+                <div class="toolBarBtn">2</div>
+                <div class="toolBarBtn">3</div>
+                <div class="toolBarBtn">4</div>
+                <div class="toolBarBtn">5</div>
+                <div class="toolBarBtn">6</div>
+                <div class="toolBarBtn">7</div>
+            </div>
+            <div class="subToolBar bottom">二级菜单</div>
+        </div>
+    </div>
+</body>
+
+</html>
