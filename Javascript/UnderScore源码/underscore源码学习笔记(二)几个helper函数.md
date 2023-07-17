@@ -1,12 +1,4 @@
----
-title: "underscore源码学习笔记(二)几个helper函数"
-date: 2019-06-28T16:24:59.000Z
-categories:
-  - tech
-tags:
-  - underscore
-permalink: 2019-06-28-underscore-analysis-2-some-helper-functions
----
+# underscore源码学习笔记(二)几个helper函数
 
 #### 上一结构我们使用到了几个 helper 函数,但是由于篇幅所致,我们集中精力在主要的函数上,这一节,我们来深入探讨一下这些函数
 

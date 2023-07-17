@@ -1,12 +1,4 @@
----
-title: "实现angular[手记五]编译字面量表达式"
-date: 2019-07-16T07:28:20.000Z
-categories:
-  - tech
-tags:
-  - angular
-permalink: 2019-07-16-build-your-own-angular-literal-expressions
----
+# 实现angular[手记五]编译字面量表达式
 
 ## 前言
 

@@ -1,11 +1,4 @@
----
-title: 实现angular手记[三]监听集合
-categories:
-  - tech
-tags:
-  - angular
-permalink: 2019-07-14-build-your-own-angular-3-watch-collections
----
+#  实现angular手记[三]监听集合
 
 ## 前言
 

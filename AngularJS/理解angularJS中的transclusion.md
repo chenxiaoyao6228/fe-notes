@@ -1,12 +1,4 @@
----
-title: 理解angularJS中的transclusion
-categories:
-  - tech
-tags:
-  - angular
-date: 2019-07-14
-permalink: 2019-07-14-understand-transclusion-in-angularJS
----
+# 理解angularJS中的transclusion
 
 ## transclusion 是什么
 

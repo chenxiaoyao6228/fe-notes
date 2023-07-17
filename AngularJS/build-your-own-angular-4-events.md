@@ -1,12 +1,4 @@
----
-title: "实现angular手记[四]事件系统"
-date: 2019-07-15
-categories:
-  - tech
-tags:
-  - angular
-permalink: 2019-07-15-build-your-own-angular-4-events
----
+# 实现angular手记[四]事件系统
 
 ## 发布订阅
 

@@ -1,12 +1,4 @@
----
-title: "underscore源码学习笔记(一)如何读underscore源码"
-date: 2019-06-28T16:23:57.000Z
-categories:
-  - tech
-tags:
-  - underscore
-permalink: 2019-06-28-underscore-analysis-1
----
+# underscore源码学习笔记(一)如何读underscore源码
 
 ### 一.前言
 

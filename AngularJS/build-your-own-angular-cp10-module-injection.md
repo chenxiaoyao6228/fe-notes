@@ -1,12 +1,6 @@
----
-permalink: 2019-07-25-build-your-own-angular-cp10-module-injection
-title: "实现 angluar 手记[十]模块与依赖注入"
-date: 2019-07-25T08:45:28.000Z
-categories:
-  - tech
-tags:
-  - angular
----
+# 实现 angluar 手记[十]模块与依赖注入
+
+## 前言
 
 angular 中的依赖注入是通过 loader 和 injector 模块来实现的, 可以把 injector 想象成为一个池子,我们可以通过类似 injector.get()的方法来获取内容, 但两者具体是怎么协作的呢? 我们先分别来看看这两个模块
 

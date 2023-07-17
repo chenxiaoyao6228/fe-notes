@@ -1,12 +1,4 @@
----
-title: "underscore源码学习笔记(六)实现bind,call, apply"
-date: 2019-06-28T16:27:31.000Z
-categories:
-  - tech
-tags:
-  - underscore
-permalink: 2019-06-28-underscore-analysis-6-implement-bind
----
+# underscore源码学习笔记(六)实现bind,call, apply
 
 #### 一. bind 的实现
 

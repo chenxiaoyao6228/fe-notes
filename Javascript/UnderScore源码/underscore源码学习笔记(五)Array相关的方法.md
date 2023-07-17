@@ -1,12 +1,4 @@
----
-title: "underscore源码学习笔记(五)Array相关的方法"
-date: 2019-06-28T16:27:16.000Z
-categories:
-  - tech
-tags:
-  - underscore
-permalink: 2019-06-28-underscore-analysis-5-array-related-method
----
+# underscore源码学习笔记(五)Array相关的方法
 
 获取数组的后 n 个元素
 
