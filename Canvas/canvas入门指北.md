@@ -1,13 +1,3 @@
----
-date: 2023-03-23
-permalink:  canvas入门指北
-title: canvas入门指北
-categories: 
-  - tech
-tags:
-  - canvas
----
-
 ## 前言
 
 本节总结了入门canvas绘图中的必须要理解的一些基础概念.

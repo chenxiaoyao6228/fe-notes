@@ -1,13 +1,3 @@
----
-title: Javascript正则表达式速查笔记
-categories:
-  - tech
-tags:
-  - javascript
-  - regex
-date: 2019-01-01
-permalink: 20219-01-01-javascript-regex-cheatsheet
----
 
 ## 前言
 

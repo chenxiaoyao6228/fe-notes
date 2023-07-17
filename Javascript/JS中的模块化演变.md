@@ -1,13 +1,3 @@
----
-date: 2023-05-24
-permalink: modular-in-javascript
-title: javascript中的模块化演变
-categories:
-  - tech
-tags:
-  - javascript
----
-
 ## 前言
 
 本文会尝试回答以下问题：

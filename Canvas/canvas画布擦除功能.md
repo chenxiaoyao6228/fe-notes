@@ -1,13 +1,3 @@
----
-date: 2023-03-23
-permalink: 2023-03-23-canvas画布擦除功能
-title: canvas画布擦除功能
-categories:
-  - tech
-tags:
-  - canvas
----
-
 ## Canvas内容擦除
 
 

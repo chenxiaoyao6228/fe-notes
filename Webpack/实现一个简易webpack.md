@@ -1,12 +1,3 @@
----
-title: 实现一个简易webpack
-date: 2019-06-30T16:52:27.000Z
-categories:
-  - tech
-tags:
-  - node
-permalink: 2019-06-30-implement-a-simple-webpack
----
 
 ## 1. webpack介绍
 

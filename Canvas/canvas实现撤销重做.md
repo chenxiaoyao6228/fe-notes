@@ -1,13 +1,3 @@
----
-date: 2023-03-28
-permalink:  implement-redo-and-undo-in-canvas-drawing-app
-title: canvas实现撤销重做
-categories: 
-  - tech
-tags:
-  - canvas
----
-
 ## 前言
 
 画板批注需要实现撤销重做的功能

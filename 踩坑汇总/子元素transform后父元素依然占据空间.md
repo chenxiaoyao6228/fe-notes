@@ -4,7 +4,7 @@
 
 效果图大概是这样:
 
-<img src="../../cloudimg/2023/transform-all-direction.png" height="300"/>
+<img src="https://cdn.jsdelivr.net/gh/chenxiaoyao6228/cloudimg@main/2023/transform-all-direction.png" height="300"/>
 
 
 [演示地址:](./_demo/transform/index.html)

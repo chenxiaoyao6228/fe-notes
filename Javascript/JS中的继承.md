@@ -1,12 +1,3 @@
----
-title: 理解Javascript中的继承
-categories:
-  - tech
-tags:
-  - javascript
-date: 2019-01-01
-permalink: 2019-01-01-javascript-inheritance-all-in-one
----
 
 ## 前言
 

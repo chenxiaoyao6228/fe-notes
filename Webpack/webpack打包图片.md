@@ -1,12 +1,3 @@
----
-date: 2023-05-22
-permalink: handling-images-in-webpack
-title: webpack打包图片
-categories:
-  - tech
-tags:
-  - webpack
----
 
 ## 前言
 
