@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title>useMedia React hooks</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/antd/dist/antd.min.css" />
+    <style>
+        #root {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(0, 0, 0, 0.7);
+            height: 100vh;
+        }
+
+        .player {
+            padding: 20px;
+        }
+
+        .player .disc {
+            margin: 0 auto;
+            position: relative;
+            border-radius: 50%;
+            width: 355px;
+            height: 355px;
+            background-image: url("https://cdn.jsdelivr.net/gh/chenxiaoyao6228/cloudimg@main/2023/bg_music.png");
+            background-size: cover;
+            background-repeat: no-repeat;
+        }
+
+        .player .control {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .player .control .duration {
+            margin: 20px 0;
+            padding: 0 100px 0 20px;
+            display: flex;
+            align-items: center;
+            color: #fff;
+        }
+
+        .player .control .play {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            justify-content: center;
+        }
+
+        .player .control .sound {
+            flex: 1;
+            height: 100px;
+            position: absolute;
+            right: 20px;
+            bottom: 20px;
+
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        .rotate {
+            transform-origin: center;
+            animation: spin 2s linear infinite;
+        }
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.21/lodash.min.js"></script>
+    <script src="https://unpkg.com/react@16.8.0/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@16.8.0/umd/react-dom.development.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/lodash/lodash.min.js"></script>
+    <!-- antd依赖了day.js -->
+    <script src="https://cdn.jsdelivr.net/npm/dayjs/dayjs.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/antd/dist/antd.min.js"></script>
+    <script src="https://unpkg.com/babel-standalone@6.26.0/babel.js"></script>
+</head>
+
+<body>
+    <div id="root"></div>
+    <script type="text/babel">
+        // createElement要保留，因为JSX最终会被转换成React.createElement()函数调用形式
+        const {
+            useState,
+            useCallback,
+            useRef,
+            useEffect,
+            useLayoutEffect,
+            useMemo,
+        } = React;
+
+        /*
+         * --------------------------useMeida hooks-----------------------------------------
+         * audio和video有差不多的api, useMedioControl都适用
+         */
+        // 播放暂停控制
+        const useMediaPlay = (mediaRef) => {
+            const [playing, setPlaying] = useState(false);
+            useEffect(() => {
+                if (!mediaRef.current) return;
+                const audio = mediaRef.current;
+                audio.addEventListener("playing", () => {
+                    setPlaying(true);
+                });
+                audio.addEventListener("pause", () => {
+                    setPlaying(false);
+                });
+            }, []);
+
+            const play = () => {
+                mediaRef.current && mediaRef.current.play();
+            };
+
+            const pause = () => {
+                mediaRef.current && mediaRef.current.pause();
+            };
+            return {
+                playing,
+                play,
+                pause,
+            };
+        };
+
+        // 播放时间控制
+        const useMediaDuraion = (mediaRef) => {
+            const [currentTime, setCurrentTime] = useState(0);
+            const [duration, setDuration] = useState(0.1);
+            useEffect(() => {
+                if (!mediaRef.current) return;
+                const audio = mediaRef.current;
+                audio.addEventListener("durationchange", () => {
+                    setDuration(audio.duration);
+                });
+                audio.addEventListener("timeupdate", () => {
+                    setCurrentTime(audio.currentTime);
+                });
+            }, []);
+            const updateCurrentTime = (value) => {
+                mediaRef.current.currentTime = value;
+            };
+            return {
+                currentTime,
+                updateCurrentTime,
+                duration,
+            };
+        };
+
+        // 声音操作控制
+        const useMediaVolume = (mediaRef) => {
+            // volume的范围: [0,1]
+            const [volume, setVolume] = useState(0.5);
+            useEffect(() => {
+                if (!mediaRef.current) return;
+                const audio = mediaRef.current;
+                audio.addEventListener("volumechange", () => {
+                    setVolume(mediaRef.current.volume);
+                });
+            }, []);
+            const updateVolume = (value) => {
+                mediaRef.current.volume = value;
+            };
+            return {
+                volume,
+                updateVolume,
+            };
+        };
+
+        // 导出给外部使用的useMedia
+        const useMediaControl = (item) => {
+            const mediaRef = useRef(null);
+
+            useLayoutEffect(() => {
+                if (!mediaRef.current) {
+                    mediaRef.current = document.createElement("audio");
+                    mediaRef.current.src = item.src;
+                    mediaRef.current.preload = "auto";
+                }
+            });
+
+            const { playing, play, pause } = useMediaPlay(mediaRef);
+
+            const { currentTime, updateCurrentTime, duration } =
+                useMediaDuraion(mediaRef);
+
+            const { volume, updateVolume } = useMediaVolume(mediaRef);
+
+            return {
+                state: {
+                    playing,
+                    currentTime,
+                    duration,
+                    volume,
+                },
+                action: {
+                    play,
+                    pause,
+                    updateCurrentTime,
+                    updateVolume,
+                },
+            };
+        };
+
+        // -------------------------------Demo----------------------------------
+        const { render } = ReactDOM;
+        const { createElement } = React;
+        const { Button, Slider, Progress } = antd;
+        const Demo = () => {
+            const musicList = useMemo(() => {
+                return [
+                    {
+                        id: "1",
+                        src: "https://cdn.jsdelivr.net/gh/chenxiaoyao6228/cloudimg@main/2023/useMedia-test-music.mp3",
+                    },
+                ];
+            }, []);
+
+            const [music, setMusic] = useState(musicList[0]);
+
+            const audioControl = useMediaControl(music);
+
+            const {
+                state: { playing, currentTime, duration, volume },
+                action: { play, pause, updateCurrentTime, updateVolume },
+            } = audioControl;
+
+            const percentage = Math.floor((currentTime / duration) * 100);
+
+            const togglePlay = playing ? pause : play;
+
+            const handleDurationChange = (value) => {
+                updateCurrentTime((value / 100) * duration);
+
+            };
+
+            const handleVolumeChange = (value) => {
+                updateVolume(value / 100);
+            }
+
+
+            return (
+                <div className="player">
+                    <div className={`disc ${playing ? "rotate" : ""}`} />
+                    <div className="control">
+                        <div className="duration">
+                            <Slider
+                                min={0}
+                                max={100}
+                                value={percentage}
+                                onChange={handleDurationChange}
+                                style={{
+                                    width: 'calc(100vw - 300px)'
+                                }}
+                            />
+                            <div>
+                                {formatTime(currentTime) + '/' + formatTime(duration)}
+                            </div>
+                        </div>
+                        <div className="play">
+                            <Button type="info" onClick={togglePlay}>
+                                play
+                            </Button>
+                        </div>
+                        <div className="sound">
+                            <Slider vertical value={volume * 100} onChange={handleVolumeChange} />
+                        </div>
+                    </div>
+                </div>
+            );
+        };
+
+        render(<Demo />, document.getElementById("root"));
+
+        function formatTime(s) {
+            const second = Math.floor(s);
+            const MIN = 60;
+            const HOUR = 60 * 60;
+            const hour = Math.floor(second / HOUR);
+            const min = Math.floor((second - hour * HOUR) / MIN);
+            const sec = second - hour * HOUR - min * MIN;
+            return `${prepend(hour)}:${prepend(min)}:${prepend(sec)}`;
+            function prepend(p) {
+                return p < 10 ? `0${p}` : p;
+            }
+        }
+    </script>
+</body>
+
+</html>

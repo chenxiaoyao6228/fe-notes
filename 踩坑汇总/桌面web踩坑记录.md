@@ -9,3 +9,5 @@
 ```jsx
  overlayStyle={{ whiteSpace: 'pre' }}
 ```
+
+## placeholder不居中的问题
