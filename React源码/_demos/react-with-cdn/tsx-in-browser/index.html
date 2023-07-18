@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>TSX Demo template</title>
+</head>
+
+<body>
+    <div id="root"></div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/17.0.2/umd/react.development.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/17.0.2/umd/react-dom.development.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/typescript/4.4.3/typescript.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/6.26.0/babel.min.js"></script>
+
+    <script type="text/typescript">
+        const {useEffect} = React;
+
+        //  CompA
+         function CompA(props: { name: string }) {
+            useEffect(()=>{
+                console.log('11111')
+            },[])
+          return <h1>Hello, {props.name}!</h1>;
+      }
+
+       //  App
+        function App(props: { name: string }) {
+          return (<div>
+                  <h1>Hello, {props.name}!</h1>
+                  <CompA name="CompA" />
+              </div>)
+        }
+
+        ReactDOM.render(<App name="App" />, document.getElementById('root'));
+    </script>
+
+    <script>
+        // -------------编译执行TSX文件------------
+        const scriptElement = document.querySelector(
+            "script[type='text/typescript']"
+        );
+        const code = scriptElement.textContent || scriptElement.innerText;
+        const transformedCode = Babel.transform(code, {
+            presets: ["es2015", "react"],
+        }).code;
+        eval(transformedCode);
+    </script>
+</body>
+
+</html>
