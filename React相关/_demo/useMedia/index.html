@@ -4,7 +4,6 @@
 <head>
     <meta charset="utf-8" />
     <title>useMedia React hooks</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/antd/dist/antd.min.css" />
     <style>
         #root {
             display: flex;
@@ -75,14 +74,15 @@
             animation: spin 2s linear infinite;
         }
     </style>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.21/lodash.min.js"></script>
-    <script src="https://unpkg.com/react@16.8.0/umd/react.development.js"></script>
-    <script src="https://unpkg.com/react-dom@16.8.0/umd/react-dom.development.js"></script>
+    <!-- React和Babel要定义在前 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/17.0.2/umd/react.production.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/17.0.2/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
     <script src="https://cdn.jsdelivr.net/npm/lodash/lodash.min.js"></script>
     <!-- antd依赖了day.js -->
     <script src="https://cdn.jsdelivr.net/npm/dayjs/dayjs.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/antd/dist/antd.min.js"></script>
-    <script src="https://unpkg.com/babel-standalone@6.26.0/babel.js"></script>
 </head>
 
 <body>
@@ -265,7 +265,7 @@
                             </div>
                         </div>
                         <div className="play">
-                            <Button type="info" onClick={togglePlay}>
+                            <Button type="primary" onClick={togglePlay}>
                                 play
                             </Button>
                         </div>

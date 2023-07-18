@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8" />
+  <title>J(T)SX Demo template</title>
+
+  <!-- React和Babel要定义在前 -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react/17.0.2/umd/react.production.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/17.0.2/umd/react-dom.production.min.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+  <script src="https://cdn.jsdelivr.net/npm/lodash/lodash.min.js"></script>
+  <!-- antd依赖了day.js -->
+  <script src="https://cdn.jsdelivr.net/npm/dayjs/dayjs.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/antd/dist/antd.min.js"></script>
+</head>
+
+<body>
+  <div id="root"></div>
+
+  <!-- ProxyInput组件 -->
+  <script id="ProxyInput" type="text/babel">
+    const { debounce } = _
+    const DEFAULT_VALUE = "="; // 占位符，本身无含义
+
+    const isDelete = (value) => !value;
+
+    function addInput2target(target, input) {
+      const div = document.createElement("div");
+      // 设置样式，input 在webview里面需要有足够的宽高并且渲染在页面中才能聚焦
+      input.style = `
+                      width:10px;
+                      height:1px;
+                  `;
+      div.style = `
+                      position: fixed;
+                      left: -9999px;
+                      top: -9999px;
+                      z-index: -1;
+                  `;
+
+      div.append(input);
+      target.append(div);
+    }
+
+    function getDefaultModelData(len) {
+      return new Array(len).fill(1).map((_, index) => ({
+        index,
+        value: "",
+        isFocus: false,
+      }));
+    }
+
+    type InputType = "text" | "number";
+
+    class ProxyInput {
+      itemLen: any;
+      items: { index: number; value: string; isFocus: boolean }[];
+      type: string;
+      input: HTMLInputElement;
+
+      constructor(
+        target: HTMLInputElement,
+        itemLen: number,
+        type: InputType = "text"
+      ) {
+        this.itemLen = itemLen;
+        this.type = type;
+        this.input = document.createElement("input");
+
+        this.input.value = DEFAULT_VALUE;
+        this.input.onblur = this.handleInputBlur.bind(this);
+        // 在input文本全选的情况下，使用微软输入法日文/英文键盘输入数字，会触发两次input事件，一次是删除原先的字符，一次是键入新的字符。所以此处加个防抖
+        this.input.oninput = debounce(this.handleInput.bind(this));
+        this.input.onkeydown = this.handleInputKeydown.bind(this);
+        this.input.onpaste = this.handleInputPaste.bind(this);
+
+        this.items = getDefaultModelData(itemLen);
+
+        this.onBlur = () => { };
+        this.onUpdate = () => { };
+
+        addInput2target(target, this.input);
+      }
+      _removeFocus() {
+        this.items = this.items.map((item) => ({ ...item, isFocus: false }));
+      }
+      _getCurrentFocusIndex() {
+        return this.items.findIndex((i) => i.isFocus);
+      }
+      _resetInputValue() {
+        this.input.value = DEFAULT_VALUE;
+
+        setTimeout(() => {
+          this.input.select(); // 全选
+        }, 100); // 大板安卓键盘删除异常，所以延迟一段时间再select
+      }
+      _updateValue2FocusItem(value) {
+        this.items = this.items.map((item) => {
+          if (item.isFocus) {
+            return { ...item, value };
+          }
+          return { ...item, isFocus: false };
+        });
+      }
+
+      // 返回 -1 表示需要失焦
+      _getNextFocus() {
+        const currentFocusIndex = this.items.findIndex((i) => i.isFocus);
+
+        if (currentFocusIndex < 0 || currentFocusIndex > this.itemLen - 1)
+          return -1;
+
+        // 最后一个，失焦
+        if (currentFocusIndex === this.itemLen - 1) return -1;
+
+        // 默认跑到下一个
+        return currentFocusIndex + 1;
+      }
+      _jump2nextEmptyInput() {
+        const nextIndex = this._getNextFocus();
+
+        if (nextIndex === -1) {
+          this.input.blur();
+          return;
+        }
+
+        this._removeFocus();
+        this.items[nextIndex].isFocus = true;
+        this._resetInputValue();
+      }
+      _focusNextItem() {
+        const focusIndex = this._getCurrentFocusIndex();
+        if (focusIndex < 0 || focusIndex > this.itemLen - 1) return;
+
+        // 当前聚焦元素为最后一个元素
+        if (focusIndex === this.itemLen - 1) {
+          return;
+        }
+
+        this.items[focusIndex].isFocus = false;
+        this.items[focusIndex + 1].isFocus = true;
+      }
+      _focusPrevItem() {
+        const focusIndex = this._getCurrentFocusIndex();
+        if (focusIndex < 0 || focusIndex > this.itemLen - 1) return;
+
+        // 当前聚焦元素为第一个元素
+        if (focusIndex === 0) {
+          return;
+        }
+
+        this.items[focusIndex].isFocus = false;
+        this.items[focusIndex - 1].isFocus = true;
+      }
+
+      _getLegalValue(value) {
+        const testRegex = this.type === "number" ? /^\d+/ : /^[0-9a-zA-Z]+/;
+        const matchValue = value.match(testRegex);
+        return matchValue ? matchValue[0] : null;
+      }
+
+      /**
+       * 将值赋给后面的input
+       */
+      _splitValue2latterInput(value) {
+        const values = value.split("");
+        const currentIndex = this._getCurrentFocusIndex();
+
+        for (let i = currentIndex, j = 0; i < this.itemLen; i++, j++) {
+          if (values[j]) {
+            this.items[i].value = values[j];
+          }
+        }
+      }
+
+      _cleanPrevItemValue(index) {
+        this.items[index].value = "";
+      }
+
+      handleInputPaste(e) {
+        e.preventDefault();
+        if (!(e.clipboardData && e.clipboardData.items)) {
+          return;
+        }
+
+        const clipboardData = e.clipboardData.items[0];
+
+        if (clipboardData.kind === "string") {
+          clipboardData.getAsString((str) => {
+            // 获取粘贴内容前6位
+            const inputStr = str.trimLeft().slice(0, 6);
+            // 获取前6位中的合法字符
+            const legalChar = this._getLegalValue(inputStr);
+
+            if (legalChar) {
+              this._splitValue2latterInput(legalChar);
+              this._jump2nextEmptyInput();
+              this._onUpdate();
+            }
+          });
+        }
+      }
+      private _onUpdate() {
+        throw new Error("Method not implemented.");
+      }
+      handleInputKeydown(e) {
+        const { key } = e;
+        const upperKey = key.toUpperCase();
+
+        if (upperKey === "ARROWLEFT") {
+          e.preventDefault();
+          this._focusPrevItem();
+          this._onUpdate();
+        } else if (upperKey === "ARROWRIGHT") {
+          e.preventDefault();
+          this._focusNextItem();
+          this._onUpdate();
+        }
+      }
+      handleInputBlur() {
+        this._removeFocus();
+        this._onUpdate();
+
+        setTimeout(() => {
+          if (document.activeElement === this.input) {
+            return;
+          }
+          this._onBlur();
+        }, 500); // 延迟判断，时间内如果再次聚焦则认为不触发 blur
+      }
+      private _onBlur() {
+        throw new Error("Method not implemented.");
+      }
+      isLegalChar(value) {
+        if (value.length !== 1) return false;
+        const testRegex = this.type === "number" ? /^\d+/ : /^[0-9a-zA-Z]+/;
+        return testRegex.test(value);
+      }
+
+      handleInput() {
+        const value = this.input.value;
+
+        if (this.isLegalChar(value)) {
+          this._updateValue2FocusItem(value);
+          this._jump2nextEmptyInput();
+          this._onUpdate();
+        } else if (isDelete(value)) {
+          const currentInputIndex = this._getCurrentFocusIndex();
+          const currentInputValue = this.items[currentInputIndex].value;
+          this._updateValue2FocusItem("");
+
+          // 删除时，无值时删除上一个内容，并退回上一格
+          if (!currentInputValue) {
+            currentInputIndex > 0 &&
+              this._cleanPrevItemValue(currentInputIndex - 1);
+            this._focusPrevItem();
+          }
+
+          this._resetInputValue();
+          this._onUpdate();
+        } else {
+          this._resetInputValue();
+        }
+      }
+
+      focus(index) {
+        this._resetInputValue();
+        this.input.focus();
+        this.items = this.items.map((item) => ({
+          ...item,
+          isFocus: item.index === index,
+        }));
+        this._onUpdate();
+      }
+
+      // 数据更新通知事件
+      set onUpdate(fn) {
+        this._onUpdate = fn;
+      }
+
+      set onBlur(fn) {
+        this._onBlur = fn;
+      }
+
+      // 获取对象
+      getItems() {
+        return this.items;
+      }
+
+      // 获取值
+      getValue() {
+        return this.items.map((i) => i.value).join("");
+      }
+    }
+
+    const proxyInput = new ProxyInput();
+
+  </script>
+
+  <script type="text/babel">
+        // ReactDOM.render(<App name="App" />, document.getElementById('root'));
+  </script>
+</body>
+
+</html>

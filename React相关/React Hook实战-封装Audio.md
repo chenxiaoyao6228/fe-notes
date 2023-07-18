@@ -1,6 +1,8 @@
-# 使用 hook 简单封装 audio
+# React Hook实战-封装Audio
 
-[演示效果](./_demo/useMedia/index.html)
+[完整Demo见此处](./_demo/useMedia/index.html)
+
+[在线效果预览(TODO)]()
 
 ## 实现
 
@@ -112,11 +114,9 @@ const useMediaControl = (item) => {
 };
 ```
 
-## 相关的库&&文章
-
-[[译]Web视频播放原理：介绍](https://www.dazhuanlan.com/tichuan/topics/957744)
 
 ## 参考
 
 - [Video and Audio APIs](https://developer.mozilla.org/en-US/docs/Learn/JavaScript/Client-side_web_APIs/Video_and_audio_APIs)
 - [https://www.zhangxinxu.com/wordpress/2019/07/html-audio-api-guide/](https://www.zhangxinxu.com/wordpress/2019/07/html-audio-api-guide/)
+- [[译]Web视频播放原理：介绍](https://www.dazhuanlan.com/tichuan/topics/957744)

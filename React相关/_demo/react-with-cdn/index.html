@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title>J(T)SX Demo template</title>
+
+    <!-- React和Babel要定义在前 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/17.0.2/umd/react.production.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/17.0.2/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/lodash/lodash.min.js"></script>
+    <!-- antd依赖了day.js -->
+    <script src="https://cdn.jsdelivr.net/npm/dayjs/dayjs.min.js"></script>
+    <!-- antd5 不再需要引入css -->
+    <script src="https://cdn.jsdelivr.net/npm/antd/dist/antd.min.js"></script>
+</head>
+
+<body>
+    <div id="root"></div>
+    <script type="text/babel">
+        const { useEffect } = React;
+        const { Button } = antd;
+        const { debounce } = _
+
+        //  CompA
+        function CompA(props: { name: string }) {
+            useEffect(() => {
+                console.log('11111')
+                console.log("debounce", debounce);
+            }, [])
+            return <h1>Hello, {props.name}!</h1>;
+        }
+
+        //  App
+        function App(props: { name: string }) {
+            return (<div>
+                <h1>Hello, {props.name}!</h1>
+                <Button type="primary">click me</Button>
+                <CompA name="CompA" />
+            </div>)
+        }
+
+        ReactDOM.render(<App name="App" />, document.getElementById('root'));
+    </script>
+</body>
+
+</html>
