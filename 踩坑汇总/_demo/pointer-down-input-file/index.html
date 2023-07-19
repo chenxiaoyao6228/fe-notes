@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>pointer down input file</title>
+</head>
+
+<body>
+    <button id="btn1">click</button>
+    <button id="btn2">pointerdown</button>
+    <script>
+        function triggerInput() {
+            const input = document.createElement('input')
+            input.type = 'file'
+            input.click()
+        }
+
+        const btn1 = document.querySelector('#btn1')
+
+        btn1.addEventListener('click', function () {
+            triggerInput()
+        })
+
+        const btn2 = document.querySelector('#btn2')
+
+        btn2.addEventListener('pointerdown', function () {
+            triggerInput()
+        })
+
+    </script>
+</body>
+
+</html>
