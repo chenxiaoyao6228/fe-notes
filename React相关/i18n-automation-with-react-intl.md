@@ -1,14 +1,3 @@
----
-permalink: 2023-02-01-i18n-automation-with-react-intl
-title: i18n-automation-with-react-intl
-date: 2023-02-01
-categories:
-  - tech
-tags:
-  - react
-  - i18n
----
-
 ## Preface
 
 The `i18n` process is tedious, This article will help you build up an automation pipeline with `react-intl` step by step.
