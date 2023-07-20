@@ -21,4 +21,5 @@ line-height: normal;
 ```
 
 ## pointerDown事件ipad端不触发fileInput
-[Demo](./_demo/pointer-down-input-file/)
+
+[Demo](./_demo/pointer-down-input-file/index.html)
