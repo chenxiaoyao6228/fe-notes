@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>焦点事件示例</title>
+    <style>
+        /* 输入框的样式 */
+        input {
+            width: 200px;
+            padding: 10px;
+            margin: 5px;
+            border: 2px solid #ccc;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>焦点事件示例</h1>
+    <p>在输入框中输入文字并触发以下事件：</p>
+    <div>
+        <input type="text" placeholder="输入框 1" onfocus="handleFocus(event)" onfocusin="handleFocusIn(event)"
+            onfocusout="handleFocusOut(event)" onblur="handleBlur(event)">
+        <p id="output1"></p>
+    </div>
+    <div>
+        <input type="text" placeholder="输入框 2" onfocus="handleFocus(event)" onfocusin="handleFocusIn(event)"
+            onfocusout="handleFocusOut(event)" onblur="handleBlur(event)">
+        <p id="output2"></p>
+    </div>
+    <div>
+        <input type="text" placeholder="输入框 3" onfocus="handleFocus(event)" onfocusin="handleFocusIn(event)"
+            onfocusout="handleFocusOut(event)" onblur="handleBlur(event)">
+        <p id="output3"></p>
+    </div>
+
+    <script>
+        // 处理获取焦点事件
+        function handleFocus(event) {
+            const inputElement = event.target;
+            document.getElementById('output1').innerHTML = `获得焦点：${inputElement.placeholder}`;
+        }
+
+        // 处理通过事件冒泡获得焦点事件
+        function handleFocusIn(event) {
+            const inputElement = event.target;
+            document.getElementById('output2').innerHTML = `通过事件冒泡获得焦点：${inputElement.placeholder}`;
+        }
+
+        // 处理通过事件冒泡失去焦点事件
+        function handleFocusOut(event) {
+            const inputElement = event.target;
+            document.getElementById('output3').innerHTML = `通过事件冒泡失去焦点：${inputElement.placeholder}`;
+        }
+
+        // 处理失去焦点事件
+        function handleBlur(event) {
+            const inputElement = event.target;
+            document.getElementById('output1').innerHTML = `失去焦点：${inputElement.placeholder}`;
+            document.getElementById('output2').innerHTML = '';
+            document.getElementById('output3').innerHTML = '';
+        }
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Focus和Focus Within示例</title>
+    <style>
+        html,
+        body {
+            margin: 0;
+        }
+
+        /* 容器 div 的样式 */
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 50px;
+        }
+
+        /* 输入框的样式 */
+        .focusable-div,
+        button,
+        input {
+            width: 200px;
+            padding: 10px;
+            margin: 5px;
+            border: 2px solid #ccc;
+            border-radius: 5px;
+        }
+
+        /* 元素获取焦点时的样式 */
+        .focusable-div:focus,
+        input:focus {
+            border-color: #ff5733;
+            outline: none;
+        }
+
+        /* 容器内有元素获得焦点时的样式 */
+        .container:focus-within {
+            background-color: #f0f0f0;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h2>autofocus, 页面进入的时候会自动focus</h2>
+        <input type="text" autofocus placeholder="输入框 1">
+        <h2>分别通过点击与tab触发focus</h1>
+            <input type="text" placeholder="输入框 2">
+            <div id="div2" class="focusable-div" tabindex="0"> DIV tabindex=0</div>
+            <p>tabindex为负值，无法通过tab聚焦</p>
+            <div id="div1" class="focusable-div" tabindex="-1"> DIV tabindex=-1</div>
+            <p>一直按tab键，该元素会到最后才聚焦</p>
+            <div class="focusable-div" tabindex="1"> DIV tabindex=1</div>
+            <div class="focusable-div" tabindex="2"> DIV tabindex=2</div>
+            <h2>通过js的focus()方法聚焦</h2>
+            <button id="btn1">button, 点击聚焦 DIV tabindex=-1</button>
+            <h2>通过js的blur()方法失去焦点</h2>
+            <button id="btn2">button, 点击失焦 DIV tabindex=-1</button>
+    </div>
+    <script>
+        document.querySelector('#btn1').addEventListener('click', () => {
+            document.querySelector('#div1').focus()
+        })
+        document.querySelector('#btn2').addEventListener('click', () => {
+            document.querySelector('#div1').blur()
+        })
+    </script>
+</body>
+
+</html>
