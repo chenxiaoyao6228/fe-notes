@@ -1,8 +1,6 @@
 # React Hook实战-封装Audio
 
-[完整Demo见此处](./_demo/useMedia/index.html)
-
-[在线效果预览(TODO)]()
+[github在线效果预览](https://chenxiaoyao6228.github.io/html-preview/?https://github.com/chenxiaoyao6228/fe-notes/blob/main/React相关/_demo/useMedia/index.html)
 
 ## 实现
 
@@ -114,6 +112,7 @@ const useMediaControl = (item) => {
 };
 ```
 
+[完整代码见此处](./_demo/useMedia/index.html)
 
 ## 参考
 
