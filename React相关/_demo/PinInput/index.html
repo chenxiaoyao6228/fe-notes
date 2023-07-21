@@ -3,7 +3,7 @@
 
 <head>
   <meta charset="utf-8" />
-  <title>J(T)SX Demo template</title>
+  <title>Pininput</title>
 
   <!-- React和Babel要定义在前 -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/react/17.0.2/umd/react.production.min.js"></script>
@@ -18,32 +18,10 @@
 
 <body>
   <div id="root"></div>
-
   <!-- ProxyInput组件 -->
   <script id="ProxyInput" type="text/babel">
     const { debounce } = _
     const DEFAULT_VALUE = "="; // 占位符，本身无含义
-
-    const isDelete = (value) => !value;
-
-    function addInput2target(target, input) {
-      const div = document.createElement("div");
-      // 设置样式，input 在webview里面需要有足够的宽高并且渲染在页面中才能聚焦
-      input.style = `
-                      width:10px;
-                      height:1px;
-                  `;
-      div.style = `
-                      position: fixed;
-                      left: -9999px;
-                      top: -9999px;
-                      z-index: -1;
-                  `;
-
-      div.append(input);
-      target.append(div);
-    }
-
     function getDefaultModelData(len) {
       return new Array(len).fill(1).map((_, index) => ({
         index,
@@ -59,7 +37,6 @@
       items: { index: number; value: string; isFocus: boolean }[];
       type: string;
       input: HTMLInputElement;
-
       constructor(
         target: HTMLInputElement,
         itemLen: number,
@@ -81,7 +58,27 @@
         this.onBlur = () => { };
         this.onUpdate = () => { };
 
-        addInput2target(target, this.input);
+        this._addInput2target(target, this.input);
+      }
+      _isDelete(value) {
+        return !value;
+      }
+      _addInput2target(target, input) {
+        const div = document.createElement("div");
+        // 设置样式，input 在webview里面需要有足够的宽高并且渲染在页面中才能聚焦
+        input.style = `
+                        width:10px;
+                        height:1px;
+                    `;
+        div.style = `
+                        position: fixed;
+                        left: -9999px;
+                        top: -9999px;
+                        z-index: -1;
+                    `;
+
+        div.append(input);
+        target.append(div);
       }
       _removeFocus() {
         this.items = this.items.map((item) => ({ ...item, isFocus: false }));
@@ -161,9 +158,6 @@
         return matchValue ? matchValue[0] : null;
       }
 
-      /**
-       * 将值赋给后面的input
-       */
       _splitValue2latterInput(value) {
         const values = value.split("");
         const currentIndex = this._getCurrentFocusIndex();
@@ -202,7 +196,7 @@
           });
         }
       }
-      private _onUpdate() {
+      _onUpdate() {
         throw new Error("Method not implemented.");
       }
       handleInputKeydown(e) {
@@ -230,7 +224,7 @@
           this._onBlur();
         }, 500); // 延迟判断，时间内如果再次聚焦则认为不触发 blur
       }
-      private _onBlur() {
+      _onBlur() {
         throw new Error("Method not implemented.");
       }
       isLegalChar(value) {
@@ -284,7 +278,6 @@
         this._onBlur = fn;
       }
 
-      // 获取对象
       getItems() {
         return this.items;
       }
@@ -295,12 +288,11 @@
       }
     }
 
-    const proxyInput = new ProxyInput();
-
+    const proxyInput = new ProxyInput(document.querySelector('#root'));
   </script>
 
   <script type="text/babel">
-        // ReactDOM.render(<App name="App" />, document.getElementById('root'));
+    // ReactDOM.render(<App name="App" />, document.getElementById('root'));
   </script>
 </body>
 

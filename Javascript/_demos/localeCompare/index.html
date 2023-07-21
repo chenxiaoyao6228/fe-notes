@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title>LocaleCompare</title>
+    <style>
+        body {
+            margin: 10px;
+        }
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/17.0.2/umd/react.production.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/17.0.2/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/lodash/lodash.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/dayjs/dayjs.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/antd/dist/antd.min.js"></script>
+</head>
+
+<body>
+    <div id="root"></div>
+    <script type="text/babel">
+        const { useState, useEffect } = React;
+        const { Button, Select, List, Divider, Row, Col, Typography } = antd;
+        const { Option } = Select;
+        // --------------------------------------------------------------------------
+
+        const nameLists = {
+            "en-US": [
+                { id: 1, name: "John", status: "active" },
+                { id: 2, name: "Alice", status: "inactive" },
+                { id: 3, name: "Émilie", status: "active" },
+                { id: 4, name: "Zhang Wei", status: "inactive" },
+                { id: 5, name: "Bob", status: "active" },
+                { id: 6, name: "Lucy", status: "inactive" },
+                { id: 7, name: "Yuto", status: "active" },
+                { id: 8, name: "Sakura", status: "inactive" },
+            ],
+            "zh-CN": [
+                { id: 1, name: "张伟", status: "active" },
+                { id: 2, name: "王芳", status: "inactive" },
+                { id: 3, name: "李娜", status: "active" },
+                { id: 4, name: "刘伟", status: "inactive" },
+                { id: 5, name: "赵敏", status: "active" },
+                { id: 6, name: "李明", status: "inactive" },
+                { id: 7, name: "王力", status: "active" },
+                { id: 8, name: "张强", status: "inactive" },
+            ],
+            "zh-TW": [
+                { id: 1, name: "陳小明", status: "active" },
+                { id: 2, name: "林玲玲", status: "inactive" },
+                { id: 3, name: "李偉成", status: "active" },
+                { id: 4, name: "張雅婷", status: "inactive" },
+                { id: 5, name: "王建宏", status: "active" },
+                { id: 6, name: "林雅婷", status: "inactive" },
+                { id: 7, name: "吳建豪", status: "active" },
+                { id: 8, name: "楊雅婷", status: "inactive" },
+            ],
+            "ja-JP": [
+                { id: 1, name: "山田太郎", status: "active" },
+                { id: 2, name: "佐藤花子", status: "inactive" },
+                { id: 3, name: "鈴木健太", status: "active" },
+                { id: 4, name: "高橋美奈子", status: "inactive" },
+                { id: 5, name: "田中一郎", status: "active" },
+                { id: 6, name: "山本花子", status: "inactive" },
+                { id: 7, name: "伊藤健二", status: "active" },
+                { id: 8, name: "小林美奈子", status: "inactive" },
+            ],
+        };
+
+        const NameList = () => {
+            const [locales] = useState([
+                { key: "en-US", label: "English" },
+                { key: "zh-CN", label: "Chinese (Simplified)" },
+                { key: "zh-TW", label: "Chinese (Traditional)" },
+                { key: "ja-JP", label: "Japanese" },
+            ]);
+            const [locale, setLocale] = useState("en-US");
+            const [sortOrder, setSortOrder] = useState("ascending");
+            const [originalData] = useState(
+                nameLists[locale].map(({ name }) => ({ name }))
+            );
+
+            useEffect(() => {
+                setLocale("en-US");
+            }, []);
+
+            const handleLocaleChange = (value) => {
+                setLocale(value);
+                const newData = nameLists[value].map(({ name }) => ({ name }));
+            };
+
+            const compareNames = (a, b) => {
+                const collator = new Intl.Collator(locale, {
+                    sensitivity: "base",
+                    ignorePunctuation: true,
+                });
+                return collator.compare(a.name, b.name);
+            };
+
+            const sortedNames = nameLists[locale].slice().sort(compareNames);
+
+            return (
+                <div>
+                    <Row>
+                        <Col xs={24} md={24}>
+                            <h2>LocaleCompare API 测试</h2>
+                        </Col>
+                    </Row>
+                    <Divider />
+                    <Row gutter={[16, 16]} align="middle">
+                        <Col xs={24} md={8}>
+                            <Select
+                                value={locale}
+                                style={{ width: "100%" }}
+                                onChange={handleLocaleChange}>
+                                {locales.map(({ key, label }) => (
+                                    <Option key={key} value={key}>
+                                        {label}
+                                    </Option>
+                                ))}
+                            </Select>
+                        </Col>
+                    </Row>
+                    <Divider />
+                    <Row gutter={[16, 16]}>
+                        <Col xs={24} md={8}>
+                            <h2>
+                                Names ({locales.find((loc) => loc.key === locale)?.label}):
+                            </h2>
+                            <List
+                                size="large"
+                                bordered
+                                dataSource={nameLists[locale]}
+                                renderItem={(user) => (
+                                    <List.Item
+                                    >
+                                        {user.name}
+                                    </List.Item>
+                                )}
+                            />
+                        </Col>
+                        <Col xs={24} md={8}>
+                            <h2>Names (sorted):</h2>
+                            <List
+                                size="large"
+                                bordered
+                                dataSource={sortedNames}
+                                renderItem={(user) => (
+                                    <List.Item>
+                                        {user.name}
+                                    </List.Item>
+                                )}
+                            />
+                        </Col>
+                    </Row>
+                </div>
+
+            );
+        };
+
+        // --------------------------------------------------------------------------
+        ReactDOM.render(<NameList />, document.getElementById("root"));
+    </script>
+</body>
+
+</html>
