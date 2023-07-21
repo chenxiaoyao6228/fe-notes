@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>HTML事件触发顺序演示</title>
+    <style>
+        html,
+        body {
+            margin: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <input type="text" id="compositionDemo" />
+    <script>
+        function handleEvent(event) {
+            console.log(event.type);
+        }
+        [
+            "compositionstart",
+            "compositionupdate",
+            "compositionend",
+            "keydown",
+            "keypress",
+            "beforeinput",
+            "keyup",
+            "change",
+        ].forEach((eventType) => {
+            document
+                .querySelector("#compositionDemo")
+                .addEventListener(eventType, handleEvent);
+        });
+    </script>
+</body>
+
+</html>
