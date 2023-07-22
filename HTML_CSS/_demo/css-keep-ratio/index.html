@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>元素宽高比例不变的演示</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f0f0f0;
+        }
+
+        .container {
+            width: 400px;
+            /* 初始宽度 */
+            position: relative;
+        }
+
+        .content {
+            width: 100%;
+            padding-top: 75%;
+            /* 宽高比例为 4:3 (即 300px * 0.75 = 225px) */
+            background-color: #4287f5;
+            /* 随便设置一个背景色方便查看效果 */
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="content"></div>
+    </div>
+</body>
+
+</html>

@@ -163,7 +163,7 @@
         // 声音操作控制
         const useMediaVolume = (mediaRef) => {
             // volume的范围: [0,1]
-            const [volume, setVolume] = useState(0.5);
+            const [volume, setVolume] = useState(0.2);
             useEffect(() => {
                 if (!mediaRef.current) return;
                 const audio = mediaRef.current;
@@ -272,7 +272,7 @@
                         </div>
                         <div className="play">
                             <Button type="primary" onClick={togglePlay}>
-                                play
+                                {playing ? '暂停' : '播放'}
                             </Button>
                         </div>
                         <div className="sound">
