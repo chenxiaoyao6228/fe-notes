@@ -7,7 +7,7 @@
 <img src="https://cdn.jsdelivr.net/gh/chenxiaoyao6228/cloudimg@main/2023/transform-all-direction.png" height="300"/>
 
 
-[演示地址:](./_demo/transform/index.html)
+[在线效果预览](https://chenxiaoyao6228.github.io/html-preview/?https://github.com/chenxiaoyao6228/fe-notes/blob/main/踩坑汇总/_demo/transform/index.html)
 
 
 基本的思考思路是： toolBar作为工具栏导出给外部使用，通过position参数来支持不同的位置调用

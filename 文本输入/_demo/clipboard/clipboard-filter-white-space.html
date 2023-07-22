@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>登录表单去除空格示例</title>
+</head>
+
+<body>
+    <h2>登录表单</h2>
+    <form>
+        <div>
+            <label for="email">电子邮件：</label>
+            <input type="email" id="email" name="email" placeholder="请输入您的电子邮件">
+        </div>
+        <div>
+            <label for="password">密码：</label>
+            <input type="password" id="password" name="password" placeholder="请输入您的密码">
+        </div>
+        <button type="submit">登录</button>
+    </form>
+
+    <script>
+        // 处理电子邮件和密码输入框的粘贴事件
+        function handlePasteEvent(event) {
+            // 从剪贴板获取粘贴的文本
+            const pastedText = event.clipboardData.getData('text/plain');
+
+            // 去除粘贴的文本中的前导和尾随空格
+            const trimmedText = pastedText.trim();
+
+            // 阻止默认的粘贴行为
+            event.preventDefault();
+
+            // 在输入框中插入去除空格后的文本
+            const input = event.target;
+            const startPosition = input.selectionStart;
+            const endPosition = input.selectionEnd;
+            const currentValue = input.value;
+            const newValue = currentValue.slice(0, startPosition) + trimmedText + currentValue.slice(endPosition);
+            input.value = newValue;
+
+            // 设置新的光标位置，以便保持焦点位置
+            const newSelectionPosition = startPosition + trimmedText.length;
+            input.setSelectionRange(newSelectionPosition, newSelectionPosition);
+        }
+
+        // 为电子邮件和密码输入框添加粘贴事件监听器
+        const emailInput = document.getElementById('email');
+        emailInput.addEventListener('paste', handlePasteEvent);
+
+        const passwordInput = document.getElementById('password');
+        passwordInput.addEventListener('paste', handlePasteEvent);
+    </script>
+</body>
+
+</html>
