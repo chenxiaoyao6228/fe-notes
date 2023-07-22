@@ -1,16 +1,9 @@
----
-title: 实现遮罩效果的几种方式
-date: 2019-06-14
-categories:
-  - tech
-tags:
-  - css
-permalink: 2019-06-14-css-overlay-effect
----
-
 ## 前言
 
-实现遮罩有两种思路, 一种是借助额外的标签, 另外一种是在弹窗本身上做手脚
+实现遮罩有两种思路, 一种是借助额外的标签, 另外一种是在弹窗本身上做手脚，本文将尝试使用不同的方式实现。
+
+👉 [在线效果预览](https://chenxiaoyao6228.github.io/html-preview/?https://github.com/chenxiaoyao6228/fe-notes/blob/main/HTML_CSS/_demo/css-overlay-effect/index.html)
+
 
 ## 绝对或定位
 
@@ -75,7 +68,7 @@ body {
 }
 ```
 
-### 使用 boxshadow
+### 使用 box-shadow
 
 ```css
 .modal.boxshadow {
@@ -84,11 +77,6 @@ body {
 }
 ```
 
-整体 demo 如下
-
-<iframe height="265" style="width: 100%;" scrolling="no" title="overlay-effect" src="//codepen.io/Allen6228/embed/qzOoeG/?height=265&theme-id=0&default-tab=css,result" frameborder="no" allowtransparency="true" allowfullscreen="true">
-  See the Pen <a href='https://codepen.io/Allen6228/pen/qzOoeG/'>overlay-effect</a> by XiaoYao
-
 ## 参考资料
 
-[css-overlay-techniques](https://tympanus.net/codrops/2013/11/07/css-overlay-techniques/)
+- [css-overlay-techniques](https://tympanus.net/codrops/2013/11/07/css-overlay-techniques/)

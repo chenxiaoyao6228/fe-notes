@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>半椭圆效果</title>
+    <style>
+        html,
+        body {
+            margin: 0;
+        }
+
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+        }
+
+        .box {
+            width: 300px;
+            height: 200px;
+            line-height: 200px;
+            text-align: center;
+            background: gold;
+            border: 1px red solid;
+            margin-bottom: 40px;
+            margin-right: 20px;
+        }
+
+        .ellipse-border {
+            border-radius: 100px 100px 100px 100px / 50px 50px 50px 50px;
+        }
+
+        .ellipse {
+            border-radius: 300px;
+        }
+
+        .half-ellipse-left {
+            border-radius: 100% 0 0 100% / 50%;
+        }
+
+        .half-ellipse-up {
+            border-radius: 50% / 100% 100% 0 0;
+        }
+
+        .half-ellipse-right {
+            border-radius: 0 100% 100% 0 / 50%;
+        }
+
+        .half-ellipse-down {
+            border-radius: 50% / 0 0 100% 100%;
+        }
+
+        .quarter-ellipse {
+            border-radius: 100% 0 0 0;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>半椭圆效果</h1>
+    <div class="container">
+        <div class="box ellipse-border">椭圆边框</div>
+        <div class="box ellipse">椭圆</div>
+        <div class="box half-ellipse-left">左半椭圆</div>
+        <div class="box half-ellipse-up">上半椭圆</div>
+        <div class="box half-ellipse-right">右半椭圆</div>
+        <div class="box half-ellipse-down">下半椭圆</div>
+        <div class="box quarter-ellipse">四分之一椭圆</div>
+    </div>
+
+</body>
+
+</html>

@@ -1,16 +1,6 @@
----
-title: "css秘密花园-实现半椭圆效果"
-date: 2019-06-14
-categories:
-  - tech
-tags:
-  - css
-permalink: 2019-06-14-css-secrets-flexible-ellipses
----
-
 ## 前言
 
-学习本文将学会如何使用 css 实现椭圆效果
+学习本文将学习如何使用 css 实现椭圆效果
 
 ## 圆
 
@@ -143,4 +133,4 @@ border-radius: 300px 0 0 0;
 
 ## 参考
 
-[秋月何时了，CSS3 border-radius 知多少？](https://www.zhangxinxu.com/wordpress/2015/11/css3-border-radius-tips/)
+- [秋月何时了，CSS3 border-radius 知多少？](https://www.zhangxinxu.com/wordpress/2015/11/css3-border-radius-tips/)

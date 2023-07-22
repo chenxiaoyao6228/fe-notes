@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>灵活的footer效果</title>
+    <style>
+        html,
+        body {
+            margin: 0;
+        }
+
+        .content {
+            background-color: greenyellow;
+            height: 100px;
+        }
+
+        footer {
+            height: 100px;
+            background-color: aqua;
+        }
+
+        /* ----------------------效果实现---------------------- */
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            min-height: 100vh;
+        }
+    </style>
+</head>
+
+<body>
+    <main class="container flex">
+        <content class="content">
+            <h2>content</h2>
+        </content>
+        <footer class="footer">
+            <button id="btn">点击增加content内容</button>底部
+        </footer>
+    </main>
+    <script>
+        document.querySelector("#btn").addEventListener("click", () => {
+            document.querySelector(".content").style.height = "120vh";
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>实现遮罩的几种方式</title>
+    <style>
+        html,
+        body {
+            height: 100%;
+        }
+
+        body {
+            position: relative;
+        }
+
+        .overlay {
+            display: none;
+        }
+
+        .overlay-absolute {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 10;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+
+        .overlay-fixed {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 10;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+
+        /* just some content with arbitrary styles for explanation purposes */
+        .modal {
+            display: none;
+            width: 300px;
+            height: 200px;
+            line-height: 200px;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            margin-top: -100px;
+            margin-left: -150px;
+            background-color: #f1c40f;
+            border-radius: 5px;
+            text-align: center;
+            z-index: 11;
+            /* 1px higher than the overlay layer */
+        }
+
+        .modal>i {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            line-height: 10px;
+            cursor: pointer;
+        }
+
+        .modal.outline {
+            display: block;
+            z-index: 10;
+            /* 保持在其他元素上最上面 */
+            outline: 9999px solid rgba(0, 0, 0, 0.5);
+        }
+
+        .modal.boxshadow {
+            z-index: 10;
+            /* 保持元素在页面其他元素之上*/
+            box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.5);
+        }
+
+        h1,
+        h2 {
+            margin-top: 0;
+        }
+
+        button {
+            margin-right: 10px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="overlay overlay-absolute"></div>
+    <div class="overlay overlay-fixed"></div>
+    <div class="modal">
+        <h2>我是弹窗</h2>
+        <i class="closeBtn">&#x2716</i>
+    </div>
+    <div class="content">
+        <h1>实现遮罩的几种方式</h1>
+        <button class="absolute">position absolute</button>
+        <button class="fixed">position fixed</button>
+        <button class="outline">huge outline</button>
+        <button class="boxshadow">huge boxshadow</button>
+    </div>
+    <script>
+        function handleOpen(e) {
+            document.querySelector('.modal').style.display = "block";
+            var className = e.target.className;
+            if (className === "absolute" || className === "fixed") {
+                document.querySelector('div.overlay-' + e.target.className).style.display = 'block'
+            }
+            if (className === "outline" || className === "boxshadow") {
+                document.querySelector(".modal").classList.add(className)
+            }
+        }
+        function handleClose() {
+            document.querySelector('.modal').style.display = 'none'
+            document.querySelector('.modal').classList.remove('outline', 'boxshadow')
+            document.querySelectorAll('.overlay').forEach(function (item) {
+                item.style.display = 'none'
+            })
+        }
+        document.querySelectorAll('button').forEach(function (item) {
+            item.addEventListener('click', handleOpen, false)
+        })
+        document.querySelector('.closeBtn').addEventListener('click', handleClose, false)</script>
+</body>
+
+</html>

@@ -1,13 +1,3 @@
----
-title: "css中的层叠,权重与继承"
-date: 2019-06-05
-categories:
-  - tech
-tags:
-  - css
-permalink: 2019-06-05-css-specificity
----
-
 ## 从一个例子讲起
 
 请判断下面两个 div 内部文字的最终颜色
@@ -28,7 +18,7 @@ permalink: 2019-06-05-css-specificity
 
 答案是: 两个 div 的文字都是**蓝色**
 
-[眼见为实, 请看 demo 演示](http://dabblet.com/gist/fb6b0c6c1a3c4f1bb9a806ae07bfba83)
+👉[在线效果预览](https://chenxiaoyao6228.github.io/html-preview/?https://github.com/chenxiaoyao6228/fe-notes/blob/main/HTML_CSS/_demo/css-inheritance/index.html)
 
 如上面的例子演示中的那样,当多个选择器作用于同一个元素的时候, 浏览器是如何决定最终的样式的,毕竟一段文字不可能既是红色又是蓝色
 
@@ -53,9 +43,12 @@ permalink: 2019-06-05-css-specificity
 
 如果两处规则作用于同一元素, 带有!important 的胜出
 
+```html
+<p style="color: black;">Well, <em>hello</em> there!</p>
+```
+
 ```css
 p {color: gray !important;}
-<p style="color: black;">Well, <em>hello</em> there!</p>
 ```
 
 三种来源规则
@@ -197,5 +190,5 @@ h1 {
 
 ## 参考
 
-[css definite guide 4th edition](https://www.amazon.com/CSS-Definitive-Guide-Visual-Presentation/dp/1449393195)
-[css 世界](https://book.douban.com/subject/27615777/)
+- [css definite guide 4th edition](https://www.amazon.com/CSS-Definitive-Guide-Visual-Presentation/dp/1449393195)
+- [css 世界](https://book.douban.com/subject/27615777/)

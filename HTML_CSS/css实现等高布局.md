@@ -1,13 +1,3 @@
----
-title: css实现等高布局
-date: 2019-06-18
-categories:
-  - tech
-tags:
-  - css
-permalink: 2019-06-18-equal-height-layout
----
-
 ## 前言
 
 给定下面一段 html 标签，实现左右两侧无论内容多少，都能保持等高的效果
@@ -45,7 +35,7 @@ permalink: 2019-06-18-equal-height-layout
 { height:100%; background: green; margin: 0 -20px; }
 ```
 
-[眼见为实，请看演示](http://dabblet.com/gist/97497820d97f612bd93ceda2ea44d6d3)
+👉 [在线效果预览](https://chenxiaoyao6228.github.io/html-preview/?https://github.com/chenxiaoyao6228/fe-notes/blob/main/HTML_CSS/_demo/css-equal-height/1.html)
 
 了解上面的原理之后，我们来看看如何使用 margin 和 padding 来实现我们的等高布局效果
 
@@ -60,9 +50,6 @@ column-right {
 }
 ```
 
-效果演示
+![](https://cdn.jsdelivr.net/gh/chenxiaoyao6228/cloudimg@main/2019/css-equal-height-2.png)
 
-<iframe height="265" style="width: 100%;" scrolling="no" title="equal-height-layout-1-padding-margin-implementation" src="//codepen.io/Allen6228/embed/QXERar/?height=265&theme-id=0&default-tab=css,result" frameborder="no" allowtransparency="true" allowfullscreen="true">
-  See the Pen <a href='https://codepen.io/Allen6228/pen/QXERar/'>equal-height-layout-1-padding-margin-implementation</a> by XiaoYao
-  (<a href='https://codepen.io/Allen6228'>@Allen6228</a>) on <a href='https://codepen.io'>CodePen</a>.
-</iframe>
+👉 [在线效果预览](https://chenxiaoyao6228.github.io/html-preview/?https://github.com/chenxiaoyao6228/fe-notes/blob/main/HTML_CSS/_demo/css-equal-height/2.html)

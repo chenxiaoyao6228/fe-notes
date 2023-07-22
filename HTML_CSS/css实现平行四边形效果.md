@@ -1,18 +1,8 @@
----
-title: "css秘密花园-实现平行四边形效果"
-date: 2019-06-15
-categories:
-  - tech
-tags:
-  - css
-permalink: 2019-06-15-css-secrets-parallelograms
----
-
-## 实现平行四边形效果
+## 前言
 
 ![parallelograms](https://cdn.jsdelivr.net/gh/chenxiaoyao6228/cloudimg@main/2019/2019-06-15-css-secrets-parallelograms/Parallelograms.png)
 
-我们可能第一反应是使用 css3 的 skewX 来进行偏移，但是内容也会跟着偏移， 这也就意味着，我们需要对内容进行反向偏移， 因此实现代码是下面这个样子
+说到实现平行四边形， 我们可能第一反应是使用 css3 的 skewX 来进行偏移，但是内容也会跟着偏移， 这也就意味着，我们需要对内容进行反向偏移， 因此实现代码是下面这个样子
 
 ```css
 // html
@@ -96,8 +86,3 @@ permalink: 2019-06-15-css-secrets-parallelograms
   transform: rotate(45deg);
 }
 ```
-
-<iframe height="265" style="width: 100%;" scrolling="no" title="css-secrets-parallelograms" src="//codepen.io/Allen6228/embed/NZxave/?height=265&theme-id=0&default-tab=css,result" frameborder="no" allowtransparency="true" allowfullscreen="true">
-  See the Pen <a href='https://codepen.io/Allen6228/pen/NZxave/'>css-secrets-parallelograms</a> by XiaoYao
-  (<a href='https://codepen.io/Allen6228'>@Allen6228</a>) on <a href='https://codepen.io'>CodePen</a>.
-</iframe>

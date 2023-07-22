@@ -1,12 +1,3 @@
----
-title: css中的径向渐变
-date: 2019-06-07
-categories:
-  - tech
-tags:
-  - css
-permalink: 2019-06-07-css-radius-gradients
----
 
 ## 语法
 
@@ -108,9 +99,7 @@ radial-gradient(farthest-corner at 30px 66%, purple, gold);
 
 ## 径向渐变实现日出效果
 
-<p class="codepen" data-height="265" data-theme-id="0" data-default-tab="css,result" data-user="okra" data-slug-hash="nlsJL" style="height: 265px; box-sizing: border-box; display: flex; align-items: center; justify-content: center; border: 2px solid; margin: 1em 0; padding: 1em;" data-pen-title="CSS Sunset Sunrise">
-  <span>See the Pen <a href="https://codepen.io/okra/pen/nlsJL"></a></span></p><br />
-
+👉 [在线效果预览](https://chenxiaoyao6228.github.io/html-preview/?https://github.com/chenxiaoyao6228/fe-notes/blob/main/HTML_CSS/_demo/css-linear-gradient/sunrise.html)
 ## 参考
 
 - [css definite guide 4th edition](https://www.amazon.com/CSS-Definitive-Guide-Visual-Presentation/dp/1449393195)

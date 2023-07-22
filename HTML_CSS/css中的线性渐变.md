@@ -1,13 +1,3 @@
----
-title: css中的线性渐变
-date: 2019-06-07
-categories:
-  - tech
-tags:
-  - css
-permalink: 2019-06-07-css-linear-gradients
----
-
 ## 语法
 
 ```css

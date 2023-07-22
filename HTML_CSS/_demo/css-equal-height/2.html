@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSS 等高布局</title>
+    <style>
+        .container {
+            margin: auto;
+            max-width: 600px;
+            overflow: hidden;
+        }
+
+        .column {
+            overflow: hidden;
+        }
+
+        .column-left,
+        .column-right {
+            width: 50%;
+            float: left;
+            margin-bottom: -9999px;
+            padding-bottom: 9999px;
+            color: #fff;
+            text-align: center;
+        }
+
+        .column-left {
+            background-color: #34538b;
+        }
+
+        .column-right {
+            background-color: #cd0000;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div id="colLeft" class="column-left">
+            左边的内容左边的内容左边的内容左边的内容左边的内容左边的内容左边的内容左边的内容左边的内容左边的内容左边的内容左边的内容
+        </div>
+
+        <div id="colRight" class="column-right">
+        </div>
+    </div>
+</body>
+
+</html>

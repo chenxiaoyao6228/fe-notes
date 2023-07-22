@@ -1,21 +1,11 @@
----
-title: 灵活的footer效果
-date: 2019-06-17
-categories:
-  - tech
-tags:
-  - css
-permalink: 2019-06-17-css-quiz-7-flexible-footer
----
-
 ## 前言
 
-要求实现下面的效果： **给定下面的 html,要求.content 的内容高度较小的时候 footer 贴在底部， .content 高度比较高的时候 footer 跟随 content, 注意: footer 的高度不一定**
+要求实现下面的效果： 给定下面的 html,要求.content 的内容高度较小的时候 footer 贴在底部，.content 高度比较高的时候 footer 跟随 content, 注意: footer 的高度不一定
 
 ```html
 <main class="container">
-    <content class="content">内容</content>
-    <footer class="footer>底部</footer>
+  <content class="content">内容</content>
+  <footer class="footer">底部</footer>
 </main>
 ```
 
@@ -37,8 +27,10 @@ permalink: 2019-06-17-css-quiz-7-flexible-footer
   min-height: 100vh;
 }
 ```
-
 缺点: IE9 不支持
+
+👉 [在线效果预览](https://chenxiaoyao6228.github.io/html-preview/?https://github.com/chenxiaoyao6228/fe-notes/blob/main/HTML_CSS/_demo/flexible-footer/flex.html)
+
 
 ## grid 布局
 
@@ -52,17 +44,7 @@ permalink: 2019-06-17-css-quiz-7-flexible-footer
 }
 ```
 
-## table 布局
-
-```css
-.container {
-  display: table;
-  height: 100vh;
-}
-.footer {
-  display: table-foo ter-group;
-}
-```
+👉 [在线效果预览](https://chenxiaoyao6228.github.io/html-preview/?https://github.com/chenxiaoyao6228/fe-notes/blob/main/HTML_CSS/_demo/flexible-footer/grid.html)
 
 ## flex + margin-top:auto
 
@@ -78,6 +60,8 @@ permalink: 2019-06-17-css-quiz-7-flexible-footer
   margin-top: auto;
 }
 ```
+
+👉 [在线效果预览](https://chenxiaoyao6228.github.io/html-preview/?https://github.com/chenxiaoyao6228/fe-notes/blob/main/HTML_CSS/_demo/flexible-footer/grid.html)
 
 这里值得注意的是 margin-top: auto, 根据《css 世界》一书的解释， 要使 margin:auto 能够实现自动分配空间的效果，对应的方向必须具有自动填充的特性，在正常的情况下， 只有左右具有自动填充的效果，因此 margin: 0 auto 能够实现元素的水平居中， 但是 margin: auto 0 并不能实现垂直方向的居中效果，而绝对定位的元素使元素处于一种尺寸可拉伸的上下文环境，如下列的例子， margin-top: auto 能够实现贴底部效果
 
