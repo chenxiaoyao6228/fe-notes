@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>JavaScript Function Testing with Jasmine</title>
+    <!-- Include Jasmine -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jasmine/3.10.0/jasmine.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jasmine/3.10.0/jasmine.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jasmine/3.10.0/jasmine-html.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jasmine/3.10.0/boot.min.js"></script>
+</head>
+</head>
+
+<body>
+    <h1>Testing JavaScript Function with Jasmine</h1>
+    <div id="jasmine-report"></div>
+
+    <script>
+        // The function to be tested
+        function add(a, b) {
+            return a + b;
+        }
+        // Jasmine test suite
+        describe('Add Function', () => {
+            it('should add two numbers correctly', () => {
+                // Test the function by passing arguments and checking the result
+                expect(add(3, 5)).toBe(8);
+                expect(add(-2, 7)).toBe(5);
+                expect(add(0, 0)).toBe(0);
+            });
+
+            it('should handle negative numbers', () => {
+                // Additional test for negative numbers
+                expect(add(-3, -5)).toBe(-8);
+                expect(add(-2, -7)).toBe(-9);
+            });
+        });
+
+        // Execute Jasmine tests
+        window.onload = () => {
+            const jasmineEnv = jasmine.getEnv();
+            jasmineEnv.addReporter(new jasmine.HtmlReporter());
+            jasmineEnv.execute();
+        };
+    </script>
+</body>
+
+</html>

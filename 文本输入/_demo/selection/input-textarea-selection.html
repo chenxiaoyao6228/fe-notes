@@ -4,6 +4,11 @@
 <head>
     <title>Selection和Range示例</title>
     <style>
+        html,
+        body {
+            margin: 10px;
+        }
+
         input,
         textarea {
             width: 300px;
@@ -11,6 +16,10 @@
 
         input::selection {
             background-color: aquamarine;
+        }
+
+        #text-selected {
+            text-decoration: underline;
         }
     </style>
 </head>
@@ -26,11 +35,12 @@
     <button onclick="selectText()">1. 主动选中某一区域</button>
     <button onclick="focusCursor()">2. 聚焦到某一位置</button>
     <button onclick="insertText()">3. 在指定选区插入（替换）内容</button>
+    <p>监听到当前选中文本: <span id="text-selected"></span></p>
     <script>
         // 主动选中文本框中的一部分文本
         function selectText() {
             const inputElement = document.getElementById("text-input");
-            inputElement.setSelectionRange(2, 4);
+            inputElement.setSelectionRange(2, 8);
             inputElement.focus();
         }
 
@@ -57,6 +67,15 @@
 
             textareaElement.value = newValue;
         }
+
+        // addEventListener 版本
+        document.addEventListener("selectionchange", () => {
+            const selection = window.getSelection();
+            if (selection.toString()) {
+                const selectedText = selection.toString();
+                document.querySelector("#text-selected").textContent = selectedText;
+            }
+        });
     </script>
 </body>
 

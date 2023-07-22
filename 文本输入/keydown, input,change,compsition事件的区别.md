@@ -6,12 +6,12 @@
 
 ## keydown 事件
 
-"keydown"事件在用户按下键盘上的任意键时触发。这个事件通常用于捕捉用户的实际按键(Enter, Backspace, Delete, Esc 等)，而不是检测输入的字符。一般会配合`event.key`或者`event.code`来判断. 关于`keyCode`可以看看这篇[告别JS keyCode](https://www.zhangxinxu.com/wordpress/2021/01/js-keycode-deprecated/)
-
 从按钮按下到弹起，会依次触发`keydown`、 `beforeinput`, `keypress`、`keyup`事件,
 
 - `keydown`和`keyup`分别在用户按下与松开按键的时候触发
-- `keypress(不推荐)`, `beforeinput` 会在按下**可显示内容**（数字/字母/符号）后在 keydown 之后触发
+- `keypress(不推荐)`, `beforeinput` 会在按下**可显示内容（字符键：数字/字母/符号）**后在 keydown 之后触发，非字符键(Enter, Backspace, Delete, Esc)则不会。
+
+这也就意味着如果我们想阻止默认的输入行为，就只能在keydown中进行对应的处理(此时浏览器默认行为未完成，输入框还没有更新显示)， 一般会配合`event.key`或者`event.code`来判断. 关于`keyCode`可以看看这篇[告别JS keyCode](https://www.zhangxinxu.com/wordpress/2021/01/js-keycode-deprecated/)
 
 ## input 事件
 
@@ -31,19 +31,20 @@
 
 "compositionstart"事件标志着合成过程的开始，"compositionupdate"事件用于在合成过程中更新文本，最后，当合成文本确定时，将触发"compositionend"事件。
 
+> 对于React来说，需要做用户输入过滤拦截的时候，一定要考虑合成事件，不能简单地用onChange事件
+
 ## 用户输入事件触发顺序
 
 在存在用户输入法输入的时候，事件的触发顺序如图：
 ![](https://cdn.jsdelivr.net/gh/chenxiaoyao6228/cloudimg@main/2023/html-input-order-composition.gif)
 
 
-## 一些实践
+## 总结
 
-### 如何阻止特定字符输入比如回车? 
-
-keypress、keydown 阻止默认事件即可 preventDefault()
-
+本文只是简单的列举了一些文本输入相关的事件，实际项目中会遇到比较多的兼容性问题，需要针对对应的问题进行处理。
 
 ## 参考
 
 - [告别JS keyCode](https://www.zhangxinxu.com/wordpress/2021/01/js-keycode-deprecated/)
+- [可能这些是你想要的H5软键盘兼容方案](https://segmentfault.com/a/1190000018959389)
+- [textarea的中文输入判断与搜狗输入法的特殊行为](https://stackoverflow.com/questions/51395393/how-to-trigger-paste-event-manually-in-javascript)
