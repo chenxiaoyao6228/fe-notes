@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Selection和Range示例</title>
+    <style>
+        input,
+        textarea {
+            width: 300px;
+        }
+
+        input::selection {
+            background-color: aquamarine;
+        }
+    </style>
+</head>
+
+<body>
+    <h2>Selection和Range示例</h2>
+    <label for="text-input">Input元素:</label>
+    <input type="text" id="text-input" value="这是一个示例文本。" />
+    <br /><br />
+    <label for="textarea">Textarea元素:</label>
+    <textarea id="textarea">这是一个示例文本区域。</textarea>
+    <br /><br />
+    <button onclick="selectText()">1. 主动选中某一区域</button>
+    <button onclick="focusCursor()">2. 聚焦到某一位置</button>
+    <button onclick="insertText()">3. 在指定选区插入（替换）内容</button>
+    <script>
+        // 主动选中文本框中的一部分文本
+        function selectText() {
+            const inputElement = document.getElementById("text-input");
+            inputElement.setSelectionRange(2, 4);
+            inputElement.focus();
+        }
+
+        // 将光标聚焦到Textarea元素的指定位置
+        function focusCursor() {
+            const textareaElement = document.getElementById("textarea");
+            textareaElement.focus();
+            textareaElement.setSelectionRange(10, 10); // 聚焦到第10个字符
+        }
+
+        // 在Textarea的指定选区位置插入文本
+        function insertText() {
+            const textareaElement = document.getElementById("textarea");
+            const selectionStart = textareaElement.selectionStart;
+            const selectionEnd = textareaElement.selectionEnd;
+            const textToInsert = "被插入的文本";
+
+            // 插入文本
+            const currentValue = textareaElement.value;
+            const newValue =
+                currentValue.substring(0, selectionStart) +
+                textToInsert +
+                currentValue.substring(selectionEnd, currentValue.length);
+
+            textareaElement.value = newValue;
+        }
+    </script>
+</body>
+
+</html>

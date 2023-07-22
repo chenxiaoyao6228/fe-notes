@@ -39,10 +39,9 @@ input:focus {
 }
 ```
 
-[github在线效果预览](https://chenxiaoyao6228.github.io/html-preview/?https://github.com/chenxiaoyao6228/fe-notes/blob/main/文本输入/_demo/focus-manament/focus.html)
+[在线效果预览](https://chenxiaoyao6228.github.io/html-preview/?https://github.com/chenxiaoyao6228/fe-notes/blob/main/文本输入/_demo/focus-manament/focus.html)
 
-
-### JS获取当前聚焦元素
+### JS 获取当前聚焦元素
 
 - document.hasFocus(): 判断当前文档是否被聚焦
 - document.activeElement: 获取当前文档内的聚焦元素
@@ -66,10 +65,8 @@ document.querySelector("#btn2").addEventListener("click", () => {
 
 ## 焦点事件
 
-- focus
-- blur
-- focus-in
-- focus-out
+不会冒泡的事件: focus, blur
+会冒泡的事件： focus-in, focus-out
 
 ## 参考
 

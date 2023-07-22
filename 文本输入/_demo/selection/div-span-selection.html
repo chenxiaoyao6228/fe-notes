@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>普通元素的选区操作示例</title>
+</head>
+
+<body>
+    <h2>普通元素的选区操作示例</h2>
+    <div contenteditable="true" id="editable-div">
+        这是一个可编辑的div元素示例。你可以在这里输入文本。
+    </div>
+    <br /><br />
+    <button onclick="selectText()">1. 主动选中某一区域</button>
+    <button onclick="selectRichText()">2. 主动选中富文本中的某一区域</button>
+    <button onclick="focusCursor()">3. 聚焦到某一位置</button>
+    <button onclick="saveSelection()">4. 保存选区</button>
+    <button onclick="restoreSelection()">5. 还原选区</button>
+
+
+    <script>
+        function selectText() {
+            // 主动选中普通元素中的一部分文本
+            const divElement = document.getElementById('editable-div');
+            const selection = window.getSelection();
+            const range = document.createRange();
+            range.setStart(divElement.firstChild, 5); // 从第5个字符开始
+            range.setEnd(divElement.firstChild, 15); // 选择到第15个字符
+            selection.removeAllRanges();
+            selection.addRange(range);
+        }
+
+        function selectRichText() {
+            // 主动选中富文本中的一部分文本
+            const divElement = document.getElementById('editable-div');
+            const selection = window.getSelection();
+            const range = document.createRange();
+            const startNode = divElement.firstChild.firstChild; // 第一个子节点
+            const endNode = divElement.firstChild.lastChild; // 最后一个子节点
+            range.setStart(startNode, 3); // 从第一个子节点的第3个字符开始
+            range.setEnd(endNode, 6); // 选择到最后一个子节点的第6个字符
+            selection.removeAllRanges();
+            selection.addRange(range);
+        }
+
+        function focusCursor() {
+            // 将光标聚焦到普通元素中的指定位置
+            const divElement = document.getElementById('editable-div');
+            const range = document.createRange();
+            const targetNode = divElement.firstChild; // 第一个子节点
+            range.setStart(targetNode, 10); // 聚焦到第10个字符
+            range.collapse(true);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+        }
+
+        let savedSelection = null;
+
+        function saveSelection() {
+            // 保存当前选区
+            savedSelection = window.getSelection().getRangeAt(0).cloneRange();
+        }
+
+        function restoreSelection() {
+            // 还原之前保存的选区
+            if (savedSelection) {
+                const selection = window.getSelection();
+                selection.removeAllRanges();
+                selection.addRange(savedSelection);
+            }
+        }
+    </script>
+
+
+</body>
+
+</html>

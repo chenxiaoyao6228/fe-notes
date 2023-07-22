@@ -1,12 +1,14 @@
 ## 前言
 
-本文主要总结下与文本输入的相关的事件
+本文主要总结下与文本输入的相关的事件。
+
+测试地址见: [在线效果预览](https://chenxiaoyao6228.github.io/html-preview/?https://github.com/chenxiaoyao6228/fe-notes/blob/main/文本输入/_demo/input-event/input-order.html)
 
 ## keydown 事件
 
-"keydown"事件在用户按下键盘上的任意键时触发。这个事件通常用于捕捉用户的实际按键(Enter, Backspace, Delete, Esc 等)，而不是检测输入的字符。一般会配合`event.key`或者`event.keyCode`来判断.
+"keydown"事件在用户按下键盘上的任意键时触发。这个事件通常用于捕捉用户的实际按键(Enter, Backspace, Delete, Esc 等)，而不是检测输入的字符。一般会配合`event.key`或者`event.code`来判断. 关于`keyCode`可以看看这篇[告别JS keyCode](https://www.zhangxinxu.com/wordpress/2021/01/js-keycode-deprecated/)
 
-从按钮按下到弹起，会依次触发`keydown`、 `beforeinput`, `keypress`、`keyup`事件, 
+从按钮按下到弹起，会依次触发`keydown`、 `beforeinput`, `keypress`、`keyup`事件,
 
 - `keydown`和`keyup`分别在用户按下与松开按键的时候触发
 - `keypress(不推荐)`, `beforeinput` 会在按下**可显示内容**（数字/字母/符号）后在 keydown 之后触发
@@ -19,7 +21,7 @@
 
 ## change 事件
 
-"change"事件在用户完成输入并且**焦点从输入元素移开后触发**。与"input"事件不同，"change"事件在用户确认完成输入后才会执行。(可以留意下文末的gif图)
+"change"事件在用户完成输入并且**焦点从输入元素移开后触发**。与"input"事件不同，"change"事件在用户确认完成输入后才会执行。(可以留意下文末的 gif 图)
 
 同时，其他的表单表单元素也会触发`change`事件: `radio`, `checkbox` `selection`, `input[type="file"]`, `input[type="date"]`
 
@@ -34,4 +36,14 @@
 在存在用户输入法输入的时候，事件的触发顺序如图：
 ![](https://cdn.jsdelivr.net/gh/chenxiaoyao6228/cloudimg@main/2023/html-input-order-composition.gif)
 
-点击查看[github在线效果预览](https://chenxiaoyao6228.github.io/html-preview/?https://github.com/chenxiaoyao6228/fe-notes/blob/main/文本输入/_demo/input-event/input-order.html)
+
+## 一些实践
+
+### 如何阻止特定字符输入比如回车? 
+
+keypress、keydown 阻止默认事件即可 preventDefault()
+
+
+## 参考
+
+- [告别JS keyCode](https://www.zhangxinxu.com/wordpress/2021/01/js-keycode-deprecated/)
