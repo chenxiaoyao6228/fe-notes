@@ -23,6 +23,6 @@ css 中有几个有关于用户行为的属性:
 
 ![](https://cdn.jsdelivr.net/gh/chenxiaoyao6228/cloudimg@main/2023/user-drag.png)
 
-👉 [在线演示效果](./_demo/user-xx/user-drag.html)
+👉 [在线效果预览](https://chenxiaoyao6228.github.io/html-preview/?https://github.com/chenxiaoyao6228/fe-notes/blob/main/HTML_CSS/_demo/user-xx/user-drag.html)
 
 总体而言，user-drag 属性和 draggable 属性都可以用来控制元素的拖拽行为，但在使用时需要根据具体需求和场景来选择。draggable 属性更适合用于简单的拖拽需求和通用的元素，而 user-drag 属性则提供了更灵活的控制方式，适用于更复杂的拖拽交互设计。
