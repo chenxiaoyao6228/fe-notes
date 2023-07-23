@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    html,body {
+        margin: 10px;
+    }
+      img {
+          width: 150px;
+          height: 150px;
+      }
+      .box {
+        display: flex;
+        flex-direction: column;
+        align-content: center;
+        justify-content: center;
+        margin-bottom: 20px;
+      }
+    .draggable-box img {
+        -webkit-user-drag: auto;
+    }
+    .non-draggable-box img{
+        -webkit-user-drag: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="box draggable-box">
+    可拖拽元素： 设置了user-drag: auto;
+    <img src="https://cdn.jsdelivr.net/gh/chenxiaoyao6228/cloudimg@main/2023/bg_music_1.png" />
+</div>
+  <div class="box">
+    可拖拽元素： html设置了 draggable=true;
+    <img src="https://cdn.jsdelivr.net/gh/chenxiaoyao6228/cloudimg@main/2023/bg_music_1.png" />
+</div>
+<div class="box non-draggable-box">
+    禁止拖拽元素： 设置了user-drag: none;
+    <img src="https://cdn.jsdelivr.net/gh/chenxiaoyao6228/cloudimg@main/2023/bg_music_1.png" />
+  </div>
+</body>
+</html>

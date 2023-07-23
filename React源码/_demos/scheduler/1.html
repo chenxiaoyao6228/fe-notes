@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Bouncing Ball Animation</title>
+    <style>
+      body {
+        margin: 0;
+        padding: 10px;
+      }
+
+      .ball {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        background-color: #ff5733;
+        position: relative;
+        animation: bounce 2s infinite;
+      }
+      .ball::before {
+        content: "";
+        position: absolute;
+        width: 10px;
+        height: 10px;
+        background-color: #ffc300;
+        border-radius: 50%;
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        opacity: 0;
+        animation: hit 0.2s ease-out;
+      }
+
+      @keyframes hit {
+        0% {
+          opacity: 1;
+          transform: translate(-50%, 0);
+        }
+        100% {
+          opacity: 0;
+          transform: translate(-50%, -30px);
+        }
+      }
+
+      @keyframes bounce {
+        0%,
+        100% {
+          transform: translateY(400px);
+        }
+        50% {
+          transform: translateY(30px);
+        }
+      }
+
+      .long-task-btn {
+        padding: 10px 20px;
+        background-color: #3498db;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+      .long-task-btn:hover {
+        background-color: #2980b9;
+      }
+    </style>
+  </head>
+  <body>
+    <button class="long-task-btn">点击模拟长任务</button>
+    <div class="ball"></div>
+  </body>
+</html>

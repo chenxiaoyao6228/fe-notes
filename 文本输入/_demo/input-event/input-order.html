@@ -8,15 +8,23 @@
         body {
             margin: 10px;
         }
+
+        input {
+            min-width: 300px;
+            padding: 5px 10px;
+        }
     </style>
 </head>
 
 <body>
-    <h2>打开控制台查看对应的输入</h2>
-    <input type="text" id="compositionDemo" />
+    <h2>输入事件触发顺序演示</h2>
+    <input type="text" id="compositionDemo" placeholder="请将输入法切换到中文并输入" autofocus />
+    <ul class="display"></ul>
     <script>
         function handleEvent(event) {
-            console.log(event.type);
+            const li = document.createElement('li')
+            li.innerHTML = event.type
+            document.querySelector(".display").appendChild(li)
         }
         [
             "compositionstart",
