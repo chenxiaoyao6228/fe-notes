@@ -29,7 +29,7 @@
 ```
 缺点: IE9 不支持
 
-👉 [在线效果预览](https://chenxiaoyao6228.github.io/html-preview/?https://github.com/chenxiaoyao6228/fe-notes/blob/main/HTML_CSS/_demo/flexible-footer/flex.html)
+👉 [Github在线效果预览](https://chenxiaoyao6228.github.io/html-preview/?https://github.com/chenxiaoyao6228/fe-notes/blob/main/HTML_CSS/_demo/flexible-footer/flex.html)
 
 
 ## grid 布局
@@ -44,7 +44,7 @@
 }
 ```
 
-👉 [在线效果预览](https://chenxiaoyao6228.github.io/html-preview/?https://github.com/chenxiaoyao6228/fe-notes/blob/main/HTML_CSS/_demo/flexible-footer/grid.html)
+👉 [Github在线效果预览](https://chenxiaoyao6228.github.io/html-preview/?https://github.com/chenxiaoyao6228/fe-notes/blob/main/HTML_CSS/_demo/flexible-footer/grid.html)
 
 ## flex + margin-top:auto
 
@@ -61,7 +61,7 @@
 }
 ```
 
-👉 [在线效果预览](https://chenxiaoyao6228.github.io/html-preview/?https://github.com/chenxiaoyao6228/fe-notes/blob/main/HTML_CSS/_demo/flexible-footer/grid.html)
+👉 [Github在线效果预览](https://chenxiaoyao6228.github.io/html-preview/?https://github.com/chenxiaoyao6228/fe-notes/blob/main/HTML_CSS/_demo/flexible-footer/grid.html)
 
 这里值得注意的是 margin-top: auto, 根据《css 世界》一书的解释， 要使 margin:auto 能够实现自动分配空间的效果，对应的方向必须具有自动填充的特性，在正常的情况下， 只有左右具有自动填充的效果，因此 margin: 0 auto 能够实现元素的水平居中， 但是 margin: auto 0 并不能实现垂直方向的居中效果，而绝对定位的元素使元素处于一种尺寸可拉伸的上下文环境，如下列的例子， margin-top: auto 能够实现贴底部效果
 

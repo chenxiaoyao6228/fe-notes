@@ -2,7 +2,7 @@
 
 实现遮罩有两种思路, 一种是借助额外的标签, 另外一种是在弹窗本身上做手脚，本文将尝试使用不同的方式实现。
 
-👉 [在线效果预览](https://chenxiaoyao6228.github.io/html-preview/?https://github.com/chenxiaoyao6228/fe-notes/blob/main/HTML_CSS/_demo/css-overlay-effect/index.html)
+👉 [Github在线效果预览](https://chenxiaoyao6228.github.io/html-preview/?https://github.com/chenxiaoyao6228/fe-notes/blob/main/HTML_CSS/_demo/css-overlay-effect/index.html)
 
 
 ## 绝对或定位

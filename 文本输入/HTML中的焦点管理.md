@@ -39,7 +39,7 @@ input:focus {
 }
 ```
 
-[在线效果预览](https://chenxiaoyao6228.github.io/html-preview/?https://github.com/chenxiaoyao6228/fe-notes/blob/main/文本输入/_demo/focus-manament/focus.html)
+👉 [Github在线效果预览](https://chenxiaoyao6228.github.io/html-preview/?https://github.com/chenxiaoyao6228/fe-notes/blob/main/文本输入/_demo/focus-manament/focus.html)
 
 ### JS 获取当前聚焦元素
 

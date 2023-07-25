@@ -36,13 +36,10 @@
             border: 1px solid #ccc;
         }
     </style>
-    <!-- React和Babel要定义在前 -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/react/17.0.2/umd/react.production.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/17.0.2/umd/react-dom.production.min.js"></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-
     <script src="https://cdn.jsdelivr.net/npm/lodash/lodash.min.js"></script>
-    <!-- antd依赖了day.js -->
     <script src="https://cdn.jsdelivr.net/npm/dayjs/dayjs.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/antd/dist/antd.min.js"></script>
 </head>
@@ -50,7 +47,6 @@
 <body>
     <div id="root"></div>
     <script type="text/babel">
-        // createElement要保留，因为JSX最终会被转换成React.createElement()函数调用形式
         const { useState, useCallback, useRef, useEffect, useMemo } = React;
 
         // --------------------------------------------------------------------

@@ -99,7 +99,7 @@ radial-gradient(farthest-corner at 30px 66%, purple, gold);
 
 ## 径向渐变实现日出效果
 
-👉 [在线效果预览](https://chenxiaoyao6228.github.io/html-preview/?https://github.com/chenxiaoyao6228/fe-notes/blob/main/HTML_CSS/_demo/css-linear-gradient/sunrise.html)
+👉 [Github在线效果预览](https://chenxiaoyao6228.github.io/html-preview/?https://github.com/chenxiaoyao6228/fe-notes/blob/main/HTML_CSS/_demo/css-linear-gradient/sunrise.html)
 ## 参考
 
 - [css definite guide 4th edition](https://www.amazon.com/CSS-Definitive-Guide-Visual-Presentation/dp/1449393195)

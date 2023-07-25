@@ -35,7 +35,7 @@
 { height:100%; background: green; margin: 0 -20px; }
 ```
 
-👉 [在线效果预览](https://chenxiaoyao6228.github.io/html-preview/?https://github.com/chenxiaoyao6228/fe-notes/blob/main/HTML_CSS/_demo/css-equal-height/1.html)
+👉 [Github在线效果预览](https://chenxiaoyao6228.github.io/html-preview/?https://github.com/chenxiaoyao6228/fe-notes/blob/main/HTML_CSS/_demo/css-equal-height/1.html)
 
 了解上面的原理之后，我们来看看如何使用 margin 和 padding 来实现我们的等高布局效果
 
@@ -52,4 +52,4 @@ column-right {
 
 ![](https://cdn.jsdelivr.net/gh/chenxiaoyao6228/cloudimg@main/2019/css-equal-height-2.png)
 
-👉 [在线效果预览](https://chenxiaoyao6228.github.io/html-preview/?https://github.com/chenxiaoyao6228/fe-notes/blob/main/HTML_CSS/_demo/css-equal-height/2.html)
+👉 [Github在线效果预览](https://chenxiaoyao6228.github.io/html-preview/?https://github.com/chenxiaoyao6228/fe-notes/blob/main/HTML_CSS/_demo/css-equal-height/2.html)

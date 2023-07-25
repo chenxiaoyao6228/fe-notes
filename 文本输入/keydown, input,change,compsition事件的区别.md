@@ -2,7 +2,7 @@
 
 本文主要总结下与文本输入的相关的事件。
 
-测试地址见: [在线效果预览](https://chenxiaoyao6228.github.io/html-preview/?https://github.com/chenxiaoyao6228/fe-notes/blob/main/文本输入/_demo/input-event/input-order.html)
+测试地址见: 👉 [Github在线效果预览](https://chenxiaoyao6228.github.io/html-preview/?https://github.com/chenxiaoyao6228/fe-notes/blob/main/文本输入/_demo/input-event/input-order.html)
 
 ## keydown 事件
 
