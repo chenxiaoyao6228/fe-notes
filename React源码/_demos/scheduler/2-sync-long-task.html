@@ -40,8 +40,39 @@
   </head>
   <body>
     <button class="long-task-btn">点击模拟长任务</button>
+    <span class="view"></span>
     <div class="ball"></div>
     <script>
+      const createWorks = () => {
+        const taskDuration = 2;
+        let works = [];
+        for (let i = 0; i < 3000; i++) {
+          const work = () => {
+            let startTime = Date.now();
+            while (Date.now() - startTime < taskDuration) {
+              // 模拟任务执行时间
+            }
+          };
+          works.push(work);
+        }
+        return works;
+      };
+      const works = createWorks();
+
+      const flushWorks = () => {
+        works.forEach((work) => work());
+      };
+
+      const updateView = (duration) => {
+        document.querySelector(".view").innerHTML = `任务执行时间: ${duration}`;
+      };
+
+      const longTaskBtn = document.querySelector(".long-task-btn");
+      longTaskBtn.addEventListener("click", () => {
+        let startTime = Date.now();
+        flushWorks();
+        updateView(Date.now() - startTime);
+      });
     </script>
   </body>
 </html>

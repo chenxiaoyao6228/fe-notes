@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Scheduler demo</title>
+    <style>
+      body {
+        margin: 0;
+        padding: 10px;
+      }
+
+      .ball {
+        width: 50px;
+        height: 50px;
+        background-color: #ff5733;
+        position: relative;
+        animation: transformation 2s infinite;
+      }
+
+      @keyframes transformation {
+        0%,
+        100% {
+          border-radius: 50%;
+          transform: translateY(400px);
+        }
+        50% {
+          border-radius: 0;
+          transform: translateY(30px);
+        }
+      }
+
+      .long-task-btn {
+        padding: 10px 20px;
+        background-color: #3498db;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+    </style>
+  </head>
+  <body>
+    <button class="long-task-btn">点击模拟长任务</button>
+    <span class="view"></span>
+    <div class="ball"></div>
+    <script>
+      let startTime = 0;
+
+      const createWorks = () => {
+        const taskDuration = 2;
+        let works = [];
+        for (let i = 0; i < 3000; i++) {
+          const work = () => {
+            // console.log(`开始执行任务: ${i}`)
+            let startTime = Date.now();
+            while (Date.now() - startTime < taskDuration) {
+              // 模拟任务执行时间
+            }
+            // console.log(`结束执行任务: ${i}`)
+          };
+          works.push(work);
+        }
+        return works;
+      };
+      const works = createWorks();
+
+      const _setTimeout = ((workLoop) => {
+        let channel = null;
+        return (onMessageCb) => {
+          if (!channel) {
+            console.log("1111", 1111);
+            channel = new MessageChannel();
+            channel.port1.onmessage = onMessageCb;
+          }
+          channel.port2.postMessage(null);
+        };
+      })();
+
+      const workLoop = () => {
+        const work = works.shift();
+        if (work) {
+          work();
+          _setTimeout(workLoop);
+        } else {
+          updateView(Date.now() - startTime);
+        }
+      };
+
+      const flushWorks = () => {
+        _setTimeout(workLoop);
+      };
+
+      const updateView = (duration) => {
+        document.querySelector(".view").innerHTML = `任务执行时间: ${duration}`;
+      };
+
+      const longTaskBtn = document.querySelector(".long-task-btn");
+      longTaskBtn.addEventListener("click", () => {
+        startTime = Date.now();
+        flushWorks();
+      });
+    </script>
+  </body>
+</html>
