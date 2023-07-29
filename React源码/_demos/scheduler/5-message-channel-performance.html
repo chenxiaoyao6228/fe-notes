@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Message Channle Performance</title>
+    <style>
+      .btn {
+        padding: 10px 20px;
+        background-color: #3498db;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+    </style>
+  </head>
+  <body>
+    <button class="btn">点击测试message channel的调用次数</button>
+    <div class="view"></div>
+    <script>
+      let count = 0;
+      document.querySelector(".btn").addEventListener("click", () => {
+        let startTime = Date.now();
+        const channel = new MessageChannel();
+        channel.port1.onmessage = () => {
+          if (Date.now() - startTime < 1000) {
+            count++;
+            channel.port2.postMessage(null);
+          } else {
+            document.querySelector(
+              ".view"
+            ).innerHTML = `总共执行了：${count}次`;
+          }
+        };
+        channel.port2.postMessage(null);
+      });
+    </script>
+  </body>
+</html>
