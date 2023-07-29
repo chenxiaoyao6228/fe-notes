@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>事件代理</title>
+    <style>
+        ul {
+            border: 1px solid red;
+        }
+        li {
+           border: 1px solid blue; 
+           list-style-type: none;
+        }
+    </style>
+  </head>
+  <body>
+    <ul id="myList">
+      <li>Item 1</li>
+      <li>Item 2</li>
+      <li>Item 3</li>
+    </ul>
+    <div class="container"></div>
+    <script>
+      const list = document.getElementById("myList");
+
+      list.addEventListener("click", function (event) {
+        if (event.target.tagName === "LI") {
+          document.querySelector('.container').innerHTML = `点击了: ${event.target.textContent}`
+        }
+      });
+    </script>
+  </body>
+</html>

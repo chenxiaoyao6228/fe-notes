@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>stopPropagation</title>
+</head>
+  </head>
+  <body>
+    <div id="root">
+      <div id="parent">
+        <button id="child">点击事件执行</button>
+      </div>
+    </div>
+    <script>
+      const root = document.querySelector("#root");
+      const parent = document.querySelector("#parent");
+      const child = document.querySelector("#child");
+
+      parent.addEventListener("click", (e) => {
+        console.log("parent 冒泡事件");
+      });
+      parent.addEventListener(
+        "click",
+        (e) => {
+          console.log("parent 捕获事件");
+        },
+        true
+      );
+
+      child.addEventListener("click", (e) => {
+        console.log("child 冒泡事件 1");
+      });
+      child.addEventListener("click", (e) => {
+        e.stopPropagation();
+        console.log("child 冒泡事件 2");
+      });
+      child.addEventListener("click", (e) => {
+        console.log("child 冒泡事件 3");
+      });
+
+      child.addEventListener(
+        "click",
+        (e) => {
+          console.log("child 捕获事件");
+        },
+        true
+      );
+    </script>
+  </body>
+</html>
