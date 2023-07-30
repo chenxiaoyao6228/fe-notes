@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>canvas default size</title>
+    <style>
+      html,
+      body {
+        margin: 10px;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="container">
+      <p>canvas默认宽高为300*150</p>
+      <canvas id="myCanvas" style="background-color: aquamarine"></canvas>
+      <div class="view"></div>
+    </div>
+    <div class="container">
+      <p>通过css设置canvas样式，宽或者高缺省的时候，会保持比例</p>
+      <button id="btn">点击通过css设置canvas的高度为 66px</button>
+    </div>
+    <script>
+      document.querySelector('#btn').addEventListener('click', ()=> {
+        document.querySelector("#myCanvas").style.height = '66px'
+      })
+    </script>
+  </body>
+</html>

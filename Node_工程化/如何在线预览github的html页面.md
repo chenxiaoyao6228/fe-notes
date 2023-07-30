@@ -36,6 +36,12 @@ Github实际上是支持直接获取文件内容的
 ![](https://cdn.jsdelivr.net/gh/chenxiaoyao6228/cloudimg@main/2023/github-preview-html-3.png)
 
 
+## 更多
+
+目前此方案还不支持esm引入(不折腾了, 复杂的东西就直接上code-sandbox吧，毕竟只是临时写写demo)，社区已经有一些尝试但是还不完全，有兴趣请看参考的部分
+
 ## 参考
 
 - [codetabs cors-proxy](https://codetabs.com/cors-proxy/cors-proxy.html)
+- [React, JSX, ES module imports (dynamic too) in browser without Webpack](https://medium.com/disdj/react-jsx-es-module-imports-dynamic-too-in-browser-without-webpack-9cf39520f20f)
+-[Using ES Modules with babel-standalone](https://github.com/babel/babel/discussions/12059)

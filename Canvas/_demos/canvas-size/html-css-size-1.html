@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>canvas size</title>
+    <style>
+        .div{
+            border: 2px solid red;
+            width: 100px;
+            height: 100px;
+            box-sizing: border-box;
+            background-image: url('https://cdn.jsdelivr.net/gh/chenxiaoyao6228/cloudimg@main/2023/img-size-300-150.png');
+        }
+        #myCanvas {
+            margin-left: -2px;
+            margin-top: -2px;
+            border: 1px solid black;
+            box-sizing: border-box;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <p>用来参考的div元素</p>
+        <div class="div"></div>
+        <p>canvas元素内部绘制一样大的矩形</p>
+        <canvas id="myCanvas" ></canvas>
+    </div>
+    <script>
+        const canvas = document.querySelector('#myCanvas');
+        const ctx  = canvas.getContext("2d");
+        ctx.strokeStyle = 'red';
+        ctx.lineWidth = 2;
+        ctx.strokeRect(1, 1, 100, 100);
+    </script>
+</body>
+</html>
