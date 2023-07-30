@@ -1,30 +1,33 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
-    <meta charset="utf-8" />
-    <title>canvas default size</title>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
     <style>
-      html,
-      body {
-        margin: 10px;
+      #myCanvas {
+        width: 300px;height: 100px;
+        border: 1px solid yellowgreen;
       }
     </style>
   </head>
-
   <body>
-    <div class="container">
-      <p>canvas默认宽高为300*150</p>
-      <canvas id="myCanvas" style="background-color: aquamarine"></canvas>
-      <div class="view"></div>
-    </div>
-    <div class="container">
-      <p>通过css设置canvas样式，宽或者高缺省的时候，会保持比例</p>
-      <button id="btn">点击通过css设置canvas的高度为 66px</button>
-    </div>
+    <canvas id="myCanvas" width="300" height="150" ></canvas>
     <script>
-      document.querySelector('#btn').addEventListener('click', ()=> {
-        document.querySelector("#myCanvas").style.height = '66px'
-      })
+      const canvas = document.querySelector("#myCanvas");
+      const ctx = canvas.getContext("2d");
+     
+    ctx.strokeStyle = "red";
+    ctx.lineWidth = 1;
+    ctx.strokeRect(0, 0, 100, 100);
+
+    ctx.beginPath();
+    ctx.moveTo(0, 0);
+    ctx.lineWidth = 1;
+
+    ctx.lineTo(300, 150);
+    ctx.stroke();
     </script>
   </body>
 </html>

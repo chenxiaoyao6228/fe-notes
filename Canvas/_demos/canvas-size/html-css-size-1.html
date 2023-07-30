@@ -1,39 +1,46 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>canvas size</title>
     <style>
-        .div{
-            border: 2px solid red;
-            width: 100px;
-            height: 100px;
-            box-sizing: border-box;
-            background-image: url('https://cdn.jsdelivr.net/gh/chenxiaoyao6228/cloudimg@main/2023/img-size-300-150.png');
-        }
-        #myCanvas {
-            margin-left: -2px;
-            margin-top: -2px;
-            border: 1px solid black;
-            box-sizing: border-box;
-        }
+      img {
+        width: 600px;
+        height: 600px;
+        object-fit: fill;
+      }
+      #myCanvas {
+        margin-left: -2px;
+        margin-top: -2px;
+        box-sizing: border-box;
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
     <div class="container">
-        <p>用来参考的div元素</p>
-        <div class="div"></div>
-        <p>canvas元素内部绘制一样大的矩形</p>
-        <canvas id="myCanvas" ></canvas>
+      <p>被拉伸的img元素，原始尺寸为300*150, css尺寸为600*600, 且默认的object-fit值为fill</p>
+      <img src="../../../../cloudimg/2023/canvas-size-html-css-4.png" alt="">
+      <p>被拉伸的img元素, 原始尺寸为300*150, css尺寸为600*600</p>
+      <canvas id="myCanvas" width="600" height="300"  style="width: 600px; height:600px"></canvas>
+      <p>显示正常的canvas元素， 原始尺寸为600*300, css尺寸为600*600</p>
+      <canvas id="myCanvas2" width="600" height="300"  style="width: 600px; height:300px"></canvas>
     </div>
     <script>
-        const canvas = document.querySelector('#myCanvas');
-        const ctx  = canvas.getContext("2d");
-        ctx.strokeStyle = 'red';
-        ctx.lineWidth = 2;
-        ctx.strokeRect(1, 1, 100, 100);
+      const canvas1 = document.querySelector("#myCanvas");
+      draw(canvas1)
+      const canvas2 = document.querySelector("#myCanvas2");
+      draw(canvas2)
+      
+      function draw(canvas){
+          const ctx = canvas.getContext("2d");
+          ctx.fillStyle = "#7FFFD4";
+          ctx.fillRect(0, 0, canvas.width, canvas.height);
+          ctx.strokeStyle = "red";
+          ctx.lineWidth = 2;
+          ctx.strokeRect(2, 2, 200, 200);
+      }
     </script>
-</body>
+  </body>
 </html>
