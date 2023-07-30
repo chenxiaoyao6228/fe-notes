@@ -42,52 +42,9 @@ draw(ctx){
 
 ## canvas元素
 
-### canvas中的宽高
-
-=> 参考月影可视化小册
-
-可通过HTML的width和height属性设置Canvas的宽高，也可以通过JavaScript动态设置Canvas的宽高。
-```js
-// 在HTML中设置Canvas大小
-<canvas id="myCanvas" width="500" height="500"></canvas>
-
-// 在JavaScript中动态设置
-const canvas = document.getElementById('myCanvas');
-canvas.width = 500;
-canvas.height = 500;
-```
-DPI适配与自适应缩放
-```js
-const canvas = document.getElementById('myCanvas');
-const ctx = canvas.getContext('2d');
-const dpi = window.devicePixelRatio;
-const width = canvas.clientWidth * dpi; // 可视区域的窗口大小
-const height = canvas.clientHeight * dpi;
-
-canvas.width = width;
-canvas.height = height;
-
-// 将Canvas上下文的缩放比例设置为dpi
-ctx.scale(dpi, dpi);
-```
 ### canvas元素的api
 
 ## context对象
-
-### ctx.save && ctx.restore
-
-https://developer.mozilla.org/zh-CN/docs/Web/API/CanvasRenderingContext2D/save
-
-
-## canvas中的坐标
-
-
-## pointerEvent实现多端兼容
-
-
-## canvass绘图的基本原理
-鼠标移动
-
 
 ## 参考：
 * https://en.wikipedia.org/wiki/Retained_mode

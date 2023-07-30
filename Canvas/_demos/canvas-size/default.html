@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title>canvas default size</title>
+    <style>
+        html,
+        body {
+            margin: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <canvas id="myCanvas" style="background-color:aquamarine;"></canvas>   
+    <div class="view"></div>
+    <script>
+        const res = document.querySelector('#myCanvas').getBoundingClientRect()
+        document.querySelector('.view').innerHTML = `${JSON.stringify(res)}`
+    </script>
+</body>
+
+</html>
