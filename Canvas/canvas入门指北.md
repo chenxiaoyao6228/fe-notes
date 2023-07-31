@@ -42,9 +42,21 @@ draw(ctx){
 
 ## canvas元素
 
-### canvas元素的api
+可以通过css选择器获取canvas元素
+## canvas元素的api
 
+Canvas本身提供了 API 不多，目前有以下几个
+
+```
+canvas.width: 获取元素的宽度
+canvas.height: 获取元素的高度
+canvas.getContext(): 获取元素的绘图环境，包括2d和3d
+canvas.toDataURL: 返回一个base64格式的链接
+canvas.toBlob: 创建一个用于表示此canvas元素图像文件的blob 
+```
 ## context对象
+
+## canvas状态的保存与恢复
 
 ## 参考：
 * https://en.wikipedia.org/wiki/Retained_mode
@@ -55,3 +67,4 @@ draw(ctx){
 * 前端 4 种渲染技术的计算机理论基础： https://cloud.tencent.com/developer/article/1920658
 * GUI架构的两种模式与四种更新页面的手法: https://www.jianshu.com/p/65189d9d7b89
 * https://games.greggman.com/game/imgui-future/
+* [](https://developer.mozilla.org/zh-CN/docs/Web/API/CanvasRenderingContext2D/save)

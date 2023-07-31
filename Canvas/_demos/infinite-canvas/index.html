@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>无线画布-定点缩放</title>
+    <style>
+      .canvas {
+        width: 100vw;
+        height: 320px;
+        box-sizing: border-box;
+        border: 1px solid black;
+        touch-action: none;
+      }
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/17.0.2/umd/react.development.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/17.0.2/umd/react-dom.development.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  </head>
+
+  <body>
+    <div id="root"></div>
+    <script type="text/babel">
+      //  ----------------------- zoom.js ----------------
+      const MIN_ZOOM = 0.1;
+
+      const getNormalizedZoom = (zoom) =>
+        Math.max(MIN_ZOOM, Math.min(zoom, 30));
+
+      const getStateForZoom = (
+        { viewportX, viewportY, nextZoom },
+        appState
+      ) => {
+        const screenX = viewportX - appState.offsetLeft;
+        const screenY = viewportY - appState.offsetTop;
+        const currentZoom = appState.zoom.value;
+
+        return {
+          scrollX:
+            appState.scrollX + screenX / nextZoom - screenX / currentZoom,
+          scrollY:
+            appState.scrollY + screenY / nextZoom - screenY / currentZoom,
+          zoom: {
+            value: nextZoom,
+          },
+        };
+      };
+
+      // ------------------ renderScene.js ----------------------------------
+      const drawAxis = (ctx, { zoom, scrollX, scrollY }) => {
+        ctx.save();
+        const rectH = 100 * zoom.value; // 纵轴刻度间距
+        const rectW = 100 * zoom.value; // 横轴刻度间距
+        const tickLength = 8 * zoom.value; // 刻度线长度
+        const canvas = ctx.canvas;
+        const offsetX = scrollX * zoom.value;
+        const offsetY = scrollY * zoom.value;
+        ctx.translate(offsetX, offsetY);
+        ctx.strokeStyle = "black";
+        ctx.fillStyle = "black";
+        // 绘制横轴和纵轴
+        ctx.save();
+        ctx.beginPath();
+        ctx.setLineDash([10, 10]);
+        ctx.moveTo(0, -offsetY);
+        ctx.lineTo(0, canvas.height - offsetY);
+        ctx.moveTo(-offsetX, 0);
+        ctx.lineTo(canvas.width - offsetX, 0);
+        ctx.stroke();
+        ctx.restore();
+        // 绘制横轴和纵轴刻度
+        ctx.beginPath();
+        ctx.lineWidth = 2;
+        ctx.textBaseline = "middle";
+        for (let i = 0; i < offsetY / rectH; i++) {
+          // 绘制纵轴负数刻度
+          ctx.moveTo(0, -i * rectH);
+          ctx.lineTo(tickLength, -i * rectH);
+          ctx.font = `${20 * zoom.value}px Arial`;
+          ctx.fillText(-i, -25, -i * rectH);
+        }
+        for (let i = 0; i < (canvas.height - offsetY) / rectH; i++) {
+          // 绘制纵轴正数刻度
+          ctx.moveTo(0, i * rectH);
+          ctx.lineTo(tickLength, i * rectH);
+          ctx.font = `${20 * zoom.value}px Arial`;
+          ctx.fillText(i, -25, i * rectH);
+        }
+        for (let i = 1; i < offsetX / rectW; i++) {
+          // 绘制横轴负数刻度
+          ctx.moveTo(-i * rectW, 0);
+          ctx.lineTo(-i * rectW, tickLength);
+          ctx.font = `${20 * zoom.value}px Arial`;
+          ctx.fillText(-i, -i * rectW - 10, -15);
+        }
+        for (let i = 1; i < (canvas.width - offsetX) / rectW; i++) {
+          // 绘制横轴正数刻度
+          ctx.moveTo(i * rectW, 0);
+          ctx.lineTo(i * rectW, tickLength);
+          ctx.font = `${20 * zoom.value}px Arial`;
+          ctx.fillText(i, i * rectW - 5, -15);
+        }
+        ctx.stroke();
+
+        ctx.restore();
+      };
+
+      const renderElements = (ctx, appState) => {
+        elements.forEach((ele) => {
+          ctx.save();
+          ctx.scale(appState.zoom.value, appState.zoom.value);
+          ctx.translate(ele.x + appState.scrollX, ele.y + appState.scrollY);
+          ctx.strokeStyle = ele.strokeStyle;
+          ctx.strokeColor = ele.strokeColor;
+          ctx.strokeRect(0, 0, ele.width, ele.height);
+          ctx.restore();
+        });
+      };
+
+      const renderScene = (canvas, appState) => {
+        const context = canvas.getContext("2d");
+        context.clearRect(0, 0, canvas.width, canvas.height);
+        drawAxis(context, appState);
+        renderElements(context, appState);
+      };
+
+      // ------------------ app.js ----------------------------------
+      const { memo, useRef, useEffect } = React;
+
+      const appState = {
+        zoom: { value: 1 },
+        offsetLeft: 0,
+        offsetTop: 0,
+        scrollX: 0,
+        scrollY: 0,
+        draggingElement: null,
+      };
+
+      const ZOOM_STEP = 0.1;
+      const elements = [];
+
+      const viewportCoordsToSceneCoords = (
+        { clientX, clientY },
+        { zoom, offsetLeft, offsetTop, scrollX, scrollY }
+      ) => {
+        const x = (clientX - offsetLeft) / zoom.value - scrollX;
+        const y = (clientY - offsetTop) / zoom.value - scrollY;
+        return { x, y };
+      };
+
+      // ----------------------- App.js -------------------------------------
+      const App = memo(() => {
+        const canvasRef = useRef(null);
+        const canvasContainer = useRef(null);
+        const cursorPosition = useRef({});
+        const scaleRef = useRef();
+
+        useEffect(() => {
+          const render = () => {
+            const canvas = canvasRef.current;
+            const context = canvas.getContext("2d");
+            const { offsetWidth, offsetHeight, offsetLeft, offsetTop } = canvas;
+            canvas.width = offsetWidth * window.devicePixelRatio;
+            canvas.height = offsetHeight * window.devicePixelRatio;
+            context.scale(window.devicePixelRatio, window.devicePixelRatio);
+
+            appState.offsetLeft = offsetLeft;
+            appState.offsetTop = offsetTop;
+            renderScene(canvas, appState);
+          };
+          render();
+          const resize = () => {
+            render();
+          };
+          window.addEventListener("resize", resize);
+          return () => {
+            window.removeEventListener("resize", resize);
+          };
+        }, []);
+
+        useEffect(() => {
+          const wrap = canvasContainer.current;
+          const handleWheel = (e) => {
+            e.preventDefault();
+          };
+          // 防止双指滑动时切换页面
+          wrap.addEventListener("wheel", handleWheel, {
+            passive: false,
+          });
+
+          const updateCurrentCursorPosition = (event) => {
+            cursorPosition.current = {
+              cursorX: event.clientX,
+              cursorY: event.clientY,
+            };
+          };
+          document.addEventListener("mousemove", updateCurrentCursorPosition);
+          return () => {
+            wrap.removeEventListener("wheel", handleWheel);
+            document.removeEventListener(
+              "mousemove",
+              updateCurrentCursorPosition
+            );
+          };
+        }, []);
+
+        const handleCanvasPointerDown = (event) => {
+          const origin = viewportCoordsToSceneCoords(event, appState);
+          const pointerDownState = {
+            origin,
+            lastCoords: { ...origin },
+            eventListeners: {
+              onMove: null,
+              onUp: null,
+            },
+          };
+          const element = {
+            x: pointerDownState.origin.x,
+            y: pointerDownState.origin.y,
+            width: 0,
+            height: 0,
+            strokeColor: "#000000",
+            backgroundColor: "transparent",
+            fillStyle: "hachure",
+            strokeWidth: 1,
+            strokeStyle: "solid",
+          };
+          appState.draggingElement = element;
+          elements.push(element);
+          const onPointerMove =
+            onPointerMoveFromCanvasPointerDownHandler(pointerDownState);
+          const onPointerUp =
+            onPointerUpFromCanvasPointerDownHandler(pointerDownState);
+          window.addEventListener("pointermove", onPointerMove);
+          window.addEventListener("pointerup", onPointerUp);
+          pointerDownState.eventListeners.onMove = onPointerMove;
+          pointerDownState.eventListeners.onUp = onPointerUp;
+        };
+        const onPointerUpFromCanvasPointerDownHandler =
+          (pointerDownState) => (event) => {
+            window.removeEventListener(
+              "pointermove",
+              pointerDownState.eventListeners.onMove
+            );
+            window.removeEventListener(
+              "pointerup",
+              pointerDownState.eventListeners.onUp
+            );
+          };
+        const onPointerMoveFromCanvasPointerDownHandler =
+          (pointerDownState) => (event) => {
+            const pointerCoords = viewportCoordsToSceneCoords(event, appState);
+            pointerDownState.lastCoords.x = pointerCoords.x;
+            pointerDownState.lastCoords.y = pointerCoords.y;
+            // maybeDragNewGenericElement(pointerDownState, event);
+            appState.draggingElement.width =
+              pointerCoords.x - pointerDownState.origin.x;
+            appState.draggingElement.height =
+              pointerCoords.y - pointerDownState.origin.y;
+            renderScene(canvasRef.current, appState);
+          };
+        const handleCanvasWheel = (event) => {
+          const { deltaX, deltaY } = event;
+          // 关于缩放：双指放大时，deltaY是负数，缩小时，deltaY是正数
+          // 缩放，本质上就是对某个点的坐标进行变换
+          if (event.metaKey || event.ctrlKey) {
+            const sign = Math.sign(deltaY); // 只有两种情况，要么+1，要么-1
+            const MAX_STEP = ZOOM_STEP * 100; // 10
+            const absDelta = Math.abs(deltaY);
+            let delta = deltaY;
+            // delta最大为10
+            if (absDelta > MAX_STEP) {
+              delta = MAX_STEP * sign;
+            }
+            let newZoom = appState.zoom.value - delta / 100;
+            newZoom +=
+              Math.log10(Math.max(1, appState.zoom.value)) *
+              -sign *
+              Math.min(1, absDelta / 20);
+            const nextZoom = getNormalizedZoom(newZoom);
+            Object.assign(appState, {
+              ...getStateForZoom(
+                {
+                  viewportX: cursorPosition.current.cursorX,
+                  viewportY: cursorPosition.current.cursorY,
+                  nextZoom: nextZoom,
+                },
+                appState
+              ),
+            });
+            scaleRef.current.innerText = `${(nextZoom * 100).toFixed(0)}%`;
+            renderScene(canvasRef.current, appState);
+
+            return;
+          }
+          //
+          appState.scrollX = appState.scrollX - deltaX / appState.zoom.value;
+          appState.scrollY = appState.scrollY - deltaY / appState.zoom.value;
+          renderScene(canvasRef.current, appState);
+        };
+        return (
+          <div className="scale">
+            <div ref={canvasContainer}>
+              <canvas
+                ref={canvasRef}
+                className="canvas"
+                onPointerDown={handleCanvasPointerDown}
+                onWheel={handleCanvasWheel}>
+                绘制canvas
+              </canvas>
+            </div>
+            <div>
+              <button
+                onClick={() => {
+                  let minX = Infinity;
+                  let maxX = -Infinity;
+                  let minY = Infinity;
+                  let maxY = -Infinity;
+
+                  elements.forEach((element) => {
+                    const [x1, y1, x2, y2] = [
+                      element.x,
+                      element.y,
+                      element.x + element.width,
+                      element.y + element.height,
+                    ];
+                    minX = Math.min(minX, x1);
+                    minY = Math.min(minY, y1);
+                    maxX = Math.max(maxX, x2);
+                    maxY = Math.max(maxY, y2);
+                  });
+
+                  const canvas = document.createElement("canvas");
+                  canvas.width = (maxX - minX + 20) * window.devicePixelRatio;
+                  canvas.height = (maxY - minY + 20) * window.devicePixelRatio;
+                  const context = canvas.getContext("2d");
+                  context.scale(
+                    window.devicePixelRatio,
+                    window.devicePixelRatio
+                  );
+                  renderScene(canvas, {
+                    ...appState,
+                    scrollX: -minX + 10,
+                    scrollY: -minY + 10,
+                  });
+                  var a = document.createElement("a");
+                  a.href = canvas.toDataURL();
+                  a.download = "canvas.png";
+                  a.click();
+                }}>
+                导出PNG
+              </button>
+            </div>
+            <div ref={scaleRef}></div>
+          </div>
+        );
+      });
+      // -----------------------DEMO-----------------------------
+      ReactDOM.render(<App />, document.getElementById("root"));
+    </script>
+  </body>
+</html>

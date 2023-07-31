@@ -10,3 +10,5 @@
 
 ## 参考
 - https://dev.to/thehomelessdev/how-to-add-a-custom-font-to-an-html-canvas-1m3g
+
+- [canvas文本绘制自动换行、字间距、竖排等实现](https://www.zhangxinxu.com/wordpress/2018/02/canvas-text-break-line-letter-spacing-vertical/)

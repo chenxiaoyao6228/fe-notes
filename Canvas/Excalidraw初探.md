@@ -1,9 +1,6 @@
 ## 前言
 
-最近团队在做教授课的共享白板工具， 为此研究了下Excalidraw，打算输出一个系列，本篇作为开篇，会梳理一下Excalidraw中的大体框架，内容包括：
-
-* Excalidraw的发展历程
-* Excalidraw的卖点(相比Fabric, Konva, Pixi这些老牌canvas库的区别)
+最近团队在做教授课的共享白板工具， 为此预研了下Excalidraw。
 
 ## Excalidraw的发展历程
 
