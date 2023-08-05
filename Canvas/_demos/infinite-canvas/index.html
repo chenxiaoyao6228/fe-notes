@@ -235,6 +235,7 @@
           pointerDownState.eventListeners.onMove = onPointerMove;
           pointerDownState.eventListeners.onUp = onPointerUp;
         };
+
         const onPointerUpFromCanvasPointerDownHandler =
           (pointerDownState) => (event) => {
             window.removeEventListener(
@@ -246,6 +247,7 @@
               pointerDownState.eventListeners.onUp
             );
           };
+
         const onPointerMoveFromCanvasPointerDownHandler =
           (pointerDownState) => (event) => {
             const pointerCoords = viewportCoordsToSceneCoords(event, appState);
@@ -258,6 +260,7 @@
               pointerCoords.y - pointerDownState.origin.y;
             renderScene(canvasRef.current, appState);
           };
+
         const handleCanvasWheel = (event) => {
           const { deltaX, deltaY } = event;
           // 关于缩放：双指放大时，deltaY是负数，缩小时，deltaY是正数
@@ -297,6 +300,7 @@
           appState.scrollY = appState.scrollY - deltaY / appState.zoom.value;
           renderScene(canvasRef.current, appState);
         };
+        
         return (
           <div className="scale">
             <div ref={canvasContainer}>
