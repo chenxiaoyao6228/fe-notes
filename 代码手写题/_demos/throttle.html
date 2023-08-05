@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Throttle节流</title>
+    <style>
+      body {
+        height: 10000vh;
+        border: 1px solid red;
+      }
+      p {
+        text-align: center;
+      }
+      .view {
+        position: fixed;
+        top: 10px;
+        left: 10px;
+        border: 1px solid burlywood;
+      }
+    </style>
+  </head>
+  <body>
+    <p>鼠标进行页面滚动</p>
+    <div class="view"></div>
+    <script>
+      function throttle(fn, timeout) {
+        let timer = null;
+        return function () {
+          const context = this;
+          const args = arguments;
+          if (timer) return;
+          timer = setTimeout(function () {
+            func.apply(context, args);
+            timer = null;
+          }, delay);
+        };
+      }
+
+      function onScroll() {
+        const logMsg = document.createElement("div");
+        logMsg.textContent = `-------触发了滚动事件------`;
+        document.querySelector(".view").appendChild(logMsg);
+      }
+
+      const throttle_scroll = throttle(onScroll, 1000);
+      document.addEventListener("scroll", throttle_scroll);
+    </script>
+  </body>
+</html>
