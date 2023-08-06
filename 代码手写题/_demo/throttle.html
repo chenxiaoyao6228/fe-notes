@@ -22,19 +22,20 @@
     </style>
   </head>
   <body>
-    <p>鼠标进行页面滚动</p>
+    <p>鼠标滚动页面查看节流效果</p>
     <div class="view"></div>
     <script>
       function throttle(fn, timeout) {
-        let timer = null;
+        let last = 0;
         return function () {
           const context = this;
           const args = arguments;
-          if (timer) return;
-          timer = setTimeout(function () {
-            func.apply(context, args);
-            timer = null;
-          }, delay);
+          let now = Date.now();
+          if (now - last < timeout){
+            return;
+          }
+          last = now;
+          fn.apply(context, args);
         };
       }
 
@@ -44,7 +45,7 @@
         document.querySelector(".view").appendChild(logMsg);
       }
 
-      const throttle_scroll = throttle(onScroll, 1000);
+      const throttle_scroll = throttle(onScroll, 3000);
       document.addEventListener("scroll", throttle_scroll);
     </script>
   </body>

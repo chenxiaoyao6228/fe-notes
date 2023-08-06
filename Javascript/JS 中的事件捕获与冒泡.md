@@ -82,7 +82,7 @@ list.addEventListener('click', function(event) {
   }
 });
 ```
-👉 [Github在线效果预览](https://chenxiaoyao6228.github.io/html-preview/?https://github.com/chenxiaoyao6228/fe-notes/blob/main/Javascript/_demos/event-bubble-capture/delegate.html)
+👉 [Github在线效果预览](https://chenxiaoyao6228.github.io/html-preview/?https://github.com/chenxiaoyao6228/fe-notes/blob/main/Javascript/_demo/event-bubble-capture/delegate.html)
 
 ## stopPropagation与stopImmediatePropagation
 `stopPropagation` 和 `stopImmediatePropagation` 都是用于阻止事件传播的方法。区别在于:
@@ -147,6 +147,6 @@ child 冒泡事件 2
 </html>
 ```
 
-stopPropagation 👉 [Github在线效果预览](https://chenxiaoyao6228.github.io/html-preview/?https://github.com/chenxiaoyao6228/fe-notes/blob/main/Javascript/_demos/event-bubble-capture/stopPropagation.html)
+stopPropagation 👉 [Github在线效果预览](https://chenxiaoyao6228.github.io/html-preview/?https://github.com/chenxiaoyao6228/fe-notes/blob/main/Javascript/_demo/event-bubble-capture/stopPropagation.html)
 
-stopImmediatePropagation 👉 [Github在线效果预览](https://chenxiaoyao6228.github.io/html-preview/?https://github.com/chenxiaoyao6228/fe-notes/blob/main/Javascript/_demos/event-bubble-capture/stopImmediatePropagation.html)
+stopImmediatePropagation 👉 [Github在线效果预览](https://chenxiaoyao6228.github.io/html-preview/?https://github.com/chenxiaoyao6228/fe-notes/blob/main/Javascript/_demo/event-bubble-capture/stopImmediatePropagation.html)

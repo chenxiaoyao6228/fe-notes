@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Debounce防抖</title>
+    <style>
+      body {
+        margin: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <p>在输入框中输入内容以查看防抖效果：</p>
+    <input type="text" id="inputField" placeholder="在此输入" />
+    <p id="output"></p>
+
+    <script>
+      function debounce(fn, timeout) {
+        let timer = null;
+        return function () {
+          let context = this;
+          let args = aruments;
+          if (timer) {
+            clearTimeout(timer);
+          }
+          timer = setTimeout(() => {
+            fn.apply(context, args);
+          }, timeout);
+        };
+      }
+
+      function onSearch(value) {
+        const outputElement = document.getElementById("output");
+        outputElement.innerHTML = `触发搜索： ${value}`;
+      }
+
+      // 使用 500 毫秒的延迟对 updateOutput 函数进行防抖处理
+      const debouncedSearch = debounce(onSearch, 500);
+
+      // 输入框的事件监听器
+      const inputField = document.getElementById("inputField");
+      inputField.addEventListener("input", function (event) {
+        const inputValue = event.target.value;
+        debouncedSearch(inputValue);
+      });
+    </script>
+  </body>
+</html>

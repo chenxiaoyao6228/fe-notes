@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CSS 实现沙漏效果⏳</title>
+    <style>
+      /* 定义变量 */
+      :root {
+        --hourglass-animation-unit-height: 2.5px;
+        --hourglass-animation-drip-time: 5s;
+        --hourglass-top-color: #996c33;
+        --hourglass-sand-color: #fc6;
+      }
+
+      .hourglass {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        margin-top: calc(-10 * var(--hourglass-animation-unit-height));
+        animation: flip var(--hourglass-animation-drip-time) ease-in-out infinite;
+        border-bottom: solid calc(1 * var(--hourglass-animation-unit-height))
+          var(--hourglass-top-color);
+        border-top: solid calc(1 * var(--hourglass-animation-unit-height))
+          var(--hourglass-top-color);
+        margin-left: calc(-6 * var(--hourglass-animation-unit-height));
+        padding: 0 calc(1 * var(--hourglass-animation-unit-height));
+      }
+
+      .hourglass .top,
+      .hourglass .bottom {
+        position: relative;
+        overflow: hidden;
+        background-color: #def;
+        box-shadow: 0 0 calc(1 * var(--hourglass-animation-unit-height))
+          calc(1 * var(--hourglass-animation-unit-height)) #bcd inset;
+        height: calc(10 * var(--hourglass-animation-unit-height));
+        width: calc(10 * var(--hourglass-animation-unit-height));
+      }
+
+      .hourglass .top {
+        border-radius: 0 0 50% 50%;
+      }
+
+      .hourglass .top:before {
+        animation: top var(--hourglass-animation-drip-time) linear infinite;
+        background-color: var(--hourglass-sand-color);
+        border-radius: 50%;
+        content: "";
+        display: block;
+        height: calc(10 * var(--hourglass-animation-unit-height));
+        left: 0;
+        position: absolute;
+        top: 0;
+        transform: translateY(50%);
+        width: calc(10 * var(--hourglass-animation-unit-height));
+      }
+
+      .hourglass .top:after {
+        animation: top-drip var(--hourglass-animation-drip-time) linear infinite;
+        background-color: var(--hourglass-sand-color);
+        content: "";
+        display: block;
+        height: 100%;
+        left: 45%;
+        position: absolute;
+        top: 0;
+        transform: translateY(100%);
+        width: 10%;
+      }
+
+      .hourglass .bottom {
+        border-radius: 50% 50% 0 0;
+      }
+
+      .hourglass .bottom:before {
+        animation: bottom var(--hourglass-animation-drip-time) linear infinite;
+        background-color: var(--hourglass-sand-color);
+        border-radius: 50%;
+        content: "";
+        display: block;
+        height: calc(10 * var(--hourglass-animation-unit-height));
+        left: 0;
+        position: absolute;
+        top: 0;
+        transform: translateY(100%);
+        width: calc(10 * var(--hourglass-animation-unit-height));
+      }
+
+      .hourglass .bottom:after {
+        animation: bottom-drip var(--hourglass-animation-drip-time) linear infinite;
+        background-color: var(--hourglass-sand-color);
+        content: "";
+        display: block;
+        height: 100%;
+        left: 45%;
+        position: absolute;
+        top: 0;
+        width: 10%;
+      }
+
+       /* 动画 */
+      @keyframes flip {
+        0%,
+        45% {
+          transform: rotate(0);
+        }
+        50%,
+        95% {
+          transform: rotate(180deg);
+        }
+        100% {
+          transform: rotate(360deg);
+        }
+      }
+
+      @keyframes bottom {
+        0% {
+          transform: translateY(100%);
+        }
+        50% {
+          transform: translateY(50%);
+        }
+        51% {
+          transform: translateY(-50%);
+        }
+        100% {
+          transform: translateY(-100%);
+        }
+      }
+
+      @keyframes top {
+        0% {
+          transform: translateY(50%);
+        }
+        50% {
+          transform: translateY(100%);
+        }
+        51% {
+          transform: translateY(-100%);
+        }
+        100% {
+          transform: translateY(-50%);
+        }
+      }
+
+      @keyframes bottom-drip {
+        0% {
+          left: 45%;
+          transform: translateY(-100%);
+          width: 10%;
+        }
+        5% {
+          transform: translateY(0);
+        }
+        45%,
+        100% {
+          left: 50%;
+          transform: translateY(0);
+          width: 0;
+        }
+      }
+
+      @keyframes top-drip {
+        0%,
+        50% {
+          left: 45%;
+          transform: translateY(100%);
+          width: 10%;
+        }
+        55% {
+          left: 45%;
+          transform: translateY(0);
+          width: 10%;
+        }
+        100% {
+          left: 50%;
+          transform: translateY(0);
+          width: 0;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="hourglass">
+      <div class="top"></div>
+      <div class="bottom"></div>
+    </div>
+  </body>
+</html>
