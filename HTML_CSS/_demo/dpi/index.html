@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+  body {
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(1920, 1px); /* 1920 columns of 1px each */
+    grid-template-rows: repeat(1080, 1px); /* 1080 rows of 1px each */
+  }
+  
+  .cell {
+    width: 1px;
+    height: 1px;
+  }
+</style>
+</head>
+<body>
+  <script>
+    function getRandomHue() {
+      return Math.floor(Math.random() * 361); // Generate a random hue value between 0 and 360
+    }
+
+    for (let i = 0; i < 1920 * 1080; i++) {
+      const cell = document.createElement('div');
+      cell.className = 'cell';
+      cell.style.backgroundColor = `hsl(${getRandomHue()}, 100%, 50%)`;
+      document.body.appendChild(cell);
+    }
+  </script>
+</body>
+</html>

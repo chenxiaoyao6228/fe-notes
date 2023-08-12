@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Canvas演示</title>
+</head>
+<body>
+    <canvas id="sourceCanvas" width="200" height="200"></canvas>
+    <canvas id="destinationCanvas" width="300" height="200"></canvas>
+
+    <script>
+        // 获取源画布和目标画布的引用
+        const sourceCanvas = document.getElementById('sourceCanvas');
+        const destinationCanvas = document.getElementById('destinationCanvas');
+
+        // 获取两个画布的2D渲染上下文
+        const sourceContext = sourceCanvas.getContext('2d');
+        const destinationContext = destinationCanvas.getContext('2d');
+
+        // 创建一个路径并绘制到源画布
+        const trianglePath = new Path2D();
+        trianglePath.moveTo(20, 100);
+        trianglePath.lineTo(150, 20);
+        trianglePath.lineTo(180, 120);
+        trianglePath.closePath();
+
+        sourceContext.fillStyle = 'blue';
+        sourceContext.fillRect(50, 50, 200, 100);
+
+        sourceContext.fillStyle = 'green';
+        sourceContext.fill(trianglePath);
+
+        // 将源画布绘制到目标画布上
+        destinationContext.fillStyle = 'yellow';
+        destinationContext.fillRect(0, 0, 300, 200);
+
+        destinationContext.drawImage(sourceCanvas, 0, 0);
+        
+        destinationContext.fillStyle = 'red';
+        destinationContext.fillRect(150, 100, 50, 50);
+    </script>
+</body>
+</html>
