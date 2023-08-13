@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    body {
+      margin: 0;
+      overflow: hidden;
+    }
+    canvas {
+      border: 1px solid black;
+      display: block;
+      cursor: grab;
+    }
+  </style>
+</head>
+<body>
+  <canvas id="myCanvas"></canvas>
+  <script>
+    const canvas = document.getElementById('myCanvas');
+    const ctx = canvas.getContext('2d');
+
+    // 初始化画布的大小
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    // 应用状态
+    const appState = {
+      scrollX: 0,
+      scrollY: 0
+    };
+
+    // 元素列表
+    const elements = [
+      { x: 100, y: 100, width: 100, height: 100 },
+      { x: 200, y: 200, width: 100, height: 150 }
+    ];
+
+    // 绘制元素
+    function drawElements() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.fillStyle = 'red';
+      console.log("appState.scrollX, appState.scrollY", Math.floor(appState.scrollX), Math.floor(appState.scrollY));
+      for (const element of elements) {
+        ctx.fillRect(element.x + appState.scrollX, element.y + appState.scrollY, element.width, element.height);
+      }
+    }
+
+    // 指针拖动事件
+    let isDragging = false;
+    let startX = 0;
+    let startY = 0;
+
+    canvas.addEventListener('pointerdown', (event) => {
+      isDragging = true;
+      startX = event.clientX;
+      startY = event.clientY;
+    });
+
+    canvas.addEventListener('pointermove', (event) => {
+      if (!isDragging) return;
+
+      const deltaX = event.clientX - startX;
+      const deltaY = event.clientY - startY;
+
+      // 更新滚动距离
+      appState.scrollX += deltaX;
+      appState.scrollY += deltaY;
+
+      // 重新绘制元素
+      drawElements();
+
+      startX = event.clientX;
+      startY = event.clientY;
+    });
+
+    canvas.addEventListener('pointerup', () => {
+      isDragging = false;
+    });
+
+    // 初始化画布内容
+    drawElements();
+  </script>
+</body>
+</html>

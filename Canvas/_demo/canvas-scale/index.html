@@ -1,58 +1,63 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <style>
-    canvas {
-      border: 1px solid black;
-    }
-  </style>
-</head>
-<body>
-  <h2>不使用坐标变换</h2>
-  <canvas id="canvasWithoutScale" width="300" height="150"></canvas>
+  <head>
+    <style>
+      canvas {
+        border: 1px solid black;
+      }
+    </style>
+  </head>
+  <body>
+    <canvas id="canvas" width="300" height="300"></canvas>
 
-  <h2>使用坐标变换</h2>
-  <canvas id="canvasWithScale" width="300" height="150"></canvas>
+    <script></script>
+    <script>
+      const canvas = document.getElementById("canvas");
+      const ctx = canvas.getContext("2d");
 
-  <script>
-    // 不使用坐标变换的Canvas
-    const canvasWithoutScale = document.getElementById('canvasWithoutScale');
-    const ctxWithoutScale = canvasWithoutScale.getContext('2d');
+      function drawSquare() {
+        // 1.绘制红色矩形
+        ctx.fillStyle = "red";
+        ctx.fillRect(50, 50, 50, 50);
 
-    // 清除Canvas
-    ctxWithoutScale.clearRect(0, 0, canvasWithoutScale.width, canvasWithoutScale.height);
+        // 2.绘制黄色矩形
+        ctx.save();
+        ctx.fillStyle = "yellow";
+        ctx.scale(0.5, 0.5);
+        ctx.fillRect(50, 50, 50, 50);
+        ctx.restore();
 
-    // 绘制矩形（需要计算每个顶点的坐标）
-    ctxWithoutScale.fillStyle = 'blue';
-    ctxWithoutScale.fillRect(50, 50, 100, 50);
+        // 放大坐标轴
+        ctx.scale(2, 2);
 
-    // 绘制斜45度线段（使用相同的坐标计算方式）
-    ctxWithoutScale.beginPath();
-    ctxWithoutScale.moveTo(200, 100);
-    ctxWithoutScale.lineTo(200 + 100 * Math.cos(Math.PI / 4), 100 - 100 * Math.sin(Math.PI / 4));
-    ctxWithoutScale.strokeStyle = 'green';
-    ctxWithoutScale.stroke();
+        // 绘制蓝色矩形（只需计算左上角的坐标，大小加倍）
+        ctx.fillStyle = "blue";
+        ctx.fillRect(50, 50, 50, 50); // 放大后的矩形
+      }
 
-    // 使用坐标变换的Canvas
-    const canvasWithScale = document.getElementById('canvasWithScale');
-    const ctxWithScale = canvasWithScale.getContext('2d');
+      // 绘制网格
+      function drawGrid(gridSize, dashLength) {
+        ctx.strokeStyle = "black";
+        ctx.setLineDash([dashLength, dashLength]);
+        ctx.beginPath();
 
-    // 清除Canvas
-    ctxWithScale.clearRect(0, 0, canvasWithScale.width, canvasWithScale.height);
+        for (let x = 0; x <= canvas.width; x += gridSize) {
+          ctx.moveTo(x, 0);
+          ctx.lineTo(x, canvas.height);
+        }
 
-    // 使用缩放，简化绘制
-    ctxWithScale.scale(0.5, 0.5); // 将画布在x和y轴方向上缩小一半
+        for (let y = 0; y <= canvas.height; y += gridSize) {
+          ctx.moveTo(0, y);
+          ctx.lineTo(canvas.width, y);
+        }
 
-    // 绘制矩形（只需计算左上角的坐标，大小减半）
-    ctxWithScale.fillStyle = 'blue';
-    ctxWithScale.fillRect(100, 100, 50, 25); // 缩小后的矩形
+        ctx.stroke();
+        ctx.setLineDash([]);
+      }
 
-    // 绘制斜45度线段（同样使用缩小后的坐标计算）
-    ctxWithScale.beginPath();
-    ctxWithScale.moveTo(400, 200);
-    ctxWithScale.lineTo(400 + 50 * Math.cos(Math.PI / 4), 200 - 25 * Math.sin(Math.PI / 4));
-    ctxWithScale.strokeStyle = 'green';
-    ctxWithScale.stroke();
-  </script>
-</body>
+
+      drawGrid(10, 1); 
+      drawSquare();
+    </script>
+  </body>
 </html>
