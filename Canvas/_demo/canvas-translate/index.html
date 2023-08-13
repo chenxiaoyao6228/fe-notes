@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Canvas坐标变换</title>
+    <style>
+      #demo {
+        display: flex;
+        align-items: center;
+      }
+      .wrap {
+        margin: 0 20px;
+      }
+      canvas {
+        border: 1px solid black;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="demo">
+      <div class="wrap">
+        <h2>使用坐标变换</h2>
+        <canvas id="canvasWithTransform" width="300" height="150"></canvas>
+      </div>
+      <div class="wrap">
+        <h2>不使用坐标变换</h2>
+        <canvas id="canvasWithoutTransform" width="300" height="150"></canvas>
+      </div>
+    </div>
+
+    <script>
+      // 使用坐标变换的Canvas
+      const canvasWithTransform = document.getElementById(
+        "canvasWithTransform"
+      );
+      const ctxWithTransform = canvasWithTransform.getContext("2d");
+      // 清除Canvas
+      ctxWithTransform.clearRect(
+        0,
+        0,
+        canvasWithTransform.width,
+        canvasWithTransform.height
+      );
+
+      // 进行坐标变换
+      ctxWithTransform.translate(50, 50);
+
+      // 绘制矩形
+      ctxWithTransform.fillStyle = "blue";
+      ctxWithTransform.fillRect(0, 0, 100, 50);
+
+      // 重置变换
+      ctxWithTransform.translate(-50, -50);
+
+      // 绘制斜45度线段
+      ctxWithTransform.translate(200, 100);
+      ctxWithTransform.rotate(-Math.PI / 4);
+      ctxWithTransform.beginPath();
+      ctxWithTransform.moveTo(0, 0);
+      ctxWithTransform.lineTo(100, 0);
+      ctxWithTransform.strokeStyle = "green";
+      ctxWithTransform.stroke();
+      // 恢复坐标的变换
+      ctxWithTransform.rotate(-Math.PI / 4);
+      ctxWithTransform.translate(-200, -100);
+    </script>
+    <script>
+      // 不使用坐标变换的Canvas
+      const canvasWithoutTransform = document.getElementById(
+        "canvasWithoutTransform"
+      );
+      const ctxWithoutTransform = canvasWithoutTransform.getContext("2d");
+
+      // 清除Canvas
+      ctxWithoutTransform.clearRect(
+        0,
+        0,
+        canvasWithoutTransform.width,
+        canvasWithoutTransform.height
+      );
+
+      // 绘制矩形（需要计算每个顶点的坐标）
+      ctxWithoutTransform.fillStyle = "blue";
+      ctxWithoutTransform.fillRect(50, 50, 100, 50);
+
+      // 绘制斜45度线段（需要计算两个端点的坐标）
+      ctxWithoutTransform.beginPath();
+      ctxWithoutTransform.moveTo(200, 100);
+      ctxWithoutTransform.lineTo(
+        200 + 100 * Math.cos(Math.PI / 4),
+        100 - 100 * Math.sin(Math.PI / 4)
+      );
+      ctxWithoutTransform.strokeStyle = "green";
+      ctxWithoutTransform.stroke();
+    </script>
+  </body>
+</html>

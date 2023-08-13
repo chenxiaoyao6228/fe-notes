@@ -12,7 +12,7 @@
         touch-action: none;
       }
     </style>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/17.0.2/umd/react.development.min.js"></script>
+     <script src="https://cdnjs.cloudflare.com/ajax/libs/react/17.0.2/umd/react.development.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/17.0.2/umd/react-dom.development.min.js"></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
   </head>
@@ -148,6 +148,23 @@
       };
 
       // ----------------------- App.js -------------------------------------
+
+      const useDevicePixelRatio = () => {
+        const [devicePixelRatio, setDevicePixelRatio] = React.useState(
+          window.devicePixelRatio
+        );
+        React.useEffect(() => {
+          const handleResize = () => {
+            setDevicePixelRatio(window.devicePixelRatio);
+          };
+          window.addEventListener("resize", handleResize);
+          return () => {
+            window.removeEventListener("resize", handleResize);
+          };
+        }, []);
+        return devicePixelRatio;
+      };
+
       const App = memo(() => {
         const canvasRef = useRef(null);
         const canvasContainer = useRef(null);
@@ -300,7 +317,42 @@
           appState.scrollY = appState.scrollY - deltaY / appState.zoom.value;
           renderScene(canvasRef.current, appState);
         };
-        
+
+        const handleExport = () => {
+          let minX = Infinity;
+          let maxX = -Infinity;
+          let minY = Infinity;
+          let maxY = -Infinity;
+
+          elements.forEach((element) => {
+            const [x1, y1, x2, y2] = [
+              element.x,
+              element.y,
+              element.x + element.width,
+              element.y + element.height,
+            ];
+            minX = Math.min(minX, x1);
+            minY = Math.min(minY, y1);
+            maxX = Math.max(maxX, x2);
+            maxY = Math.max(maxY, y2);
+          });
+
+          const canvas = document.createElement("canvas");
+          canvas.width = (maxX - minX + 20) * window.devicePixelRatio;
+          canvas.height = (maxY - minY + 20) * window.devicePixelRatio;
+          const context = canvas.getContext("2d");
+          context.scale(window.devicePixelRatio, window.devicePixelRatio);
+          renderScene(canvas, {
+            ...appState,
+            scrollX: -minX + 10,
+            scrollY: -minY + 10,
+          });
+          var a = document.createElement("a");
+          a.href = canvas.toDataURL();
+          a.download = "canvas.png";
+          a.click();
+        };
+
         return (
           <div className="scale">
             <div ref={canvasContainer}>
@@ -313,46 +365,7 @@
               </canvas>
             </div>
             <div>
-              <button
-                onClick={() => {
-                  let minX = Infinity;
-                  let maxX = -Infinity;
-                  let minY = Infinity;
-                  let maxY = -Infinity;
-
-                  elements.forEach((element) => {
-                    const [x1, y1, x2, y2] = [
-                      element.x,
-                      element.y,
-                      element.x + element.width,
-                      element.y + element.height,
-                    ];
-                    minX = Math.min(minX, x1);
-                    minY = Math.min(minY, y1);
-                    maxX = Math.max(maxX, x2);
-                    maxY = Math.max(maxY, y2);
-                  });
-
-                  const canvas = document.createElement("canvas");
-                  canvas.width = (maxX - minX + 20) * window.devicePixelRatio;
-                  canvas.height = (maxY - minY + 20) * window.devicePixelRatio;
-                  const context = canvas.getContext("2d");
-                  context.scale(
-                    window.devicePixelRatio,
-                    window.devicePixelRatio
-                  );
-                  renderScene(canvas, {
-                    ...appState,
-                    scrollX: -minX + 10,
-                    scrollY: -minY + 10,
-                  });
-                  var a = document.createElement("a");
-                  a.href = canvas.toDataURL();
-                  a.download = "canvas.png";
-                  a.click();
-                }}>
-                导出PNG
-              </button>
+              <button onClick={handleExport}>导出PNG</button>
             </div>
             <div ref={scaleRef}></div>
           </div>

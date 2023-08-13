@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    canvas {
+      border: 1px solid black;
+    }
+  </style>
+</head>
+<body>
+  <h2>不使用坐标变换</h2>
+  <canvas id="canvasWithoutScale" width="300" height="150"></canvas>
+
+  <h2>使用坐标变换</h2>
+  <canvas id="canvasWithScale" width="300" height="150"></canvas>
+
+  <script>
+    // 不使用坐标变换的Canvas
+    const canvasWithoutScale = document.getElementById('canvasWithoutScale');
+    const ctxWithoutScale = canvasWithoutScale.getContext('2d');
+
+    // 清除Canvas
+    ctxWithoutScale.clearRect(0, 0, canvasWithoutScale.width, canvasWithoutScale.height);
+
+    // 绘制矩形（需要计算每个顶点的坐标）
+    ctxWithoutScale.fillStyle = 'blue';
+    ctxWithoutScale.fillRect(50, 50, 100, 50);
+
+    // 绘制斜45度线段（使用相同的坐标计算方式）
+    ctxWithoutScale.beginPath();
+    ctxWithoutScale.moveTo(200, 100);
+    ctxWithoutScale.lineTo(200 + 100 * Math.cos(Math.PI / 4), 100 - 100 * Math.sin(Math.PI / 4));
+    ctxWithoutScale.strokeStyle = 'green';
+    ctxWithoutScale.stroke();
+
+    // 使用坐标变换的Canvas
+    const canvasWithScale = document.getElementById('canvasWithScale');
+    const ctxWithScale = canvasWithScale.getContext('2d');
+
+    // 清除Canvas
+    ctxWithScale.clearRect(0, 0, canvasWithScale.width, canvasWithScale.height);
+
+    // 使用缩放，简化绘制
+    ctxWithScale.scale(0.5, 0.5); // 将画布在x和y轴方向上缩小一半
+
+    // 绘制矩形（只需计算左上角的坐标，大小减半）
+    ctxWithScale.fillStyle = 'blue';
+    ctxWithScale.fillRect(100, 100, 50, 25); // 缩小后的矩形
+
+    // 绘制斜45度线段（同样使用缩小后的坐标计算）
+    ctxWithScale.beginPath();
+    ctxWithScale.moveTo(400, 200);
+    ctxWithScale.lineTo(400 + 50 * Math.cos(Math.PI / 4), 200 - 25 * Math.sin(Math.PI / 4));
+    ctxWithScale.strokeStyle = 'green';
+    ctxWithScale.stroke();
+  </script>
+</body>
+</html>
