@@ -12,8 +12,8 @@
         touch-action: none;
       }
     </style>
-     <script src="https://cdnjs.cloudflare.com/ajax/libs/react/17.0.2/umd/react.development.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/17.0.2/umd/react-dom.development.min.js"></script>
+     <script src="https://cdn.jsdelivr.net/npm/react@17.0.2/umd/react.production.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/react-dom@17.0.2/umd/react-dom.production.min.js"></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
   </head>
 
@@ -55,8 +55,8 @@
         const offsetX = scrollX * zoom.value;
         const offsetY = scrollY * zoom.value;
         ctx.translate(offsetX, offsetY);
-        ctx.strokeStyle = "black";
-        ctx.fillStyle = "black";
+        ctx.strokeStyle = "red";
+        ctx.fillStyle = "red";
         // 绘制横轴和纵轴
         ctx.save();
         ctx.beginPath();
@@ -148,23 +148,6 @@
       };
 
       // ----------------------- App.js -------------------------------------
-
-      const useDevicePixelRatio = () => {
-        const [devicePixelRatio, setDevicePixelRatio] = React.useState(
-          window.devicePixelRatio
-        );
-        React.useEffect(() => {
-          const handleResize = () => {
-            setDevicePixelRatio(window.devicePixelRatio);
-          };
-          window.addEventListener("resize", handleResize);
-          return () => {
-            window.removeEventListener("resize", handleResize);
-          };
-        }, []);
-        return devicePixelRatio;
-      };
-
       const App = memo(() => {
         const canvasRef = useRef(null);
         const canvasContainer = useRef(null);

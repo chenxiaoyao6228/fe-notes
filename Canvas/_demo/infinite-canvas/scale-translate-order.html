@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    body {
+      margin: 0;
+      overflow: hidden;
+    }
+    canvas {
+      border: 1px solid black;
+      display: block;
+    }
+  </style>
+</head>
+<body>
+  <canvas id="myCanvas"></canvas>
+  <script>
+    const canvas = document.getElementById('myCanvas');
+    const ctx = canvas.getContext('2d');
+
+    // 初始化画布的大小
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    // 绘制函数
+    function drawRectangle(x, y) {
+      ctx.fillStyle = 'red';
+      ctx.fillRect(x, y, 100, 100);
+    }
+
+    // 不同顺序的效果
+
+    // 1. 先缩放再平移
+    ctx.save();
+    ctx.scale(2, 2);
+    ctx.translate(100, 100); 
+    drawRectangle(0, 0);
+    ctx.restore();
+
+    // 2. 先平移再缩放
+    ctx.save();
+    ctx.translate(100, 100); // 在原来的基础上进行平移
+    ctx.scale(2, 2);
+    drawRectangle(0, 0);
+    ctx.restore();
+  </script>
+</body>
+</html>

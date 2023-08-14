@@ -1,23 +1,23 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <style>
-    body {
-      margin: 0;
-      overflow: hidden;
-    }
-    canvas {
-      border: 1px solid black;
-      display: block;
-      cursor: grab;
-    }
-    .btn-group {
-      display: flex;
-      position: absolute;
-      top: 10px;
-      left: 10px;
-    }
-    .accord {
+  <head>
+    <style>
+      body {
+        margin: 0;
+        overflow: hidden;
+      }
+      canvas {
+        border: 1px solid black;
+        display: block;
+        cursor: grab;
+      }
+      .btn-group {
+        display: flex;
+        position: absolute;
+        top: 10px;
+        left: 10px;
+      }
+      .accord {
         width: 100px;
         height: 100px;
         background-color: yellow;
@@ -25,99 +25,125 @@
         left: 100px;
         top: 100px;
         z-index: -1;
-    }
-  </style>
-</head>
-<body>
-  <canvas id="myCanvas"></canvas>
-  <div class="accord">参照物div</div>
-  <div class="btn-group">
-    <button class="btn shrink">-</button>
-    <div class="val">100%</div>
-    <button class="btn zoom">+</button>
-  </div>
-  <script>
-    const canvas = document.getElementById('myCanvas');
-    const ctx = canvas.getContext('2d');
+      }
+    </style>
+  </head>
+  <body>
+    <canvas id="myCanvas"></canvas>
+    <div class="accord">参照物div</div>
+    <div class="btn-group">
+      <button class="btn shrink">-</button>
+      <div class="val">100%</div>
+      <button class="btn zoom">+</button>
+    </div>
+    <script>
+      const canvas = document.getElementById("myCanvas");
+      const ctx = canvas.getContext("2d");
 
-    // 初始化画布的大小
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
+      // 初始化画布的大小
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
 
-     // 应用状态
-    const appState = {
-      scrollX: 0,
-      scrollY: 0,
-      zoom: 1
-    };
+      // 应用状态
+      let appState = {
+        scrollX: 0,
+        scrollY: 0,
+        zoom: 1,
+      };
 
-    // 元素列表
-    const elements = [
-      { x: 100, y: 100, width: 100, height: 100, background: 'red' },
-    ];
+      function getNextStateForZoom(param) {
+        const { zoom: currentZoom } = appState;
+        const screenX = 200;
+        const screenY = 100;
+        const nextZoom = currentZoom + 0.1;
 
-    // 绘制元素
-    function drawElements() {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
+        const nextAppState = {
+          scrollX:
+            appState.scrollX + screenX / nextZoom - screenX / currentZoom,
+          scrollY:
+            appState.scrollY + screenY / nextZoom - screenY / currentZoom,
+          zoom: nextZoom,
+        };
 
-      ctx.save(); // 保存当前的绘制状态
-      ctx.translate(appState.scrollX, appState.scrollY); // 平移绘制坐标系
-      ctx.scale(appState.zoom, appState.zoom); // 缩放绘制坐标系
-
-      for (const element of elements) {
-        ctx.fillStyle = element.background || 'red';
-        ctx.fillRect(element.x, element.y, element.width, element.height);
+        appState = nextAppState;
+        
+        return nextAppState
       }
 
-      ctx.restore(); // 恢复绘制状态
-    }
+      // 元素列表
+      const elements = [
+        { x: 200, y: 100, width: 100, height: 100, background: "red" },
+      ];
 
-    // 指针拖动事件
-    let isDragging = false;
-    let startX = 0;
-    let startY = 0;
+      // 绘制元素
+      function renderElements() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    canvas.addEventListener('pointerdown', (event) => {
-      isDragging = true;
-      startX = event.clientX;
-      startY = event.clientY;
-    });
+        for (const element of elements) {
+          ctx.save(); // 保存当前的绘制状态
+          ctx.scale(appState.zoom, appState.zoom); // 缩放绘制坐标系
+          ctx.translate(
+            element.x + appState.scrollX,
+            element.y + appState.scrollY
+          ); // 平移绘制坐标系
+          ctx.fillStyle = element.background || "red";
+          ctx.fillRect(0, 0, element.width, element.height); // 我们的目的是保持元素的相对，避免过多的计算
+          ctx.restore(); // 恢复绘制状态
+        }
+      }
 
-    canvas.addEventListener('pointermove', (event) => {
-      if (!isDragging) return;
+      // 指针拖动事件
+      let isDragging = false;
+      let startX = 0;
+      let startY = 0;
 
-      const deltaX = event.clientX - startX;
-      const deltaY = event.clientY - startY;
+      canvas.addEventListener("pointerdown", (event) => {
+        isDragging = true;
+        startX = event.clientX;
+        startY = event.clientY;
+      });
 
-      // 更新滚动距离
-      appState.scrollX += deltaX;
-      appState.scrollY += deltaY;
+      canvas.addEventListener("pointermove", (event) => {
+        if (!isDragging) return;
 
-      // 重新绘制元素
-      drawElements();
+        const deltaX = event.clientX - startX;
+        const deltaY = event.clientY - startY;
 
-      startX = event.clientX;
-      startY = event.clientY;
-    });
+        // 更新滚动距离
+        appState.scrollX += deltaX;
+        appState.scrollY += deltaY;
 
-    canvas.addEventListener('pointerup', () => {
-      isDragging = false;
-    });
+        // 重新绘制元素
+        renderElements();
 
-    // 初始化画布内容
-    drawElements();
+        startX = event.clientX;
+        startY = event.clientY;
+      });
 
-    document.querySelector('.btn.shrink').addEventListener('click', () => {
-      appState.zoom -= 0.1;
-        document.querySelector('.val').innerText = `${Math.floor(appState.zoom * 100)}%`;
-      drawElements();
-    });
+      canvas.addEventListener("pointerup", () => {
+        isDragging = false;
+      });
 
-    document.querySelector('.btn.zoom').addEventListener('click', () => {
-      appState.zoom += 0.1;
-      document.querySelector('.val').innerText = `${Math.floor(appState.zoom * 100)}%`;
-      drawElements();
-    });
-  </script>
-</body>
+      // 初始化画布内容
+      renderElements();
+
+      document.querySelector(".btn.shrink").addEventListener("click", () => {
+        // 记录上一次的缩放值
+        appState.preZoom = appState.zoom;
+        appState.zoom -= 0.1;
+        document.querySelector(".val").innerText = `${Math.floor(
+          appState.zoom * 100
+        )}%`;
+        renderElements();
+      });
+
+      document.querySelector(".btn.zoom").addEventListener("click", () => {
+        const nextAppState = getNextStateForZoom()
+        document.querySelector(".val").innerText = `${Math.floor(
+          nextAppState.zoom * 100
+        )}%`;
+        renderElements();
+      });
+    </script>
+  </body>
 </html>
