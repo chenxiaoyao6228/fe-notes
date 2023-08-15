@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>ActionManger状态管理</title>
+    <style>
+      html,
+      body {
+        margin: 10px;
+      }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/react@17.0.2/umd/react.development.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/react-dom@17.0.2/umd/react-dom.development.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  </head>
+
+  <body>
+    <div id="root"></div>
+    <script type="text/babel">
+      const { useEffect, useState, useRef } = React;
+      // -------------------ActionManage---------------------------------
+      class ActionManager {
+        constructor(updater, getState) {
+          this.updater = updater;
+          this.actions = {};
+          this.getState = getState;
+        }
+
+        registerAction = (action) => {
+          this.actions[action.name] = action;
+        };
+
+        registerAll = (actions) => {
+          actions.forEach((action) => this.registerAction(action));
+        };
+
+        renderAction = (name, payload) => {
+          const action = this.actions[name];
+          const newState = action.perform(this.getState(), payload);
+          this.updater(newState);
+        };
+      }
+
+      // -------------------Action---------------------------------
+      let actions = [];
+
+      const register = (action) => {
+        actions.push(action);
+        return action;
+      };
+
+      const increment = register({
+        name: "increment",
+        perform: (state) => ({
+          ...state,
+          counter: state.counter + 1,
+        }),
+      });
+
+      const decrement = register({
+        name: "decrement",
+        perform: (state) => ({
+          ...state,
+          counter: state.counter - 1,
+        }),
+      });
+
+      // -------------------Component---------------------------------
+
+      class Counter extends React.Component {
+        onIncrement = () => {
+          this.props.actionManager.renderAction("increment");
+        };
+
+        onDecrement = () => {
+          this.props.actionManager.renderAction("decrement");
+        };
+
+        render() {
+          const { counter } = this.props.appState;
+
+          return (
+            <div>
+              <h2>Count: {counter}</h2>
+              <button onClick={this.onIncrement}>Increment</button>
+              <button onClick={this.onDecrement}>Decrement</button>
+            </div>
+          );
+        }
+      }
+
+      class App extends React.Component {
+        constructor(props) {
+          super(props);
+          this.state = {
+            counter: 0,
+          }
+          this.actionManager = new ActionManager(
+            this.stateUpdater,
+            this.getState
+          );
+          this.actionManager.registerAll(actions);
+        }
+        getState = () => this.state;
+
+        stateUpdater = (newState) => {
+          this.setState({ ...newState });
+        };
+
+        render() {
+          return (
+            <Counter actionManager={this.actionManager} appState={this.state} />
+          );
+        }
+      }
+
+      // ----------------------------------------------------
+      ReactDOM.render(<App />, document.getElementById("root"));
+    </script>
+  </body>
+</html>

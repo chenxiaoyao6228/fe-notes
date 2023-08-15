@@ -17,7 +17,7 @@ const isTextOverflow = (element: HTMLElement | null) => {
 
 ## React 代码
 
-👉 [Github在线效果预览](https://chenxiaoyao6228.github.io/html-preview/?https://github.com/chenxiaoyao6228/fe-notes/blob/main/React相关/_demo/TooltipWithEllipsis/index.html)
+👉 [在线效果预览](https://chenxiaoyao6228.github.io/html-preview/?https://github.com/chenxiaoyao6228/fe-notes/blob/main/React相关/_demo/TooltipWithEllipsis/index.html)
 
 ```tsx
 import { Tooltip, TooltipProps } from "antd";

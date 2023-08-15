@@ -18,7 +18,7 @@
 
 答案是: 两个 div 的文字都是**蓝色**
 
-👉[Github在线效果预览](https://chenxiaoyao6228.github.io/html-preview/?https://github.com/chenxiaoyao6228/fe-notes/blob/main/HTML_CSS/_demo/css-inheritance/index.html)
+👉[在线效果预览](https://chenxiaoyao6228.github.io/html-preview/?https://github.com/chenxiaoyao6228/fe-notes/blob/main/HTML_CSS/_demo/css-inheritance/index.html)
 
 如上面的例子演示中的那样,当多个选择器作用于同一个元素的时候, 浏览器是如何决定最终的样式的,毕竟一段文字不可能既是红色又是蓝色
 

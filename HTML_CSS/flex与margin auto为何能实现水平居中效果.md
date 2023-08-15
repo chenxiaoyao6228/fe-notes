@@ -25,7 +25,7 @@
     margin: auto
 }
 ```
-👉 [Github在线效果预览](https://chenxiaoyao6228.github.io/html-preview/?https://github.com/chenxiaoyao6228/fe-notes/blob/main/HTML_CSS/_demo/css-center-with-flex-margin-auto/index.html)
+👉 [在线效果预览](https://chenxiaoyao6228.github.io/html-preview/?https://github.com/chenxiaoyao6228/fe-notes/blob/main/HTML_CSS/_demo/css-center-with-flex-margin-auto/index.html)
 ## 解释
 
 css 规范是这样解释的,在 dispaly: flex 下：

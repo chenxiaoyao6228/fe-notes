@@ -12,7 +12,7 @@
 
 ![](https://cdn.jsdelivr.net/gh/chenxiaoyao6228/cloudimg@main/2023/canvas-default-size.png)
 
-👉 [Github 在线效果预览](https://chenxiaoyao6228.github.io/html-preview/?https://github.com/chenxiaoyao6228/fe-notes/blob/main/Canvas/_demo/canvas-size/default.html)
+👉 [在线效果预览](https://chenxiaoyao6228.github.io/html-preview/?https://github.com/chenxiaoyao6228/fe-notes/blob/main/Canvas/_demo/canvas-size/default.html)
 
 Canvas 的 HTML 属性尺寸可通过 HTML 的 width 和 height 属性设置，也可以通过 JavaScript 动态设置。
 
@@ -47,7 +47,7 @@ canvas 作为替换元素，很多样式表现和 img 元素是一致的。
 ></canvas>
 ```
 
-相应的对比效果请看 👉 [Github 在线效果预览](./_demo/canvas-size/html-css-size-1.html)
+相应的对比效果请看 👉 [在线效果预览](https://chenxiaoyao6228.github.io/html-preview/?https://github.com/chenxiaoyao6228/fe-notes/blob/main/Canvas/_demo/canvas-size/html-css-size-1.html)
 
 ## DPI 适配与自适应缩放
 
@@ -74,7 +74,7 @@ canvas 作为替换元素，很多样式表现和 img 元素是一致的。
 
 ![](https://cdn.jsdelivr.net/gh/chenxiaoyao6228/cloudimg@main/2023/canvas-size-blur.png)
 
-👉 [Github 在线效果预览](./_demo/canvas-size/html-css-size-2.html)
+👉 [在线效果预览](https://chenxiaoyao6228.github.io/html-preview/?https://github.com/chenxiaoyao6228/fe-notes/blob/main/Canvas/_demo/canvas-size/html-css-size-2.html)
 
 影响因素是设备的像素比。根据 [MDN 的定义](https://developer.mozilla.org/en-US/docs/Web/API/Window/devicePixelRatio),
 
@@ -96,7 +96,7 @@ ctx.scale(scale, scale); // 缩放修正
 
 ![](https://cdn.jsdelivr.net/gh/chenxiaoyao6228/cloudimg@main/2023/canvas-size-blur-2.png)
 
-👉 [Github在线效果预览](https://chenxiaoyao6228.github.io/html-preview/?https://github.com/chenxiaoyao6228/fe-notes/blob/main/Canvas/_demo/canvas-size/html-css-size-3.html)
+👉 [在线效果预览](https://chenxiaoyao6228.github.io/html-preview/?https://github.com/chenxiaoyao6228/fe-notes/blob/main/Canvas/_demo/canvas-size/html-css-size-3.html)
 
 ## 参考
 
