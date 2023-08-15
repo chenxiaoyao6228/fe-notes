@@ -11,3 +11,9 @@
 ![](https://cdn.jsdelivr.net/gh/chenxiaoyao6228/cloudimg@main/2023/canvas-max-size-test.png)
 
 尺寸越大，渲染需要的消耗的资源就越多，应用性能就会越差。
+
+
+
+## 参考
+
+- https://developer.mozilla.org/zh-CN/docs/Web/API/Canvas_API/Tutorial/Optimizing_canvas
