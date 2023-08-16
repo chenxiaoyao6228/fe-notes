@@ -101,7 +101,6 @@ Excalidraw 中使用了一个 Scene 静态工具类来专门对元素进行管�
 
 Excalidraw 自己实现了一个类似 Redux 的状态管理库 ActionManager, 通过 actionManager.dispatch(action)来更新状态。
 
-
 Action： register 为提供的一个简易的注册接口，把所有的 action 收集起来到一个数组里面、
 
 ```js
@@ -129,7 +128,7 @@ const decrement = register({
 });
 ```
 
-ActionManager: App初始化的时候会初始化一个actionManager, 同时注册所有的action。
+ActionManager: App 初始化的时候会初始化一个 actionManager, 同时注册所有的 action。
 
 ```js
 class ActionManager {
@@ -155,14 +154,17 @@ class ActionManager {
 }
 ```
 
-组件渲染的时候把actionManager和appState传入组件，没有redux的connect操作，组件内部通过actionManager来更新状态。
+组件渲染的时候把 actionManager 和 appState 传入组件，没有 redux 的 connect 操作，组件内部通过 actionManager 来更新状态。
+
 ```js
- <Counter actionManager={this.actionManager} appState={this.state} />
-```
-```js
- <button onClick={this.props.actionManager.renderAction("increment")}>Increment</button>
+<Counter actionManager={this.actionManager} appState={this.state} />
 ```
 
+```js
+<button onClick={this.props.actionManager.renderAction("increment")}>
+  Increment
+</button>
+```
 
 ![](https://cdn.jsdelivr.net/gh/chenxiaoyao6228/cloudimg@main/2023/excalidraw-action-manager.gif)
 
@@ -170,7 +172,103 @@ class ActionManager {
 
 ## 协同
 
+主要涉及的技术点如下：
+
+### 通讯机制
+
+基于上述数据模型中的元素 Element, 在元素发生变更的时候更新版本，然后通过 socket.io 进行广播
+
+### 数据安全性
+
+去中心化端对端加密: excalidraw 的序列化后的数据就是一坨 json, 那么这也就意味在在多人协作的场景中，数据可能被三方劫持, 这时候就可以考虑对称加密的方式。考虑到业务场景，Excalidraw 选择了端对端加密的方式。
+缺陷就是如果系统需要列出其他用户的 scene, 那 server 就必须知道所有人的 scene 信息，这种情况下就需要一个中心化的数据处理中心。
+
+实现依据两个技术：
+
+1.  路由 hash 后面的数据不会通过网络请求发送，但是 javascript 可以拿到，因此可以作为端对端加密中的 private key
+2.  web 端通过[Web Crypto API](https://developer.mozilla.org/en-US/docs/Web/API/Web_Crypto_API)进行加密
+
+当开启分享的时候，会先通过加密生成 key
+
+```js
+const url = new URL(window.location.href);
+url.hash = `json=${json.id},${encryptionKey}`;
+const urlString = url.toString();
+```
+
+最终生成这样的一个 link
+
+> https://excalidraw.com/#room=7ba1b01ed33b3e02fbb0,mZITFQhcSROwpPJwPqXmKg
+
+当对方那到链接的时候，再对应进行解密即可。
+
+```js
+const key = await getCryptoKey(privateKey, "decrypt");
+return window.crypto.subtle.decrypt(
+  {
+    name: "AES-GCM",
+    iv,
+  },
+  key,
+  encrypted
+);
+```
+
+当然这只是简单的介绍，有兴趣的朋友可以深入看看[Web Crypto API](https://developer.mozilla.org/en-US/docs/Web/API/Web_Crypto_API)
+
+### 冲突解决
+
 ## 撤销重做
+
+使用双栈模型，具体可以参看[这里](./canvas实现撤销重做.md)
+
+## 性能优化方案
+
+- renderScene 防抖
+- 使用离屏 Canvas 缓存元素，然后再通过 ctx.drawImage 绘制图像到画布上
+
+## 其他
+
+### 层级管理
+
+不像 FabricJS, Excalidraw 中没有对应的 zIndex 管理元素的层级, 而是通过元素在数组中的顺序来判断
+
+![](https://cdn.jsdelivr.net/gh/chenxiaoyao6228/cloudimg@main/2023/excalidraw-zIndex.png)
+
+### 开发环境通过 Object.defineProperties 暴露状态方便测试
+
+也方便判断是哪个 setState 触发了 componentDidUpdate
+
+```js
+if (
+  process.env.NODE_ENV === ENV.TEST ||
+  process.env.NODE_ENV === ENV.DEVELOPMENT
+) {
+  const setState = this.setState.bind(this);
+  Object.defineProperties(window.h, {
+    state: {
+      configurable: true,
+      get: () => {
+        return this.state;
+      },
+    },
+    setState: {
+      configurable: true,
+      value: (...args: Parameters<typeof setState>) => {
+        return this.setState(...args);
+      },
+    },
+    app: {
+      configurable: true,
+      value: this,
+    },
+    history: {
+      configurable: true,
+      value: this.history,
+    },
+  });
+}
+```
 
 ## 不足
 

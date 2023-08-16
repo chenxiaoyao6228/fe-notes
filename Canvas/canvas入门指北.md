@@ -67,4 +67,4 @@ canvas.toBlob: 创建一个用于表示此canvas元素图像文件的blob
 * 前端 4 种渲染技术的计算机理论基础： https://cloud.tencent.com/developer/article/1920658
 * GUI架构的两种模式与四种更新页面的手法: https://www.jianshu.com/p/65189d9d7b89
 * https://games.greggman.com/game/imgui-future/
-* [](https://developer.mozilla.org/zh-CN/docs/Web/API/CanvasRenderingContext2D/save)
+* https://developer.mozilla.org/zh-CN/docs/Web/API/CanvasRenderingContext2D/save
