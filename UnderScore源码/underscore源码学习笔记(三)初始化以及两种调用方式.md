@@ -18,7 +18,7 @@ console.log(v); //v is not defined ->内部变量不暴露
 
 underscore 稍微复杂一点,通过传入 this 来改变函数的作用域,并将\_构造函数挂载传入的 this 上,
 
-```
+```js
 (function(){
   if(typeof exports !== 'undefined'){
         if(typeof module !== 'undefined' && module.exports){
@@ -46,7 +46,7 @@ console.log(this === window) //true
 
 但我们也可以使用 oop 的调用方式,这样的好处之一是方便使用 chain 方法进行链式调用,写法上更加简洁.具体的使用下文会讲
 
-```
+```js
  var _ = function(obj){
        if(obj instanceof _) return obj;
        if(!(this instanceof _)) return new _(obj);

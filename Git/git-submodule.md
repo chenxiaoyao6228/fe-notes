@@ -1,13 +1,3 @@
----
-permalink: 2023-01-20-git-submodule
-title: git-submodule
-date: 2023-01-20
-categories:
-  - tech
-tags:
-  - git
----
-
 ## Preface
 
 I have two repositories, the `fe-notes` and `blog`, I want the former to be a pure git repo to store my articles, and the latter as my website build-kit, which is using Vuepress as the site generator currently but might change to other tools someday.

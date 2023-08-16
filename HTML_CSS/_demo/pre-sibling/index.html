@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>css sibling</title>
+    <style>
+      .list {
+        display: flex;
+      }
+      .item {
+        width: 100px;
+        height: 100px;
+        background-color: aquamarine;
+      }
+      .separator {
+        width: 10px;
+        height: 100px;
+        background: #ccc;
+      }
+      .separator {
+        display: none;
+      }
+
+      .wrap {
+        display: flex;
+      }
+
+  
+      .wrap + .separator {
+        display: block;
+      }
+
+      .wrap:not(:last-of-type) {
+        border-right: 10px solid #ccc;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="list">
+      <!-- itemA item个数可能为 0 或者多个, 且数量是动态的 -->
+      <div class="wrap">
+        <div class="item itemA"></div>
+        <div class="item itemA"></div>
+      </div>
+      <div class="separator separatorA"></div>
+      <!-- item个数可能为 0 或者多个，  且数量是动态的 -->
+      <div class="wrap">
+        <div class="item itemB"></div>
+        <div class="item itemB"></div>
+      </div>
+      <div class="separator separatorB"></div>
+      <!-- item个数可能为 0 或者多个， 且数量是动态的  -->
+      <div class="wrap">
+         <div class="item itemC"></div>
+        <div class="item itemC"></div>
+      </div>
+    </div>
+  </body>
+</html>
