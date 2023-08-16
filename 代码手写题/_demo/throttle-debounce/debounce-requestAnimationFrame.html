@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Debounce防抖</title>
+    <title>Debounce with requestAnimationFrame</title>
     <style>
       body {
         margin: 10px;
@@ -16,19 +16,25 @@
     <p id="output"></p>
 
     <script>
-      function debounce(fn, timeout) {
+      const debounce = (fn, timeout) => {
         let timer = null;
         return function () {
-          let context = this;
-          let args = aruments;
+          const context = this;
+          const args = arguments;
           if (timer) {
-            clearTimeout(timer);
+            cancelAnimationFrame(timer);
           }
-          timer = setTimeout(() => {
-            fn.apply(context, args);
-          }, timeout);
+          const start = performance.now();
+          function tick() {
+            if (performance.now() - start >= timeout) {
+              fn.apply(context, args);
+            } else {
+              timer = requestAnimationFrame(tick);
+            }
+          }
+          timer = requestAnimationFrame(tick);
         };
-      }
+      };
 
       function onSearch(value) {
         const outputElement = document.getElementById("output");
