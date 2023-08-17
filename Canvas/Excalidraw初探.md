@@ -200,7 +200,7 @@ const urlString = url.toString();
 
 > https://excalidraw.com/#room=7ba1b01ed33b3e02fbb0,mZITFQhcSROwpPJwPqXmKg
 
-当对方那到链接的时候，再对应进行解密即可。
+当对方拿到链接的时候，再对应进行解密即可。
 
 ```js
 const key = await getCryptoKey(privateKey, "decrypt");
@@ -217,6 +217,26 @@ return window.crypto.subtle.decrypt(
 当然这只是简单的介绍，有兴趣的朋友可以深入看看[Web Crypto API](https://developer.mozilla.org/en-US/docs/Web/API/Web_Crypto_API)
 
 ### 冲突解决
+
+协同的难点之一在于冲突解决，主要有新增/删除/编辑三种情况
+
+1. 新增
+
+Excalidraw为每个元素添加了id以及version属性
+
+* 每次用户对元素进行了变更，找到对应id的版本进行变更
+* 如果两个用户同时进行了文件的变更，当收到来自其他客户端的更新状态时， 拥有更高版本的那个用户会胜出
+
+![](https://cdn.jsdelivr.net/gh/chenxiaoyao6228/cloudimg@main/2023/excalidraw-collab-add.png)
+
+2. 删除
+
+如果用户A删除了其中的一个元素，就会标记为删除，这样如果此时用户 B更新了此元素，该元素也不会无缘无故从画布中蹦出来
+
+![](https://cdn.jsdelivr.net/gh/chenxiaoyao6228/cloudimg@main/2023/excalidraw-collab-delete.png)
+
+1. 并行编辑
+
 
 ## 撤销重做
 
