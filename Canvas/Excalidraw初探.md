@@ -1,6 +1,6 @@
 ## 前言
 
-最近团队在做教授课的共享白板工具， 为此预研了下 Excalidraw。
+最近团队在做授课相关的共享白板工具， 为此预研了下 Excalidraw。
 
 ## Excalidraw 的发展历程
 
@@ -78,7 +78,7 @@ Excalidraw 的数据分为两个部分：
     },
     "boundElements": null,
     "isDeleted": false,
-    "locked": false,
+    "locked": false, // 元素是否可编辑，在viewMode模式下使用
     "link": null,
     // 协同相关的属性
     "seed": 1727948779,
@@ -97,9 +97,19 @@ Excalidraw 中使用了一个 Scene 静态工具类来专门对元素进行管�
 
 用户指针事件 -> 事件处理 -> 更新元素状态 -> componentDidUpdate -> renderScene -> renderElements
 
+## 手写风格
+
+基于rough.js, 需要处理线/圆/文字
+
+- 书写的时候最后一个点不与第一个点相连，而是与第二个点连接，看起来就会有一些毛刺的感觉
+
+![](https://cdn.jsdelivr.net/gh/chenxiaoyao6228/cloudimg@main/2023/excalidraw-roughjs.png)
+
+- 文字手写风格字体库是作者联系了一个开源很久的字体库的作者实现的，并且其他很多国家的文字不支持，比如[这里](https://github.com/excalidraw/excalidraw/issues/6394)
+
 ## 状态管理
 
-Excalidraw 自己实现了一个类似 Redux 的状态管理库 ActionManager, 通过 actionManager.dispatch(action)来更新状态。
+Excalidraw 自己实现了一个类似 Redux 的状态管理库 ActionManager.
 
 Action： register 为提供的一个简易的注册接口，把所有的 action 收集起来到一个数组里面、
 
@@ -220,7 +230,7 @@ return window.crypto.subtle.decrypt(
 
 协同的难点之一在于冲突解决，主要有新增/删除/编辑三种情况
 
-1. 新增
+1. 新增/编辑
 
 Excalidraw为每个元素添加了id以及version属性
 
@@ -231,11 +241,17 @@ Excalidraw为每个元素添加了id以及version属性
 
 2. 删除
 
-如果用户A删除了其中的一个元素，就会标记为删除，这样如果此时用户 B更新了此元素，该元素也不会无缘无故从画布中蹦出来
+如果用户A删除了其中的一个元素， 传输过来的数据就没有当前元素了, id和version失效。
+
+因此excalidraw添加了一个isDeleted字段，通过这种软删除的形式实现删除效果。
 
 ![](https://cdn.jsdelivr.net/gh/chenxiaoyao6228/cloudimg@main/2023/excalidraw-collab-delete.png)
 
-1. 并行编辑
+3. 多人同时编辑
+
+作者的观察是: 在一个多人协作的白板中，你可以看到多人的鼠标，但是你不太会在同一个画布上进行绘制( 比如教师讲课的时候)
+
+但Excalidraw还是通过技术手段解决了这个冲突，Excalidraw给每个元素都增加了一个versionNonce字段。每次只要version增加了，都将versionNonce设置成一个随机整数。在合并的时候，如果遇到version相同的两个元素，则保留值较小的versionNonce对应的状态.
 
 
 ## 撤销重做
@@ -247,6 +263,17 @@ Excalidraw为每个元素添加了id以及version属性
 - renderScene 防抖
 - 使用离屏 Canvas 缓存元素，然后再通过 ctx.drawImage 绘制图像到画布上
 
+
+## 文件管理
+
+有几个比较新的文件 API
+- window.showOpenFilePicker: 允许网页应用程序弹出浏览器的文件保存对话框，以便用户选择文件的保存位置和名称,提供更多的文件命名和保存位置的控制，使用户能够更好地管理保存的文件
+- window.showSaveFilePicker: 允许网页应用程序弹出浏览器的文件保存对话框，以便用户选择文件的保存位置和名称,可以提供更多的文件命名和保存位置的控制，
+- window.showDirectoryPicker: 允许网页应用程序通过浏览器的目录选择对话框让用户选择一个目录,提供了更好的目录选择体验，使用户能够方便地选择目录而不必手动输入路径
+-DataTransferItem.getAsFileSystemHandle: 允许你从拖放操作中获取数据，并将其转换为 FileSystemHandle 对象.
+
+可以兼容性都不太好，如果需要用的话目前建议使用GoogleChromeLabs开源的[browser-fs-access](https://github.com/GoogleChromeLabs/browser-fs-access)
+
 ## 其他
 
 ### 层级管理
@@ -255,6 +282,11 @@ Excalidraw为每个元素添加了id以及version属性
 
 ![](https://cdn.jsdelivr.net/gh/chenxiaoyao6228/cloudimg@main/2023/excalidraw-zIndex.png)
 
+
+
+### 插件系统
+
+[具体参见这里](https://libraries.excalidraw.com/?theme=light&sort=default)
 ### 开发环境通过 Object.defineProperties 暴露状态方便测试
 
 也方便判断是哪个 setState 触发了 componentDidUpdate
