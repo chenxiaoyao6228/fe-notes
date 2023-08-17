@@ -2,7 +2,7 @@
 
 在日常的网页开发中，经常会遇到需要保持元素宽高比例不变的需求，尤其是在屏幕宽度调整或容器尺寸变化的情况下，比如要保持图片的宽高比例不变。
 
-👉[在线效果预览](https://chenxiaoyao6228.github.io/html-preview/?https://github.com/chenxiaoyao6228/fe-notes/blob/main/HTML_CSS/_demo/css-keep-ratio/index.html)
+👉[在线效果预览](https://chenxiaoyao6228.github.io/html-preview/?https://github.com/chenxiaoyao6228/fe-notes/blob/main/HTML_CSS/_demo/css-keep-ratio/index.html), 拖拽浏览器窗口查看效果
 
 ## 实现
 
