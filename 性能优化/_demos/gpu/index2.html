@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Canvas Rectangles Performance Demo</title>
+    <style>
+      body {
+        margin: 0;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+        font-family: Arial, sans-serif;
+      }
+      canvas {
+        border: 1px solid #000;
+        cursor: grab;
+      }
+      .controls {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      .indicator {
+        margin-top: 10px;
+        display: flex;
+        p {
+          margin-left: 10px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="controls">
+      <label for="rectCount">Number of Rectangles:</label>
+      <input type="number" id="rectCount" value="10000" />
+      <button class="acceleration-toggle">Toggle Hardware Acceleration</button>
+    </div>
+    <canvas id="canvas"></canvas>
+    <div class="indicator">
+      <p id="fps">FPS: -</p>
+    </div>
+
+    <script>
+      const canvas = document.getElementById("canvas");
+      const ctx = canvas.getContext("2d");
+      let rectangles = [];
+      let dragging = false;
+      let offsetX, offsetY;
+      let draggedRectangles = [];
+      let axisX = 0;
+      let axisY = 0;
+      let useHardwareAcceleration = true;
+      let fps = 0;
+      let lastRenderTime = 0;
+
+      const accelerationToggle = document.querySelector(".acceleration-toggle");
+      const rectCountInput = document.getElementById("rectCount");
+      const fpsIndicator = document.getElementById("fps");
+      const draggingIndicator = document.getElementById("dragging");
+
+      const debounce = (fn, timeout) => {
+        let timer = null;
+        return function () {
+          const context = this;
+          const args = arguments;
+          if (timer) {
+            cancelAnimationFrame(timer);
+          }
+          const start = performance.now();
+          function tick() {
+            if (performance.now() - start >= timeout) {
+              fn.apply(context, args);
+            } else {
+              timer = requestAnimationFrame(tick);
+            }
+          }
+          timer = requestAnimationFrame(tick);
+        };
+      };
+
+      function clearCanvas() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+      }
+
+      function generateRectangles(count) {
+        rectangles = [];
+        for (let i = 0; i < count; i++) {
+          const x = Math.random() * canvas.width;
+          const y = Math.random() * canvas.height;
+          const width = Math.random() * 100 + 20;
+          const height = Math.random() * 100 + 20;
+          rectangles.push({ x, y, width, height });
+        }
+      }
+
+      function drawRectangles() {
+        console.log("rectangles.length", rectangles.length);
+        for (const rect of rectangles) {
+          ctx.strokeStyle = `rgba(${Math.random() * 255}, ${
+            Math.random() * 255
+          }, ${Math.random() * 255}, 0.8)`;
+          ctx.strokeRect(rect.x, rect.y, rect.width, rect.height);
+        }
+      }
+
+      function drawAxis() {
+        // Draw axis
+        ctx.strokeStyle = "#333";
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.moveTo(axisX, 0);
+        ctx.lineTo(axisX, canvas.height);
+        ctx.moveTo(0, axisY);
+        ctx.lineTo(canvas.width, axisY);
+        ctx.stroke();
+      }
+
+      function _draw() {
+        clearCanvas();
+        drawRectangles();
+        drawAxis();
+      }
+
+      const draw = debounce(_draw, 1000 / 60);
+
+      function updateFPS() {
+        const currentTime = performance.now();
+        const deltaTime = currentTime - lastRenderTime;
+        fps = Math.round(1000 / deltaTime);
+        lastRenderTime = currentTime;
+        fpsIndicator.textContent = `FPS: ${fps}`;
+        requestAnimationFrame(updateFPS);
+      }
+
+      canvas.addEventListener("mousedown", (event) => {
+        dragging = true;
+        offsetX = event.clientX - rectangles[0].x;
+        offsetY = event.clientY - rectangles[0].y;
+        canvas.style.cursor = "grabbing";
+      });
+
+      canvas.addEventListener("mousemove", (event) => {
+        if (dragging) {
+          const mouseX = event.clientX;
+          const mouseY = event.clientY;
+          for (const rect of rectangles) {
+            rect.x = mouseX - offsetX;
+            rect.y = mouseY - offsetY;
+          }
+          axisX = mouseX - offsetX;
+          axisY = mouseY - offsetY;
+          draw();
+        }
+      });
+
+      canvas.addEventListener("mouseup", () => {
+        dragging = false;
+        canvas.style.cursor = "grab";
+      });
+
+      accelerationToggle.addEventListener("click", () => {
+        useHardwareAcceleration = !useHardwareAcceleration;
+        if (useHardwareAcceleration) {
+          canvas.style.willChange = "transform";
+          accelerationToggle.textContent = "Disable Hardware Acceleration";
+        } else {
+          canvas.style.willChange = "auto";
+          accelerationToggle.textContent = "Enable Hardware Acceleration";
+        }
+      });
+
+      rectCountInput.addEventListener("change", () => {
+        const rectCount = parseInt(rectCountInput.value);
+        generateRectangles(rectCount);
+      });
+
+      window.addEventListener("resize", () => {
+        canvas.width = window.innerWidth - 20;
+        canvas.height = window.innerHeight - 100;
+        drawRectangles();
+      });
+
+      canvas.width = window.innerWidth - 20;
+      canvas.height = window.innerHeight - 100;
+      generateRectangles(10000);
+      draw();
+
+    //   updateFPS();
+    </script>
+  </body>
+</html>

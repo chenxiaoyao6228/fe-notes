@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Canvas Rectangles Demo</title>
+    <style>
+      body {
+        margin: 0;
+        overflow: hidden;
+      }
+      canvas {
+        border: 1px solid #000;
+        cursor: grab;
+      }
+      .acceleration-toggle {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        padding: 5px 10px;
+        background-color: #333;
+        color: #fff;
+        cursor: pointer;
+      }
+    </style>
+  </head>
+  <body>
+    <button class="acceleration-toggle">开启硬件加速</button>
+    <canvas id="canvas"></canvas>
+
+    <script>
+      const canvas = document.getElementById("canvas");
+      const ctx = canvas.getContext("2d");
+      let rectangles = [];
+      let dragging = false;
+      let offsetX, offsetY;
+      let draggedRectangles = [];
+
+      const accelerationToggle = document.querySelector(".acceleration-toggle");
+      let useHardwareAcceleration = true;
+
+      function clearCanvas() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+      }
+
+      function generateRectangles(count) {
+        rectangles = [];
+        for (let i = 0; i < count; i++) {
+          const x = Math.random() * canvas.width;
+          const y = Math.random() * canvas.height;
+          const width = Math.random() * 100 + 20;
+          const height = Math.random() * 100 + 20;
+          rectangles.push({ x, y, width, height });
+        }
+        draw();
+      }
+
+      function draw() {
+        clearCanvas();
+        drawRectangles();
+        drawAxis();
+        // requestAnimationFrame(draw);
+      }
+
+      function drawAxis() {
+        ctx.strokeStyle = "blue";
+        ctx.lineWidth = 10;
+
+        // Draw the vertical line of the cross
+        ctx.save()
+        ctx.beginPath();
+        ctx.moveTo(canvas.width / 2, 0);
+        ctx.lineTo(canvas.width / 2, canvas.height);
+        ctx.stroke();
+
+        // Draw the horizontal line of the cross
+        ctx.beginPath();
+        ctx.moveTo(0, canvas.height / 2);
+        ctx.lineTo(canvas.width, canvas.height / 2);
+        ctx.stroke();
+        ctx.restore();
+      }
+
+      function drawRectangles() {
+        clearCanvas();
+        for (const rect of rectangles) {
+          ctx.save();
+          ctx.strokeStyle = `rgba(${Math.random() * 255}, ${
+            Math.random() * 255
+          }, ${Math.random() * 255}, 0.8)`;
+          ctx.strokeRect(rect.x, rect.y, rect.width, rect.height);
+          ctx.restore();
+        }
+      }
+
+      canvas.addEventListener("mousedown", (event) => {
+        const mouseX = event.clientX;
+        const mouseY = event.clientY;
+        for (const rect of rectangles) {
+          if (
+            mouseX >= rect.x &&
+            mouseX <= rect.x + rect.width &&
+            mouseY >= rect.y &&
+            mouseY <= rect.y + rect.height
+          ) {
+            dragging = true;
+            draggedRectangles.push(rect);
+            offsetX = mouseX - rect.x;
+            offsetY = mouseY - rect.y;
+            canvas.style.cursor = "grabbing";
+            break;
+          }
+        }
+      });
+
+      canvas.addEventListener("mousemove", (event) => {
+        if (dragging) {
+          const mouseX = event.clientX;
+          const mouseY = event.clientY;
+          for (const rect of draggedRectangles) {
+            rect.x = mouseX - offsetX;
+            rect.y = mouseY - offsetY;
+          }
+          draw();
+        }
+      });
+
+      canvas.addEventListener("mouseup", () => {
+        dragging = false;
+        draggedRectangles = [];
+        canvas.style.cursor = "grab";
+      });
+
+      accelerationToggle.addEventListener("click", () => {
+        useHardwareAcceleration = !useHardwareAcceleration;
+        if (useHardwareAcceleration) {
+          canvas.style.willChange = "transform";
+          accelerationToggle.textContent = "开启硬件加速";
+        } else {
+          canvas.style.willChange = "auto";
+          accelerationToggle.textContent = "关闭硬件加速";
+        }
+      });
+
+      // Initial canvas size setup
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight - 40; // Adjust for the button height
+      generateRectangles(500000);
+
+      // Update canvas size on window resize
+      window.addEventListener("resize", () => {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight - 40; // Adjust for the button height
+        draw();
+      });
+    </script>
+  </body>
+</html>
