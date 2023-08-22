@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>beforeunload事件演示</title>
+</head>
+<body>
+  <h1>beforeunload事件演示</h1>
+  <p>输入字符后尝试刷新页面</p>
+  
+  <form>
+    <input type="text" id="textInput" placeholder="输入一些内容...">
+  </form>
+  
+  <script>
+    // 添加beforeunload事件监听器
+    window.addEventListener('beforeunload', function(event) {
+      // 取消事件以阻止浏览器的默认行为
+      event.preventDefault();
+      // Chrome要求返回值来显示确认对话框
+      event.returnValue = '';
+    });
+  </script>
+</body>
+</html>
