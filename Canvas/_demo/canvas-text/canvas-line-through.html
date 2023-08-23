@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Canvas Text Line-Through Demo</title>
+<style>
+  body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+  }
+  canvas {
+    border: 1px solid black;
+  }
+</style>
+</head>
+<body>
+<canvas id="demoCanvas" width="400" height="100"></canvas>
+
+<script>
+  const canvas = document.getElementById("demoCanvas");
+  const ctx = canvas.getContext("2d");
+
+//   const text = "Text with Line-Through";
+  const text = "日";
+
+  ctx.font = "24px Arial";
+  ctx.textBaseline = "middle";
+
+  // Draw the text
+  ctx.fillText(text, 20, canvas.height / 2);
+
+  // Draw the line-through effect
+  const textMetrics = ctx.measureText(text);
+  const lineY = canvas.height / 2;
+  ctx.beginPath();
+  ctx.moveTo(20, lineY);
+  ctx.lineTo(20 + textMetrics.width, lineY);
+  ctx.strokeStyle = "red";
+  ctx.lineWidth = 2;
+  ctx.stroke();
+</script>
+</body>
+</html>

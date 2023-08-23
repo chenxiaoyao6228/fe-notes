@@ -26,13 +26,22 @@
 而如果是父元素定宽，在子元素上设置 margin 值的话，子元素可视尺寸变了，宽度表现为 340px!
 
 ```html
-// html
 <div class="box-outer">
   <div class="box-inner"></div>
 </div>
+```
 
-// css .box-outer { width: 300px; height: 200px; background: gold; } .box-inner
-{ height:100%; background: green; margin: 0 -20px; }
+```css
+.box-outer {
+  width: 300px;
+  height: 200px;
+  background: gold;
+}
+.box-inner {
+  height: 100%;
+  background: green;
+  margin: 0 -20px;
+}
 ```
 
 👉 [在线效果预览](https://chenxiaoyao6228.github.io/html-preview/?https://github.com/chenxiaoyao6228/fe-notes/blob/main/HTML_CSS/_demo/css-equal-height/1.html)

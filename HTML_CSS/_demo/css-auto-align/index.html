@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      .btn {
+        margin-bottom: 20px;
+        display: block;
+      }
+      .wrap {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(86px, 1fr));
+        gap: 10px;
+        border: 1px solid #ccc;
+      }
+
+      .box {
+        width: 86px;
+        height: 76px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        padding: 8px 6px;
+      }
+      .box1 {
+        background-color: aquamarine;
+      }
+      .box2 {
+        background-color: aqua;
+      }
+      .box3 {
+        background-color: rgb(227, 143, 33);
+      }
+
+      img {
+        width: 28px;
+        height: 28px;
+        border-radius: 4px;
+      }
+
+      .text {
+        text-align: center;
+        font-size: 12px;
+        line-height: 13px;
+        text-align: left;
+        /*  */
+        margin-top: 6px;
+        max-width: 74px;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+      }
+    </style>
+  </head>
+  <body>
+    <p>
+      文字高度不确定，当文字高度超出两行时超出隐藏，当文字高度不确定撑起时，高度较小的盒子内部的元素与较高的盒子顶部对齐
+    </p>
+    <button class="btn">点击切换第三个box的内容</button>
+    <div class="wrap">
+      <div class="box box1">
+        <img src="../../../../cloudimg/2023/user-drag.png" alt="" />
+        <div class="text">tab1</div>
+      </div>
+      <div class="box box2">
+        <img src="../../../../cloudimg/2023/user-drag.png" alt="" />
+        <div class="text">tab2</div>
+      </div>
+      <div class="box box3">
+        <img src="../../../../cloudimg/2023/user-drag.png" alt="" />
+        <div class="text">tab3</div>
+      </div>
+    </div>
+    <script>
+      document.querySelector(".btn").addEventListener("click", function () {
+        const content = document.querySelector(".box3 .text").textContent;
+        if (content === "tab3") {
+          document.querySelector(".box3 .text").textContent =
+            "tab3 super long text overflow hidden";
+        } else {
+          document.querySelector(".box3 .text").textContent = "tab3";
+        }
+      });
+    </script>
+  </body>
+</html>
