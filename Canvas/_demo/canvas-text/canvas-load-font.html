@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Canvas 加载三方字体</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Epilogue&amp;family=Galada&amp;family=Noto+Serif&amp;family=Righteous&amp;family=Roboto+Mono&amp;family=Sawarabi+Mincho&amp;display=swap">
+<style>
+  body {
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #f0f0f0;
+  }
+  canvas {
+    border: 2px solid #333;
+  }
+</style>
+</head>
+<body>
+  <canvas id="myCanvas" width="400" height="200"></canvas>
+  <script>
+    const canvas = document.getElementById('myCanvas');
+    const context = canvas.getContext('2d');
+
+    // Load fonts from Google Fonts API
+    const fontLoader = new FontFace('Sawarabi Mincho', 'url(https://fonts.gstatic.com/s/sawarabimincho/v3/0nknC9ziJOYewAQ.ttf)');
+    fontLoader.load().then((font) => {
+      document.fonts.add(font);
+      drawText();
+    });
+
+    function drawText() {
+      context.clearRect(0, 0, canvas.width, canvas.height);
+
+      context.font = "36px 'Sawarabi Mincho', sans-serif";
+      context.fillStyle = "#333";
+      context.textAlign = "center";
+      context.fillText("Hello Google Fonts!", canvas.width / 2, canvas.height / 2);
+    }
+  </script>
+</body>
+</html>

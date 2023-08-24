@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>websocket server</title>
+  </head>
+  <body>
+    <script>
+      // WebSocket 服务器端代码
+      const serverWebSocket = new WebSocket('ws://echo.websocket.org'); // 替换成你的服务器地址
+
+      serverWebSocket.onopen = (event) => {
+        console.log("Server WebSocket connection opened");
+      };
+
+      serverWebSocket.onmessage = (event) => {
+        console.log("Server received message:", event.data);
+
+        // 向客户端发送消息
+        serverWebSocket.send("Hello from server!");
+      };
+    </script>
+  </body>
+</html>

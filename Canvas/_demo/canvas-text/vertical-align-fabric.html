@@ -1,54 +1,75 @@
 <!DOCTYPE html>
 <html>
-<head>
+  <head>
     <script src="https://cdn.jsdelivr.net/npm/fabric@4.5.0/dist/fabric.min.js"></script>
-</head>
-<body>
+    <style>
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+      }
+    </style>
+  </head>
+  <body>
     <canvas id="canvas" width="400" height="400"></canvas>
     <script>
-        // 初始化 Fabric.js 画布
-        var canvas = new fabric.Canvas('canvas');
+      // 初始化 Fabric.js 画布
+      document.querySelector("#canvas").width = window.innerWidth;
+      document.querySelector("#canvas").height = window.innerHeight;
 
-        // 创建网格背景
-        for (var i = 0; i < canvas.width; i += 20) {
-            canvas.add(new fabric.Line([i, 0, i, canvas.height], { stroke: '#ccc', selectable: false }));
-        }
-        for (var i = 0; i < canvas.height; i += 20) {
-            canvas.add(new fabric.Line([0, i, canvas.width, i], { stroke: '#ccc', selectable: false }));
-        }
+      var canvas = new fabric.Canvas("canvas");
 
-        // 创建多行文本对象
-        var multiLineText = new fabric.Textbox('垂直对齐\n多行文字', {
-            left: 50,
-            top: 50,
-            width: 150,
-            fontSize: 16,
-            textAlign: 'center',
-            verticalAlign: 'middle', // 设置垂直对齐为居中
-            backgroundColor: 'rgba(255, 0, 0, 0.2)', // 添加背景
-        });
+      // 创建网格背景
+      for (var i = 0; i < canvas.width; i += 20) {
+        canvas.add(
+          new fabric.Line([i, 0, i, canvas.height], {
+            stroke: "#ccc",
+            selectable: false,
+          })
+        );
+      }
+      for (var i = 0; i < canvas.height; i += 20) {
+        canvas.add(
+          new fabric.Line([0, i, canvas.width, i], {
+            stroke: "#ccc",
+            selectable: false,
+          })
+        );
+      }
 
-        // 创建单行文本对象
-        var singleLineText = new fabric.Text('单行文字', {
-            left: 250,
-            top: 50,
-            fontSize: 16,
-            textAlign: 'center',
-            backgroundColor: 'rgba(0, 0, 255, 0.2)', // 添加背景
-        });
-        
-        var singleLineTextEn = new fabric.Text('singleLineText', {
-            left: 250,
-            top: 150,
-            fontSize: 16,
-            textAlign: 'center',
-            backgroundColor: 'rgba(0, 0, 255, 0.2)', // 添加背景
-        });
+      // 创建多行文本对象
+      //   var multiLineText = new fabric.Textbox("垂直对齐\n多行文字", {
+      //     left: 50,
+      //     top: 50,
+      //     width: 150,
+      //     fontSize: 100,
+      //     textAlign: "center",
+      //     verticalAlign: "middle", // 设置垂直对齐为居中
+      //     backgroundColor: "rgba(255, 0, 0, 0.2)", // 添加背景
+      //   });
 
-        // 将文本对象添加到画布
-        canvas.add(multiLineText);
-        canvas.add(singleLineText);
-        canvas.add(singleLineTextEn);
+      //   // 创建单行文本对象
+      //   var singleLineText = new fabric.Text("单行文字", {
+      //     left: 500,
+      //     top: 50,
+      //     fontSize: 100,
+      //     textAlign: "center",
+      //     backgroundColor: "rgba(0, 0, 255, 0.2)", // 添加背景
+      //   });
+
+      var singleLineTextEn = new fabric.Text("singleLineText", {
+        left: 0,
+        top: 0,
+        fontSize: 96,
+        lineHeight: 1.25,
+        textAlign: "center",
+        backgroundColor: "rgba(0, 0, 255, 0.2)", // 添加背景
+      });
+
+      // 将文本对象添加到画布
+      //   canvas.add(multiLineText);
+      //   canvas.add(singleLineText);
+      canvas.add(singleLineTextEn);
     </script>
-</body>
+  </body>
 </html>

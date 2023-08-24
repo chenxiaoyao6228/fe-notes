@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Canvas不同字体下textBaseline:middle的效果</title>
+    <style>
+      canvas {
+      }
+    </style>
+  </head>
+  <body>
+    <canvas id="myCanvas" width="800" height="600"></canvas>
+    <script>
+      const canvas = document.getElementById("myCanvas");
+      const ctx = canvas.getContext("2d");
+
+      document.querySelector("#myCanvas").width = window.innerWidth;
+      document.querySelector("#myCanvas").height = window.innerHeight;
+
+      let cordX = 0;
+      let cordY = 0;
+
+      const elements = [];
+
+      const fontList = [
+        "Virgil",
+        "Roboto",
+        "Roboto Mono",
+        "Noto Serif",
+        "Righteous",
+        "Galada",
+        "Epilogue",
+        "Sawarabi Mincho",
+      ];
+
+      for (let index = 0; index < fontList.length - 1; index++) {
+        const font = fontList[index];
+        const element = newTextElement({
+          x: 400,
+          y: cordY + 100 * (index + 1),
+          text: `${font}: x 日`,
+          font: `96px ${font}`,
+        });
+        elements.push(element);
+      }
+
+      function newTextElement(element) {
+        return { ...element };
+      }
+
+      function renderScene() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        for (let i = 0; i < elements.length - 1; i++) {
+          const element = elements[i];
+          renderTextElement(element);
+          renderLineForText(element);
+        }
+      }
+
+      function renderTextElement(element) {
+        ctx.save();
+        ctx.font = element.font;
+        ctx.fillStyle = "black";
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+        // 重点
+        fix = ctx.measureText(element.text).actualBoundingBoxDescent / 2;
+        ctx.fillText(element.text, element.x, element.y + fix / 2);
+        ctx.restore();
+      }
+
+      function renderLineForText(element) {
+        ctx.save();
+        ctx.fillStyle = "red";
+        ctx.lineWidth = 1;
+        ctx.fillRect(0, element.y - 1, window.innerWidth, 2);
+        ctx.restore();
+      }
+
+      function init() {
+        renderScene();
+      }
+
+      init();
+    </script>
+  </body>
+</html>

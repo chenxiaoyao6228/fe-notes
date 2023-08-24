@@ -3,28 +3,30 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>canvas textAlign textBaseline</title>
+    <title>canvas textAlign textBaseline Demo</title>
     <style></style>
   </head>
   <body>
     <canvas id='canvas' width='780' height='440'></canvas>
     <script>
       let canvas = document.getElementById("canvas"),
-        context = canvas.getContext("2d"),
-        fontHeight = 24,
-        alignValues = ["start", "center", "end"],
-        baselineValues = [
-          "top",
-          "middle",
-          "bottom",
-          "alphabetic",
-          "ideographic",
-          "hanging",
-        ],
-        x,
-        y;
-
-
+      context = canvas.getContext("2d"),
+      fontHeight = 50,
+      alignValues = ["start", "center", "end"],
+      baselineValues = [
+        "top",
+        "middle",
+        "bottom",
+        "alphabetic",
+        "ideographic",
+        "hanging",
+      ],
+      x,
+      y;
+      
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+      
       function drawGrid(color, stepx, stepy) {
         context.save();
 
@@ -74,7 +76,11 @@
       }
 
 
-      context.font = "oblique normal bold 24px palatino";
+      // context.font = "bold 50px Virgil";
+      // context.font = "bold 50px palatino";
+      // context.font = "bold 50px Cascadia";
+      // context.font = "bold 50px Helvetica";
+      context.font = "bold 50px serif";
 
       drawGrid("lightgray", 10, 10);
 
@@ -84,7 +90,7 @@
           y = 20 + baseline * fontHeight * 3;
 
           drawText(
-            alignValues[align] + "/" + baselineValues[baseline],
+            alignValues[align] + "/" + baselineValues[baseline] + '/ x',
             alignValues[align],
             baselineValues[baseline]
           );

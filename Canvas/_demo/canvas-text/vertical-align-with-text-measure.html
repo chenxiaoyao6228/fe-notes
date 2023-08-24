@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>canvas { border: 1px solid rgb(5, 24, 17); }</style>
+  </head>
+  <body>
+    <label
+      >Text content:
+      <input type="text" value="日" /></label
+    ><br />
+    <label>Padding: <input type="range" min="0" max="100" /></label><br />
+    <canvas></canvas>
+    <script>
+      const text_input = document.querySelector("input[type='text']");
+      const padding_input = document.querySelector("input[type='range']");
+      const canvas = document.querySelector("canvas");
+      const ctx = canvas.getContext("2d");
+      //   const font = "96px sans-serif";
+      //   const font = "96px Roboto Mono";
+      // const font = "196px Roboto";
+      const font = "196px Epilogue";
+      // const font = "196px Epilogue";
+      let padding_x = 0;
+      let padding_y = 0;
+
+      text_input.oninput = padding_input.oninput = (evt) =>
+        drawText(text_input.value);
+
+      drawText(text_input.value);
+
+      // returns an easier to use BBox like object from a TextMetrics object
+      function getTextBBox(ctx, text) {
+        const metrics = ctx.measureText(text);
+        const left = metrics.actualBoundingBoxLeft * -1;
+        const top = metrics.actualBoundingBoxAscent * -1;
+        const right = metrics.actualBoundingBoxRight;
+        const bottom = metrics.actualBoundingBoxDescent;
+        const width = right - left;
+        const height = bottom - top;
+        return { left, top, right, bottom, width, height };
+      }
+
+      function drawText(text) {
+        // we set only the font  other values like textBaseline and textAlign are left to their default
+        ctx.font = font;
+        const bbox = getTextBBox(ctx, text);
+        const padding = +padding_input.value;
+        
+        canvas.width = bbox.width + padding;
+        canvas.height = bbox.height + padding;
+
+        ctx.font = font;
+        ctx.fillStyle = "#F9A403";
+
+        const middle_x = bbox.left + bbox.width / 2;
+        const middle_y = bbox.top + bbox.height / 2;
+
+        const left = canvas.width / 2 - middle_x;
+        const top = canvas.height / 2 - middle_y;
+
+        ctx.fillText(text, left, top);
+
+        // draw the middle line for reference
+        ctx.fillStyle = "red";
+        // ctx.fillRect(0, canvas.height / 2 - 1, canvas.width, 2);
+        ctx.fillRect(0, canvas.height / 2 , canvas.width, 1);
+      }
+    </script>
+  </body>
+</html>
