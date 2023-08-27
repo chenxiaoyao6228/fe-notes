@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>不同字体的content-area</title>
+    <style>
+      html,
+      body,
+      p {
+        margin: 0;
+        padding: 0;
+      }
+      p {
+        font-size: 0;
+        vertical-align: top;
+      }
+      span {
+        font-size: 100px;
+        line-height: 1;
+
+      }
+      .a {
+        font-family: Helvetica;
+      }
+      .b {
+        font-family: Cursive;
+      }
+      .c {
+        font-family: Fantasy;
+      }
+    </style>
+  </head>
+  <body>
+    <p>
+      <span class="a">xfg</span>
+      <span class="b">xfg</span>
+      <span class="c">xfg</span>
+    </p>
+    <label for="alignment-select">选择垂直对齐方式：</label>
+    <select id="alignment-select">
+      <option value="baseline">baseline</option>
+      <option value="top">top</option>
+      <option value="middle">middle</option>
+      <option value="bottom">bottom</option>
+    </select>
+    <script>
+      const selectElement = document.getElementById("alignment-select");
+      const textElement = document.querySelector(".selected-style");
+
+      // 添加事件监听器，当选择发生变化时更新样式
+      selectElement.addEventListener("change", function () {
+        const selectedValue = selectElement.value;
+        document.querySelector('span').style.verticalAlign = selectedValue;
+      });
+    </script>
+  </body>
+</html>

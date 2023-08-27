@@ -3,35 +3,44 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
-    <style>canvas { border: 1px solid rgb(5, 24, 17); }</style>
+    <title>Text measure实现文本垂直居中</title>
+    <style>
+      canvas {
+        border: 1px solid rgb(5, 24, 17);
+      }
+    </style>
   </head>
   <body>
-    <label
-      >Text content:
-      <input type="text" value="日" /></label
-    ><br />
-    <label>Padding: <input type="range" min="0" max="100" /></label><br />
+    <label>Text content: <input type="text" value="日" /></label>
+    <br />
+    <label>Padding: <input type="range" min="0" max="100" /></label>
+    <br />
+    <label for="fontSelector"
+      >Font:
+      <select id="fontSelector">
+        <option value="sans-serif">Sans-serif</option>
+        <option value="serif">Serif</option>
+        <option value="monospace">Monospace</option>
+        <option value="cursive">Cursive</option>
+        <option value="fantasy">Fantasy</option>
+      </select>
+    </label>
+    <br />
     <canvas></canvas>
     <script>
-      const text_input = document.querySelector("input[type='text']");
-      const padding_input = document.querySelector("input[type='range']");
+      const textInput = document.querySelector("input[type='text']");
+      const paddingInput = document.querySelector("input[type='range']");
+      const fontSelector = document.querySelector("#fontSelector");
       const canvas = document.querySelector("canvas");
       const ctx = canvas.getContext("2d");
-      //   const font = "96px sans-serif";
-      //   const font = "96px Roboto Mono";
-      // const font = "196px Roboto";
-      const font = "196px Epilogue";
-      // const font = "196px Epilogue";
-      let padding_x = 0;
-      let padding_y = 0;
+      const fontSize = 196;
+      let font = `${fontSize}px ${fontSelector.value}`;
+      let text = textInput.value;
+      let paddingX = 0;
+      let paddingY = 0;
 
-      text_input.oninput = padding_input.oninput = (evt) =>
-        drawText(text_input.value);
+      draw();
 
-      drawText(text_input.value);
-
-      // returns an easier to use BBox like object from a TextMetrics object
       function getTextBBox(ctx, text) {
         const metrics = ctx.measureText(text);
         const left = metrics.actualBoundingBoxLeft * -1;
@@ -43,31 +52,51 @@
         return { left, top, right, bottom, width, height };
       }
 
-      function drawText(text) {
-        // we set only the font  other values like textBaseline and textAlign are left to their default
+      function draw() {
+        drawText();
+        drawLineThrough();
+      }
+
+      function drawText() {
+        ctx.save();
+        
         ctx.font = font;
         const bbox = getTextBBox(ctx, text);
-        const padding = +padding_input.value;
-        
+        const padding = +paddingInput.value;
         canvas.width = bbox.width + padding;
         canvas.height = bbox.height + padding;
 
         ctx.font = font;
         ctx.fillStyle = "#F9A403";
 
-        const middle_x = bbox.left + bbox.width / 2;
-        const middle_y = bbox.top + bbox.height / 2;
+        const middleX = bbox.left + bbox.width / 2;
+        const middleY = bbox.top + bbox.height / 2;
 
-        const left = canvas.width / 2 - middle_x;
-        const top = canvas.height / 2 - middle_y;
+        const left = canvas.width / 2 - middleX;
+        const top = canvas.height / 2 - middleY;
 
         ctx.fillText(text, left, top);
-
-        // draw the middle line for reference
-        ctx.fillStyle = "red";
-        // ctx.fillRect(0, canvas.height / 2 - 1, canvas.width, 2);
-        ctx.fillRect(0, canvas.height / 2 , canvas.width, 1);
+        ctx.restore();
       }
+
+      function drawLineThrough() {
+        ctx.save();
+        ctx.fillStyle = "red";
+        ctx.fillRect(0, canvas.height / 2, canvas.width, 1);
+        ctx.restore();
+      }
+
+      function handleTextInput(evt) {
+        text = textInput.value;
+        draw();
+      }
+
+      textInput.addEventListener("input", handleTextInput);
+      paddingInput.addEventListener("input", handleTextInput);
+      fontSelector.addEventListener("change", (evt) => {
+        font = `${fontSize}px ${fontSelector.value}`;
+        draw();
+      });
     </script>
   </body>
 </html>
