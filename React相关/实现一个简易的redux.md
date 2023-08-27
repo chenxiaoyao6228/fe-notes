@@ -1,13 +1,3 @@
----
-permalink: 2019-07-13-build-a-simple-redux
-title: 实现一个简易的redux
-date: 2019-07-13
-categories:
-  - tech
-tags:
-  - react
-  - redux
----
 
 ## 前言
 

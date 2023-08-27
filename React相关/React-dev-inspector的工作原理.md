@@ -1,6 +1,7 @@
 ## 前言
 
 由于中项目模块组件繁多，为了在面对部署模块的 bug 的时候能够快速找到对应的组件，内部统一使用了 React-dev-inspector 作为组件审查工具。
+
 [体验地址](https://react-dev-inspector.zthxxx.me/)，本文来简单分析一下其工作原理以及启发:
 
 - 接入步骤
@@ -75,7 +76,7 @@ REACT_EDITOR=code // 指定对应的editor
 
 主要是遍历项目组件的 JSX 元素，分别加上必要的组件名, 代码行数等参数, 最终构建出来的组件的 html 是这样的
 
-![](https://cdn.jsdelivr.net/gh/chenxiaoyao6228/cloudimg@main/2019/10/2019-10-29-13-33-36.png)
+![](https://cdn.jsdelivr.net/gh/chenxiaoyao6228/cloudimg@main/2023/react-dev-inspector-babel.png)
 
 主要修改了JSX 中的JSXOpeningElement类型节点
 ```tsx
@@ -113,7 +114,7 @@ const doJSXOpeningElement: NodeHandler<JSXOpeningElement, { relativePath: string
 
 运行时监听用户的操作，弹出遮罩层以及在用户点击的时候发送向 dev-server 发起一个打开浏览器的请求， 通过浏览器可以看到发出的请求
 
-![](https://cdn.jsdelivr.net/gh/chenxiaoyao6228/cloudimg@main/2019/10/2019-10-29-13-33-36.png)
+![](https://cdn.jsdelivr.net/gh/chenxiaoyao6228/cloudimg@main/2023/react-dev-inspector-request.png)
 
 - webpack 构建：启动 react‐dev‐utils 里的一个中间件,监听一个特定的路径,在本机服务端执行打开 VSCode 的指令
 

@@ -1,13 +1,3 @@
----
-title: 实现react-router
-date: 2019-06-15
-categories:
-  - tech
-tags:
-  - react
-permalink: 2019-06-15-implement-react-router
----
-
 ## 路由的原理
 
 路由的实现有两种方式， 一种是老式的基于 location.hash 路由，兼容绝大部分浏览器， 一种是基于 history api 的新式路由。
