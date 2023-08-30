@@ -4,7 +4,7 @@
 
 - HTML 属性尺寸
 - CSS 尺寸
-- Canvas 模糊的问题(设备物理像素/设备独立像素/DPI/像素分辨率/)
+- Canvas 模糊的问题
 
 ## HTML 尺寸
 
@@ -97,6 +97,12 @@ ctx.scale(scale, scale); // 缩放修正
 ![](https://cdn.jsdelivr.net/gh/chenxiaoyao6228/cloudimg@main/2023/canvas-size-blur-2.png)
 
 👉 [在线效果预览](https://chenxiaoyao6228.github.io/html-preview/?https://github.com/chenxiaoyao6228/fe-notes/blob/main/Canvas/_demo/canvas-size/html-css-size-3.html)
+
+
+
+
+
+
 
 ## 参考
 

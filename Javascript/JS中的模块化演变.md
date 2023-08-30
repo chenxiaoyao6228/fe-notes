@@ -7,7 +7,6 @@
   - CJS(CommonJS)
     - package.json 中各种乱七八糟的字段: main, module, exports, browser
     - nodejs 是如何查找模块的
-    - 实现一个模块加载器要注意什么 => 参考 angularJS 中的模块化实现
   - CMD(requireJS)
   - AMD(seaJS)
   - UMD
@@ -559,25 +558,6 @@ import { default as myModule } from "my-library";
 
 ### package.json 中的 umd:main 字段
 
-### sinonJS 的引入
-
-https://note.youdao.com/s/RF9fMtDt
-
-```js
-import { publishExternalAPI } from "../src/angular_public";
-import { createInjector } from "../src/injector";
-const sinon = require("sinon");
-```
-
-这段代码可以工作，是因为 Node.js 允许在单个文件中混合使用 ES 模块和 CommonJS 模块。在此代码片段中，使用 import 语句导入使用 ECMAScript 模块的模块，而使用 require 语句导入使用 CommonJS 模块系统的 sinon。 默认情况下，Node.js 将任何以 .js 结尾的文件视为 CommonJS 模块，将任何以 .mjs 结尾的文件视为 ECMAScript 模块。但是，您也可以使用 --experimental-modules 标志，在 .js 扩展名的 Node.js 文件中启用 ECMAScript 模块加载。 需要注意的是，虽然可以混合使用模块系统，但可能会导致混淆和潜在的错误。通常建议在整个应用程序中坚持一种模块系统。
-
-ps: 如果是在 webpack 中打包的话，也是同样可以使用的
-
-### webpack export not found
-
-https://note.youdao.com/s/T5eKdAOF
-
-https://note.youdao.com/s/dbaNuxSi
 
 ### webpack 是如何支持多种文件格式打包的
 
@@ -772,11 +752,6 @@ function loadLocalesInDev() {
   return localMapOfLocaleData;
 }
 ```
-
-### 使用"enhanced-resolve"的包
-
-Jest: Jest is a JavaScript testing framework that uses "enhanced-resolve" for resolving and loading modules.
-
 ## 参考
 
 - [UMD 规范](https://github.com/umdjs/umd/)
