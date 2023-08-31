@@ -1,3 +1,13 @@
+---
+permalink: 2023-05-01--canvas-infinite-canvas
+title: canvas 实现无限画布
+date: 2023-05-01
+categories:
+  - tech
+tags:
+  - canvas
+---
+
 ## 前言
 
 本节我们来了解下如何实现无限画布的定点缩放以及绘制矩形的功能。涉及的知识点如下

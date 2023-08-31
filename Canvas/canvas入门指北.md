@@ -1,3 +1,13 @@
+---
+permalink: 2023-05-01-first-glance
+title: canvas 尺寸
+date: 2023-05-01
+categories:
+  - tech
+tags:
+  - canvas
+---
+
 ## 前言
 
 本节总结了入门canvas绘图中的必须要理解的一些基础概念.

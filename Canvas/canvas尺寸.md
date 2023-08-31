@@ -1,3 +1,13 @@
+---
+permalink: 2023-05-01-canvas-size
+title: canvas 尺寸
+date: 2023-05-01
+categories:
+  - tech
+tags:
+  - canvas
+---
+
 ## 前言
 
 本文大纲：
@@ -97,12 +107,6 @@ ctx.scale(scale, scale); // 缩放修正
 ![](https://cdn.jsdelivr.net/gh/chenxiaoyao6228/cloudimg@main/2023/canvas-size-blur-2.png)
 
 👉 [在线效果预览](https://chenxiaoyao6228.github.io/html-preview/?https://github.com/chenxiaoyao6228/fe-notes/blob/main/Canvas/_demo/canvas-size/html-css-size-3.html)
-
-
-
-
-
-
 
 ## 参考
 

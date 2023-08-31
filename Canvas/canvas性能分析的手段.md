@@ -1,3 +1,13 @@
+---
+permalink: 2023-05-01--canvas-performance
+title: canvas 性能分析的手段
+date: 2023-05-01
+categories:
+  - tech
+tags:
+  - canvas
+---
+
 ## 前言
 
 日常开发中，我们一般使用Performance面板与Memory面板来分析页面的性能问题，但是canvas消耗的主要是 GPU，因此我们还需要其他的辅助手段，这里主要介绍常用的几种性能检测手段

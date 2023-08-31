@@ -1,3 +1,13 @@
+---
+permalink: 2023-05-01--canvas-redo-undo
+title: canvas 实现撤销重做
+date: 2023-05-01
+categories:
+  - tech
+tags:
+  - canvas
+---
+
 ## 前言
 
 本节探究如何实现画板撤销重做的功能
