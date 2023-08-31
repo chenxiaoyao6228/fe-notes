@@ -11,4 +11,8 @@
 
 ## 一些参考资料
 
-[MDN Canvas Tutorial](https://developer.mozilla.org/zh-CN/docs/Web/API/Canvas_API/Tutorial)
+- [MDN Canvas Tutorial](https://developer.mozilla.org/zh-CN/docs/Web/API/Canvas_API/Tutorial)
+
+- [Excalidraw](www.excalidraw.com)
+
+- [FabricJS](http://fabricjs.com)
