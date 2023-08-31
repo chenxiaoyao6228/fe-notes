@@ -19,4 +19,5 @@ refresh token 是专用于刷新 access token 的 token。 如果没有 refresh 
 
 ## 参考
 
-[](https://www.ruanyifeng.com/blog/2018/07/json_web_token-tutorial.html)
+- [](https://www.ruanyifeng.com/blog/2018/07/json_web_token-tutorial.html)
+- [](https://docs.authing.cn/)
