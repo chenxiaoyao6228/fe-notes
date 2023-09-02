@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>自定义二次贝塞尔曲线</title>
+    <style>
+      canvas {
+        border: 1px solid black;
+        position: absolute;
+      }
+    </style>
+  </head>
+  <body>
+    <canvas id="myCanvas" width="600" height="300"></canvas>
+    <script>
+      function drawQuadraticCurve(
+        context,
+        startX,
+        startY,
+        controlX,
+        controlY,
+        endX,
+        endY
+      ) {
+        context.beginPath();
+        context.moveTo(startX, startY);
+        ctx.lineWidth = 20;
+
+        // 计算曲线上的点，通过插值计算
+        for (let t = 0; t <= 1; t += 0.01) {
+          // 可以调整步进值来控制曲线的光滑度
+          const x =
+            (1 - t) ** 2 * startX + 2 * (1 - t) * t * controlX + t ** 2 * endX;
+          const y =
+            (1 - t) ** 2 * startY + 2 * (1 - t) * t * controlY + t ** 2 * endY;
+          context.lineTo(x, y);
+        }
+
+        context.stroke();
+      }
+
+      const canvas = document.getElementById("myCanvas");
+      const ctx = canvas.getContext("2d");
+
+      const startX = 50;
+      const startY = 100;
+      const controlX = 150;
+      const controlY = 30;
+      const endX = 250;
+      const endY = 200;
+
+      drawQuadraticCurve(ctx, startX, startY, controlX, controlY, endX, endY);
+    </script>
+  </body>
+</html>

@@ -1,6 +1,6 @@
 ---
 permalink: 2023-05-01-first-glance
-title: canvas 尺寸
+title: canvas 入门指北
 date: 2023-05-01
 categories:
   - tech

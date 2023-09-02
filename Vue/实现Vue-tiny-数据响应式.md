@@ -1,11 +1,11 @@
 ---
+permalink: 2020-01-24-vue-tiny-reactive-and-setup
+date: 2020-01-24
 title: 实现Vue-tiny-数据响应式
 categories:
   - tech
 tags:
   - vue
-date: 2020-01-24
-permalink: 2020-01-24-vue-tiny-reactive-and-setup
 ---
 
 ## 前言
@@ -307,7 +307,3 @@ createApp(App).mount(document.querySelector("#root"));
 ```
 
 至此,我们的数据更新到模板更新就基本完成了
-
-## 参考
-
-整理自: <https://www.bilibili.com/video/BV1hV411q7S8?p=2>

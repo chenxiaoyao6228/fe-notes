@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>FreeDraw 应用程序</title>
+    <style>
+      body,
+      html {
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+      }
+      #app-container {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+      }
+      #drawing-canvas,
+      #rendering-canvas {
+        border: 1px solid black;
+        position: absolute;
+        width: 100%;
+        height: 100%;
+      }
+      #point-counter {
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        color: white;
+        background-color: rgba(0, 0, 0, 0.5);
+        padding: 5px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="app-container">
+      <!-- 绘图画布 -->
+      <canvas id="rendering-canvas"></canvas>
+      <canvas id="drawing-canvas"></canvas>
+      <!-- 渲染画布 -->
+      <div id="point-counter">当前绘制元素的点数：0</div>
+    </div>
+
+    <script>
+      const appContainer = document.getElementById("app-container");
+      const renderingCanvas = document.getElementById("rendering-canvas");
+      const drawingCanvas = document.getElementById("drawing-canvas");
+      const pointCounter = document.getElementById("point-counter");
+      const renderingCtx = renderingCanvas.getContext("2d");
+      const drawingCtx = drawingCanvas.getContext("2d");
+      let drawing = false;
+      let points = [];
+
+      let appState = {
+        elements: [],
+      };
+
+      // 添加元素到应用程序状态
+      function createElement(points) {
+        const element = {
+          type: "freedraw",
+          points: points,
+        };
+        appState.elements.push(element);
+      }
+
+      // 渲染整个场景
+      function renderScene() {
+        renderingCtx.clearRect(
+          0,
+          0,
+          renderingCanvas.width,
+          renderingCanvas.height
+        );
+        for (const element of appState.elements) {
+          if (element.type === "freedraw") {
+            renderFreedraw(renderingCtx, element.points);
+          }
+        }
+      }
+
+      // 渲染自由绘制路径
+      function renderFreedraw(ctx, points) {
+        if (points.length < 2) {
+          return;
+        }
+        ctx.strokeStyle = "black";
+        ctx.lineWidth = 20;
+        ctx.lineJoin = "round";
+        ctx.lineCap = "round";
+
+        ctx.beginPath();
+        ctx.moveTo(points[0].x, points[0].y);
+
+        for (let i = 1; i < points.length; i++) {
+          const xc = (points[i].x + points[i - 1].x) / 2;
+          const yc = (points[i].y + points[i - 1].y) / 2;
+          ctx.quadraticCurveTo(points[i - 1].x, points[i - 1].y, xc, yc);
+        }
+
+        ctx.stroke();
+      }
+
+      // 事件监听器以跟踪用户手势并在绘图画布上绘制
+      drawingCanvas.addEventListener("pointerdown", (e) => {
+        updatePointCounter(0);
+        drawing = true;
+        points = [];
+        addPoint(e);
+      });
+
+      drawingCanvas.addEventListener("pointermove", (e) => {
+        if (drawing) {
+          addPoint(e);
+          renderFreedraw(drawingCtx, points);
+          updatePointCounter(points.length);
+        }
+      });
+
+      drawingCanvas.addEventListener("pointerup", () => {
+        drawing = false;
+        createElement(points);
+      });
+
+      function addPoint(e) {
+        const rect = drawingCanvas.getBoundingClientRect();
+        const x = e.clientX;
+        const y = e.clientY;
+        points.push({ x, y });
+      }
+
+      // 更新点数计数器
+      function updatePointCounter(count) {
+        pointCounter.textContent = `当前绘制元素的点数：${count}`;
+      }
+
+      // 初始化画布DPI
+      const dpr = window.devicePixelRatio || 1;
+      drawingCanvas.width = appContainer.clientWidth * dpr;
+      drawingCanvas.height = appContainer.clientHeight * dpr;
+      renderingCanvas.width = appContainer.clientWidth * dpr;
+      renderingCanvas.height = appContainer.clientHeight * dpr;
+      drawingCtx.scale(dpr, dpr);
+      renderingCtx.scale(dpr, dpr);
+
+      // 初始化应用程序
+      renderScene();
+
+      // 使用RAF版本来改善性能
+      function throttledWithRAF(callback) {
+        let requestId;
+        return (...args) => {
+          if (!requestId) {
+            requestId = requestAnimationFrame(() => {
+              callback(...args);
+              requestId = null;
+            });
+          }
+        };
+      }
+
+      const throttledRenderScene = throttledWithRAF(renderScene);
+
+      // 监听窗口大小变化以重新初始化画布大小
+      window.addEventListener("resize", () => {
+        drawingCanvas.width = appContainer.clientWidth * dpr;
+        drawingCanvas.height = appContainer.clientHeight * dpr;
+        renderingCanvas.width = appContainer.clientWidth * dpr;
+        renderingCanvas.height = appContainer.clientHeight * dpr;
+        drawingCtx.scale(dpr, dpr);
+        renderingCtx.scale(dpr, dpr);
+        throttledRenderScene();
+      });
+    </script>
+  </body>
+</html>

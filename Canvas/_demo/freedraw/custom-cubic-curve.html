@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>自定义三次贝塞尔曲线</title>
+    <style>
+      canvas {
+        border: 1px solid black;
+        position: absolute;
+      }
+    </style>
+  </head>
+  <body>
+    <canvas id="myCanvas" width="600" height="300"></canvas>
+    <script>
+      function drawCubicBezierCurve(
+        context,
+        startX,
+        startY,
+        control1X,
+        control1Y,
+        control2X,
+        control2Y,
+        endX,
+        endY
+      ) {
+        context.beginPath();
+        context.moveTo(startX, startY);
+        ctx.lineWidth = 20;
+
+        // 控制点和结束点之间的分段数
+        const segments = 100; // 可以根据需要调整
+
+        for (let t = 0; t <= 1; t += 1 / segments) {
+          const u = 1 - t;
+          const x =
+            u ** 3 * startX +
+            3 * u ** 2 * t * control1X +
+            3 * u * t ** 2 * control2X +
+            t ** 3 * endX;
+          const y =
+            u ** 3 * startY +
+            3 * u ** 2 * t * control1Y +
+            3 * u * t ** 2 * control2Y +
+            t ** 3 * endY;
+
+          context.lineTo(x, y);
+        }
+
+        context.stroke();
+      }
+
+      const canvas = document.getElementById("myCanvas");
+      const ctx = canvas.getContext("2d");
+
+      const startX = 50;
+      const startY = 100;
+      const control1X = 100;
+      const control1Y = 30;
+      const control2X = 200;
+      const control2Y = 150;
+      const endX = 250;
+      const endY = 100;
+
+      drawCubicBezierCurve(
+        ctx,
+        startX,
+        startY,
+        control1X,
+        control1Y,
+        control2X,
+        control2Y,
+        endX,
+        endY
+      );
+    </script>
+  </body>
+</html>

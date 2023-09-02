@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>FreeDraw 应用程序</title>
+    <style>
+      body,
+      html {
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+      }
+      #app-container {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+      }
+      #drawing-canvas,
+      #rendering-canvas {
+        border: 1px solid black;
+        position: absolute;
+        width: 100%;
+        height: 100%;
+      }
+      #point-counter {
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        color: white;
+        background-color: rgba(0, 0, 0, 0.5);
+        padding: 5px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="app-container">
+      <!-- 渲染画布 -->
+      <canvas id="rendering-canvas"></canvas>
+      <!-- 绘图画布 -->
+      <canvas id="drawing-canvas"></canvas>
+      <div id="point-counter">当前绘制元素的点数：0</div>
+    </div>
+
+    <script>
+      const appContainer = document.getElementById("app-container");
+      const renderingCanvas = document.getElementById("rendering-canvas");
+      const drawingCanvas = document.getElementById("drawing-canvas");
+      const pointCounter = document.getElementById("point-counter");
+      const renderingCtx = renderingCanvas.getContext("2d");
+      const drawingCtx = drawingCanvas.getContext("2d");
+      let drawing = false;
+      let points = [];
+
+      let appState = {
+        elements: [],
+      };
+
+      // 添加元素到应用程序状态
+      function createElement(points) {
+        const element = {
+          type: "freedraw",
+          points: points,
+        };
+        appState.elements.push(element);
+      }
+
+      // 渲染整个场景
+      function renderScene() {
+        renderingCtx.clearRect(
+          0,
+          0,
+          renderingCanvas.width,
+          renderingCanvas.height
+        );
+        for (const element of appState.elements) {
+          if (element.type === "freedraw") {
+            renderFreedraw(renderingCtx, element.points);
+          }
+        }
+      }
+
+      // 渲染自由绘制路径
+      function renderFreedraw(ctx, points) {
+        ctx.strokeStyle = "black";
+        ctx.lineWidth = 20;
+        ctx.lineJoin = "round";
+        ctx.lineCap = "round";
+        ctx.beginPath();
+        for (let i = 0; i < points.length; i++) {
+          const { x, y } = points[i];
+          if (i === 0) {
+            ctx.moveTo(x, y);
+          } else {
+            ctx.lineTo(x, y);
+          }
+        }
+        ctx.stroke();
+      }
+
+      // 事件监听器以跟踪用户手势并在绘图画布上绘制
+      drawingCanvas.addEventListener("pointerdown", (e) => {
+        updatePointCounter(0);
+        drawing = true;
+        points = [];
+        addPoint(e);
+      });
+
+      drawingCanvas.addEventListener("pointermove", debounce((e) => {
+        if (drawing) {
+          addPoint(e);
+          renderFreedraw(drawingCtx, points);
+          updatePointCounter(points.length);
+        }
+      }), 1000);
+
+      drawingCanvas.addEventListener("pointerup", () => {
+        drawing = false;
+        createElement(points);
+      });
+
+      function addPoint(e) {
+        const rect = drawingCanvas.getBoundingClientRect();
+        const x = e.clientX;
+        const y = e.clientY;
+        points.push({ x, y });
+      }
+
+      // 更新点数计数器
+      function updatePointCounter(count) {
+        pointCounter.textContent = `当前绘制元素的点数：${count}`;
+      }
+
+      // 初始化画布DPI
+      const dpr = window.devicePixelRatio || 1;
+      drawingCanvas.width = appContainer.clientWidth * dpr;
+      drawingCanvas.height = appContainer.clientHeight * dpr;
+      renderingCanvas.width = appContainer.clientWidth * dpr;
+      renderingCanvas.height = appContainer.clientHeight * dpr;
+      drawingCtx.scale(dpr, dpr);
+      renderingCtx.scale(dpr, dpr);
+
+      // 初始化应用程序
+      renderScene();
+
+      // // 使用RAF版本来改善性能
+      function throttledWithRAF(callback) {
+        let requestId;
+        return (...args) => {
+          if (!requestId) {
+            requestId = requestAnimationFrame(() => {
+              callback(...args);
+              requestId = null;
+            });
+          }
+        };
+      }
+
+      function debounce(fn, timeout) {
+        let timer = null;
+        return function () {
+          let context = this;
+          let args = arguments;
+          if (timer) {
+            clearTimeout(timer);
+          }
+          timer = setTimeout(() => {
+            fn.apply(context, args);
+          }, timeout);
+        };
+      }
+
+      const throttledRenderScene = renderScene;
+
+      // 监听窗口大小变化以重新初始化画布大小
+      window.addEventListener("resize", () => {
+        drawingCanvas.width = appContainer.clientWidth * dpr;
+        drawingCanvas.height = appContainer.clientHeight * dpr;
+        renderingCanvas.width = appContainer.clientWidth * dpr;
+        renderingCanvas.height = appContainer.clientHeight * dpr;
+        drawingCtx.scale(dpr, dpr);
+        renderingCtx.scale(dpr, dpr);
+        throttledRenderScene();
+      });
+    </script>
+  </body>
+</html>

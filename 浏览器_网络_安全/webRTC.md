@@ -1,3 +1,13 @@
+---
+permalink: 2022-01-02-webrtc-first-glance
+title: WebRTC 初探
+date: 2022-01-02
+categories:
+  - tech
+tags:
+  - webrtc
+---
+
 ## 前言
 
 项目中有局域网投屏与文件传输的需求，所以研究了一下 webRTC，这里记录一下学习过程。
