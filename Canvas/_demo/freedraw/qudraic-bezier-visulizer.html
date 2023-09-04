@@ -1,72 +1,83 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>二次贝塞尔曲线可视化工具</title>
     <style>
-        canvas {
-            border: 1px solid #000;
-            cursor: pointer;
-        }
+      canvas {
+        border: 1px solid #000;
+        cursor: pointer;
+      }
     </style>
-</head>
-<body>
-    <canvas id="bezierCanvas" width="400" height="200"></canvas>
+  </head>
+  <body>
+    <canvas id="bezierCanvas" width="1200" height="600"></canvas>
     <script>
-        const canvas = document.getElementById('bezierCanvas');
-        const ctx = canvas.getContext('2d');
-        
-        let controlX = 100; // 初始控制点X坐标
-        let controlY = 100; // 初始控制点Y坐标
-        
-        // 绘制初始曲线
-        drawQuadraticBezier();
-        
-        canvas.addEventListener('mousemove', (e) => {
-            if (isDragging) {
-                controlX = e.clientX - canvas.getBoundingClientRect().left;
-                controlY = e.clientY - canvas.getBoundingClientRect().top;
-                drawQuadraticBezier();
-            }
-        });
-        
-        canvas.addEventListener('mousedown', () => {
-            isDragging = true;
-        });
-        
-        canvas.addEventListener('mouseup', () => {
-            isDragging = false;
-        });
-        
-        canvas.addEventListener('mouseout', () => {
-            isDragging = false;
-        });
-        
-        function drawQuadraticBezier() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            
-            // 绘制控制点
-            ctx.fillStyle = 'red';
-            ctx.beginPath();
-            ctx.arc(controlX, controlY, 5, 0, Math.PI * 2);
-            ctx.fill();
-            
-            // 绘制起始点
-            const startX = 50;
-            const startY = 150;
-            ctx.fillStyle = 'blue';
-            ctx.beginPath();
-            ctx.arc(startX, startY, 5, 0, Math.PI * 2);
-            ctx.fill();
-            
-            // 绘制二次贝塞尔曲线
-            ctx.strokeStyle = 'black';
-            ctx.beginPath();
-            ctx.moveTo(startX, startY);
-            ctx.quadraticCurveTo(controlX, controlY, canvas.width - 50, 150);
-            ctx.stroke();
+      const canvas = document.getElementById("bezierCanvas");
+      const ctx = canvas.getContext("2d");
+
+      // 绘制起始点
+      const startX = 50;
+      const startY = 50;
+      
+      // 控制点
+      let controlX = 200; 
+      let controlY = 100; 
+
+
+      // 绘制终点
+      const endX = 400;
+      const endY = 150
+
+
+      // 绘制初始曲线
+      drawQuadraticBezier();
+
+      canvas.addEventListener("pointermove", (e) => {
+        if (isDragging) {
+          controlX = e.clientX - canvas.getBoundingClientRect().left;
+          controlY = e.clientY - canvas.getBoundingClientRect().top;
+          drawQuadraticBezier();
         }
+      });
+
+      canvas.addEventListener("pointerdown", () => {
+        isDragging = true;
+      });
+
+      canvas.addEventListener("pointerup", () => {
+        isDragging = false;
+      });
+
+      canvas.addEventListener("pointerout", () => {
+        isDragging = false;
+      });
+
+      function drawQuadraticBezier() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        // 绘制控制点
+        ctx.fillStyle = "red";
+        ctx.beginPath();
+        ctx.arc(controlX, controlY, 5, 0, Math.PI * 2);
+        ctx.fill();
+
+        ctx.fillStyle = "blue";
+        ctx.beginPath();
+        ctx.arc(startX, startY, 5, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.beginPath();
+        ctx.arc(endX, endY, 5, 0, Math.PI * 2);
+        ctx.fill();
+
+        // 绘制二次贝塞尔曲线
+        ctx.strokeStyle = "black";
+        ctx.beginPath();
+        ctx.moveTo(startX, startY);
+        ctx.quadraticCurveTo(controlX, controlY, endX, endY);
+        ctx.stroke();
+      }
     </script>
-</body>
+  </body>
 </html>

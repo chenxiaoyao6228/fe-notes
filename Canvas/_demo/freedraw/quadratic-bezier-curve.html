@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>线性插值</title>
+    <style>
+      body {
+        margin: 0;
+      }
+      canvas {
+        border: 1px solid black;
+        position: absolute;
+        z-index: 100;
+      }
+      .slider-container {
+        margin-top: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="slider-container">
+      <label for="tSlider">Step (t):</label>
+      <input
+        type="range"
+        id="tSlider"
+        min="0.01"
+        max="0.1"
+        step="0.01"
+        value="0.01"
+      />
+      <span id="tValue">0.02</span>
+    </div>
+    <canvas id="myCanvas" width="600" height="600"></canvas>
+    <script>
+      const canvas = document.getElementById("myCanvas");
+      const ctx = canvas.getContext("2d");
+      let isDragging = false;
+      let step = 0.01;
+
+      const p0 = { x: 0, y: 300 };
+      let p1 = { x: 200, y: 50 }; // 控制点
+      const p2 = { x: 600, y: 300 };
+
+      function lerp(start, end, t) {
+        return start + (end - start) * t;
+      }
+
+      function quadratic(p0, p1, p2, t) {
+        const x1 = lerp(p0.x, p1.x, t);
+        const y1 = lerp(p0.y, p1.y, t);
+        const x2 = lerp(p1.x, p2.x, t);
+        const y2 = lerp(p1.y, p2.y, t);
+        const x = lerp(x1, x2, t);
+        const y = lerp(y1, y2, t);
+        return { x, y };
+      }
+
+      function renderPoint(x, y, r) {
+        ctx.beginPath();
+        ctx.arc(x, y, r, 0, 2 * Math.PI);
+        ctx.fill();
+        ctx.closePath();
+      }
+
+      function renderLine(p0, p1) {
+        ctx.beginPath();
+        ctx.moveTo(p0.x, p0.y);
+        ctx.lineTo(p1.x, p1.y);
+        ctx.stroke();
+        ctx.closePath();
+      }
+
+      function renderScene(step) {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.fillStyle = "black";
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        ctx.fillStyle = "white";
+        ctx.strokeStyle = "white";
+        for (let t = 0; t <= 1.0000001; t += step) {
+          const x1 = lerp(p0.x, p1.x, t);
+          const y1 = lerp(p0.y, p1.y, t);
+          const x2 = lerp(p1.x, p2.x, t);
+          const y2 = lerp(p1.y, p2.y, t);
+
+          renderLine({ x: x1, y: y1 }, { x: x2, y: y2 });
+
+          const x = lerp(x1, x2, t);
+          const y = lerp(y1, y2, t);
+          renderPoint(x, y, 2);
+        }
+      }
+
+      const tSlider = document.getElementById("tSlider");
+      const tValue = document.getElementById("tValue");
+
+      tSlider.addEventListener("input", () => {
+        step = parseFloat(tSlider.value);
+        tValue.textContent = step.toFixed(2);
+        renderScene(step);
+      });
+
+      renderScene(0.01); // Initial render with the default step value
+
+      canvas.addEventListener("pointermove", (e) => {
+        if (isDragging) {
+          p1 = {
+            x: e.clientX - canvas.getBoundingClientRect().left,
+            y: e.clientY - canvas.getBoundingClientRect().top,
+          };
+          renderScene(step);
+        }
+      });
+
+      canvas.addEventListener("pointerdown", () => {
+        isDragging = true;
+      });
+
+      canvas.addEventListener("pointerup", () => {
+        isDragging = false;
+      });
+
+      canvas.addEventListener("pointerout", () => {
+        isDragging = false;
+      });
+    </script>
+  </body>
+</html>

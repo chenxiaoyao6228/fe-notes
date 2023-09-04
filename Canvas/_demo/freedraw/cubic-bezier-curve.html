@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>线性插值</title>
+    <style>
+      html,
+      body,
+      canvas {
+        margin: 0;
+      }
+      canvas {
+        border: 1px solid black;
+      }
+      .slider-container {
+        margin-top: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="slider-container">
+      <label for="tSlider">Step (t):</label>
+      <input
+        type="range"
+        id="tSlider"
+        min="0.01"
+        max="0.1"
+        step="0.01"
+        value="0.01"
+      />
+      <span id="tValue">0.05</span>
+    </div>
+    <canvas id="myCanvas" width="600" height="600"></canvas>
+    <p>可拖动滑块改变点的密度，且拖动控制点p1, p2可以改变曲线的形状</p>
+    <script>
+      const canvas = document.getElementById("myCanvas");
+      const ctx = canvas.getContext("2d");
+      let isDragging = false;
+      let step = 0.05;
+      let pointRadius = 5;
+
+      const p0 = { x: 100, y: 400 }; // 起点
+      let p1 = { x: 50, y: 200 }; // 控制点1
+      let p2 = { x: 300, y: 200 }; // 控制点2
+      const p3 = { x: 500, y: 400 }; // 终点
+
+      let currentCtrlPoint = p1;
+
+      function lerp(start, end, t) {
+        return start + (end - start) * t;
+      }
+
+      function quadratic(p0, p1, p2, t) {
+        const x1 = lerp(p0.x, p1.x, t);
+        const y1 = lerp(p0.y, p1.y, t);
+        const x2 = lerp(p1.x, p2.x, t);
+        const y2 = lerp(p1.y, p2.y, t);
+        const x = lerp(x1, x2, t);
+        const y = lerp(y1, y2, t);
+        renderLine({ x: x1, y: y1 }, { x: x2, y: y2 });
+        return { x, y };
+      }
+
+      function cubic(p0, p1, p2, p3, t) {
+        const v1 = quadratic(p0, p1, p2, t);
+        const v2 = quadratic(p1, p2, p3, t);
+        const x = lerp(v1.x, v2.x, t);
+        const y = lerp(v1.y, v2.y, t);
+        return { x, y };
+      }
+
+      function getMousePosFromEvent(e) {
+        return {
+          x: e.clientX - canvas.getBoundingClientRect().left,
+          y: e.clientY - canvas.getBoundingClientRect().top,
+        };
+      }
+
+      function checkMousePosInPoint(e, p) {
+        const { x, y } = getMousePosFromEvent(e);
+        return (
+          Math.abs(p.x - x) <= pointRadius && Math.abs(p.y - y) <= pointRadius
+        );
+      }
+
+      function updateCurrentCtrlPointPos(e) {
+        const { x, y } = getMousePosFromEvent(e);
+        currentCtrlPoint.x = x;
+        currentCtrlPoint.y = y;
+      }
+
+      function findCtrlPointInRange(e) {
+        let inRangePoint = null;
+        let inRange = [p1, p2].some((p) => {
+          let _inRange = checkMousePosInPoint(e, p);
+          if (_inRange) {
+            inRangePoint = p;
+            return true;
+          }
+        });
+        return inRange && inRangePoint;
+      }
+
+      function renderSelection() {
+        ctx.strokeStyle = "red";
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.moveTo(p0.x, p0.y);
+        ctx.lineTo(p1.x, p1.y);
+        ctx.lineTo(p2.x, p2.y);
+        ctx.lineTo(p3.x, p3.y);
+        ctx.stroke();
+        ctx.closePath();
+      }
+
+      function renderAnchorPoints() {
+        ctx.fillStyle = "red";
+        ctx.font = "20px Arial";
+        [p0, p1, p2, p3].forEach((p, index) => {
+          renderPoint(p.x, p.y, pointRadius);
+          ctx.fillText(`p${index}`, p.x + 0, p.y - 20);
+        });
+      }
+
+      function renderPoint(x, y, r) {
+        ctx.beginPath();
+        ctx.arc(x, y, r, 0, 2 * Math.PI);
+        ctx.fill();
+        ctx.closePath();
+      }
+
+      function renderLine(p0, p1) {
+        ctx.beginPath();
+        ctx.moveTo(p0.x, p0.y);
+        ctx.lineTo(p1.x, p1.y);
+        ctx.stroke();
+        ctx.closePath();
+      }
+
+      function renderScene(step) {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.fillStyle = "black";
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        ctx.fillStyle = "red";
+        ctx.strokeStyle = "white";
+        // js存在精度问题，所以这里的t不能等于1
+        for (let t = 0; t <= 1.0000001; t += step) {
+          const { x, y } = cubic(p0, p1, p2, p3, t);
+          renderPoint(x, y, 2);
+        }
+        renderAnchorPoints();
+      }
+
+      const tSlider = document.getElementById("tSlider");
+      const tValue = document.getElementById("tValue");
+
+      tSlider.addEventListener("input", () => {
+        step = parseFloat(tSlider.value);
+        tValue.textContent = step.toFixed(2);
+        renderScene(step);
+      });
+
+      renderScene(step);
+
+      canvas.addEventListener("pointerdown", (e) => {
+        const ctrlPointInRange = findCtrlPointInRange(e);
+        if (ctrlPointInRange) {
+          currentCtrlPoint = ctrlPointInRange;
+          updateCurrentCtrlPointPos(e);
+          isDragging = true;
+          console.log("currentCtrlPoint", currentCtrlPoint);
+        } else {
+          isDragging = false;
+        }
+      });
+
+      canvas.addEventListener("pointermove", (e) => {
+        if (findCtrlPointInRange(e)) {
+          canvas.style.cursor = "move";
+        } else {
+          canvas.style.cursor = "default";
+        }
+        if (isDragging) {
+          updateCurrentCtrlPointPos(e);
+          renderScene(step);
+        }
+      });
+
+      canvas.addEventListener("pointerup", () => {
+        isDragging = false;
+      });
+
+      canvas.addEventListener("pointerout", () => {
+        isDragging = false;
+      });
+    </script>
+  </body>
+</html>

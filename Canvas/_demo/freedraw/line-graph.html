@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>月份折线图</title>
+    <style>
+      body {
+        margin: 0;
+      }
+
+      #myCanvas {
+        border: 1px solid #ccc;
+      }
+    </style>
+  </head>
+  <body>
+    <canvas id="myCanvas" width="900" height="450"></canvas>
+    <script>
+      // 获取Canvas元素和上下文
+      var canvas = document.getElementById("myCanvas");
+      var ctx = canvas.getContext("2d");
+
+      // 生成随机数据点
+      var dataPoints = [];
+      for (var i = 0; i <= 30; i++) {
+        var x = i * 20;
+        var y = Math.random() * 300;
+        dataPoints.push({ x: x, y: y });
+      }
+
+      // 开始绘制路径
+      ctx.beginPath();
+      ctx.moveTo(dataPoints[0].x, dataPoints[0].y);
+
+      // 使用贝塞尔曲线连接数据点并平滑
+      for (var i = 1; i < dataPoints.length - 2; i++) {
+        var xc = (dataPoints[i].x + dataPoints[i + 1].x) / 2;
+        var yc = (dataPoints[i].y + dataPoints[i + 1].y) / 2;
+        ctx.quadraticCurveTo(dataPoints[i].x, dataPoints[i].y, xc, yc);
+      }
+
+      // 绘制最后两个数据点的直线
+      ctx.lineTo(dataPoints[i + 1].x, dataPoints[i + 1].y);
+      ctx.lineTo(dataPoints[i + 2].x, dataPoints[i + 2].y);
+
+      // 设置线条样式
+      ctx.lineWidth = 2;
+      ctx.strokeStyle = "blue";
+
+      // 绘制曲线
+      ctx.stroke();
+    </script>
+  </body>
+</html>
