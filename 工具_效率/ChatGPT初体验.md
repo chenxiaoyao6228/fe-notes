@@ -5,7 +5,7 @@ title: ChatGPT初体验
 categories:
   - tech
 tags:
-  - ChatGPT
+  - 效率与工具
 ---
 
 ## 序言
@@ -143,6 +143,14 @@ chatGPT的vscode集成， 添加API key就能够使用，程序员效率提升�
 
 集成谷歌搜索
 
+
+## 常用的prompt
+
+### 英文提问但是让 GPT用中文回答
+
+强迫自己英文输入，加上grammarly插件，能提高自己的英语输出能力。
+
+> In the following context, I will ask in English, but you should reply in Chinese, including all the code comments, ready ?
 ## 总结
 
 总的来说，ChatGPT 还是能提升一定的工作效率的，随着 ChatGPT 开放插件市场，相信在不久的将来我们会遇见更多的可能。

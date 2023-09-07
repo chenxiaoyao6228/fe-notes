@@ -1,0 +1,10 @@
+{
+  "name": "computer-networking",
+  "description": "learning computer networking",
+  "scripts": {
+    "tcp": "node tcp/server.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}

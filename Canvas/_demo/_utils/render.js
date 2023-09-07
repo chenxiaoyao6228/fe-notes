@@ -1,0 +1,2 @@
+function renderGrid() {}
+function renderAxis() {}
