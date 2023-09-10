@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SVG 操作</title>
+    <style>
+      #mysvg {
+        width: 120px;
+      }
+      circle {
+        stroke-width: 1;
+        stroke: #f00;
+      }
+
+      circle:hover {
+        stroke: #090;
+        cursor: pointer;
+        fill: #fff;
+      }
+    </style>
+  </head>
+  <body>
+    <svg
+      id="mysvg"
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 100 100"
+      preserveAspectRatio="xMidYMid meet"
+    >
+      <circle id="mycircle" cx="50" cy="50" r="50" />
+    </svg>
+    <p>样式设置</p>
+    <code>
+      <pre>
+    #mysvg {
+        width: 120px;
+      }
+      circle {
+        stroke-width: 1;
+        stroke: #f00;
+        fill: #ff0;
+      }
+
+      circle:hover {
+        stroke: #090;
+        cursor: pointer;
+        fill: #fff;
+      }
+    </pre>
+    </code>
+    <p>js操作</p>
+    <code>
+        <pre>
+            const mycircle = document.getElementById('mycircle');
+                mycircle.addEventListener('click', () => {
+                    mycircle.setAttribute("fill", 'purple');
+                });
+        </pre>
+    </code>
+    <script>
+      var mycircle = document.getElementById("mycircle");
+
+      mycircle.addEventListener(
+        "click",
+        function (e) {
+          console.log("circle clicked - enlarging");
+          mycircle.setAttribute("fill", "purple");
+        },
+        false
+      );
+    </script>
+  </body>
+</html>

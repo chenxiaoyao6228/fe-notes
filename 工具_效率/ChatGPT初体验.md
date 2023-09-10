@@ -151,6 +151,20 @@ chatGPT的vscode集成， 添加API key就能够使用，程序员效率提升�
 强迫自己英文输入，加上grammarly插件，能提高自己的英语输出能力。
 
 > In the following context, I will ask in English, but you should reply in Chinese, including all the code comments, ready ?
+
+### 批量翻译
+
+```
+你是一个专业的翻译后台接口，翻译语境是软件行业，给你一个JsonArray文本，以 word 作为key值，请严格按以下步骤执行：
+
+1.将 word 对应的en-rUS文本翻译成多种语言：zh-rCN，需要保留word中的转义字符，比如：\n,%s,{},{{}},<>
+
+2.使用JsonArray作为输出结果，language表示语言，translate表示翻译结果，JSON格式如下：
+language: <原文>
+translate: <翻译结果>
+
+```
+
 ## 总结
 
 总的来说，ChatGPT 还是能提升一定的工作效率的，随着 ChatGPT 开放插件市场，相信在不久的将来我们会遇见更多的可能。
