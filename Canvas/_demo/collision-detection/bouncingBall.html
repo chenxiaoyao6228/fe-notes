@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Canvas小球碰撞检测示例</title>
+  <style>
+    body {
+      margin: 0;
+      overflow: hidden;
+    }
+    canvas {
+      display: block;
+      border: 1px solid black;
+      background-color: rgb(52, 87, 80);
+    }
+  </style>
+</head>
+<body>
+  <canvas id="canvas" width="800" height="400"></canvas>
+
+  <script>
+    const canvas = document.getElementById("canvas");
+    const ctx = canvas.getContext("2d");
+
+    // 小球的状态
+    const ball = {
+      x: 50,
+      y: 50,
+      radius: 20,
+      speedX: 2,
+      speedY: 2,
+    };
+
+    // 更新小球的位置
+    function updateBallPosition() {
+      ball.x += ball.speedX;
+      ball.y += ball.speedY;
+
+      // 碰撞检测
+      if (ball.x - ball.radius < 0 || ball.x + ball.radius > canvas.width) {
+        // 左边界或右边界碰撞，反转水平速度方向
+        ball.speedX = -ball.speedX;
+      }
+
+      if (ball.y - ball.radius < 0 || ball.y + ball.radius > canvas.height) {
+        // 上边界或下边界碰撞，反转垂直速度方向
+        ball.speedY = -ball.speedY;
+      }
+    }
+
+    // 渲染小球
+    function renderBall() {
+      ctx.fillStyle = "white";
+      ctx.beginPath();
+      ctx.arc(ball.x, ball.y, ball.radius, 0, Math.PI * 2);
+      ctx.fill();
+    }
+
+    // 更新画布
+    function updateCanvas() {
+      updateBallPosition();
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      renderBall();
+
+      // 使用requestAnimationFrame持续更新画布
+      requestAnimationFrame(updateCanvas);
+    }
+
+    // 启动画布更新
+    requestAnimationFrame(updateCanvas);
+  </script>
+</body>
+</html>

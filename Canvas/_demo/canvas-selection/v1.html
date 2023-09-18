@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Canvas 元素选中效果</title>
+    <style>
+      body {
+        margin: 0;
+        overflow: hidden;
+        background-color: rgb(52, 87, 80);
+      }
+
+      #container {
+        position: relative;
+        width: 100%;
+        height: 100%;
+      }
+
+      #canvas-container {
+      }
+
+      #canvas {
+        cursor: default;
+      }
+
+      #tools {
+        position: absolute;
+        bottom: 10px;
+        left: 50%;
+        transform: translateX(-50%);
+        display: flex;
+      }
+
+      #tools button {
+        padding: 10px 20px;
+        margin: 0 10px;
+        font-size: 18px;
+        cursor: pointer;
+      }
+      .tool.selected {
+        border: 1px solid red;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="container">
+      <div id="canvas-container">
+        <canvas id="canvas"></canvas>
+      </div>
+      <div id="tools">
+        <button id="select-tool" class="tool">选择</button>
+        <button id="rect-tool" class="tool">矩形</button>
+        <button id="free-draw-tool" class="tool">自由画笔</button>
+      </div>
+    </div>
+    <script>
+      class Element {
+        constructor(type, x, y) {
+          this.type = type;
+          this.x = x;
+          this.y = y;
+          this.width = 0;
+          this.height = 0;
+          this.rotation = 0;
+          this.points = [];
+          this.isSelected = false;
+        }
+      }
+
+      class Group {
+        constructor() {
+          this.elements = [];
+          this.x = 0;
+          this.y = 0;
+          this.rotation = 0;
+        }
+
+        addElement(element) {
+          this.elements.push(element);
+        }
+
+        removeElement(element) {
+          const index = this.elements.indexOf(element);
+          if (index !== -1) {
+            this.elements.splice(index, 1);
+          }
+        }
+
+        updateGroupElementPosition() {
+          const firstElement = this.elements[0];
+          let minX = firstElement.x;
+          let minY = firstElement.y;
+          let maxX = firstElement.x + firstElement.width;
+          let maxY = firstElement.y + firstElement.height;
+
+          for (const element of this.elements) {
+            if (element.x < minX) {
+              minX = element.x;
+            }
+            if (element.y < minY) {
+              minY = element.y;
+            }
+            if (element.x + element.width > maxX) {
+              maxX = element.x + element.width;
+            }
+            if (element.y + element.height > maxY) {
+              maxY = element.y + element.height;
+            }
+          }
+
+          this.x = minX;
+          this.y = minY;
+          this.width = maxX - minX;
+          this.height = maxY - minY;
+        }
+
+
+        renderSelectionBorder() {
+          ctx.save();
+          ctx.strokeStyle = "red";
+          ctx.lineWidth = 2;
+          ctx.strokeRect(this.x, this.y, this.width, this.height);
+          ctx.restore();
+        }
+
+        isSelected() {
+          return this.elements.every((element) => element.isSelected);
+        }
+      }
+
+      const canvas = document.getElementById("canvas");
+      const ctx = canvas.getContext("2d");
+
+      // 画笔工具
+      let currentTool = "rectangle";
+
+      // 绘制状态
+      let isDrawing = false;
+      let isResizing = false;
+      let isRotating = false;
+      let prevX = 0;
+      let prevY = 0;
+      let offsetX = 0;
+      let offsetY = 0;
+      let selectedGroup = null;
+
+      // 元素集合
+      const elements = [];
+      const groups = [];
+
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+
+      canvas.addEventListener("pointerdown", handlePointerDown);
+      canvas.addEventListener("pointermove", handlePointerMove);
+      canvas.addEventListener("pointerup", handlePointerUp);
+
+      function bindEventToToolBtns() {
+        const toolButtons = document.querySelectorAll("#tools button");
+
+        document.getElementById("tools").addEventListener("click", (event) => {
+          const clickedElement = event.target;
+
+          if (clickedElement.tagName === "BUTTON") {
+            toolButtons.forEach((button) => {
+              button.classList.remove("selected");
+            });
+
+            clickedElement.classList.add("selected");
+
+            switch (clickedElement.id) {
+              case "select-tool":
+                currentTool = "select";
+                break;
+              case "rect-tool":
+                currentTool = "rectangle";
+                break;
+              case "free-draw-tool":
+                currentTool = "freeDraw";
+                break;
+            }
+          }
+        });
+      }
+
+      function handlePointerDown(e) {
+        const mouseX = e.clientX;
+        const mouseY = e.clientY;
+        if (currentTool === "select") {
+            // 分为两种情况，一种是点击到了元素，一种是没有点击到元素
+          selectElement(mouseX, mouseY);
+        } else if (currentTool === "rectangle") {
+          isDrawing = true;
+          addRectangle(mouseX, mouseY);
+        } else if (currentTool === "freeDraw") {
+          isDrawing = true;
+          addFreeDraw(mouseX, mouseY);
+        }
+
+        prevX = mouseX;
+        prevY = mouseY;
+
+        if (selectedGroup) {
+          if (isRotating) {
+            handleRotatePointerDown(mouseX, mouseY);
+          } else if (isResizing) {
+            handleResizePointerDown(mouseX, mouseY);
+          }
+        }
+      }
+
+      function handlePointerMove(e) {
+        const mouseX = e.clientX;
+        const mouseY = e.clientY;
+
+        if (isDrawing) {
+          if (currentTool === "rectangle") {
+            updateRectangleSize(mouseX, mouseY);
+          } else if (currentTool === "freeDraw") {
+            addPointToFreeDraw(mouseX, mouseY);
+          }
+          renderScene();
+        } else if (selectedGroup) {
+          if (isRotating) {
+            handleRotatePointerMove(mouseX, mouseY);
+          } else if (isResizing) {
+            handleResizePointerMove(mouseX, mouseY);
+          } else {
+            handleDragPointerMove(mouseX, mouseY);
+          }
+          renderScene();
+        }
+      }
+
+      function handlePointerUp() {
+        isDrawing = false;
+        isResizing = false;
+        isRotating = false;
+        selectedGroup = null;
+        currentTool = 'select'
+      }
+
+      function selectElement(x, y) {
+        for (let i = elements.length - 1; i >= 0; i--) {
+          const element = elements[i];
+          if (
+            x >= element.x &&
+            x <= element.x + element.width &&
+            y >= element.y &&
+            y <= element.y + element.height
+          ) {
+            element.isSelected = !element.isSelected;
+            if (element.isSelected) {
+              selectedGroup = createGroupFromSelected();
+            }
+            renderScene();
+            return;
+          }
+        }
+        // If no element is clicked, clear selection.
+        clearSelection();
+        renderScene();
+      }
+
+      function clearSelection() {
+        elements.forEach((element) => {
+          element.isSelected = false;
+        });
+        selectedGroup = null;
+      }
+
+      function createGroupFromSelected() {
+        const group = new Group();
+        elements.forEach((element) => {
+          if (element.isSelected) {
+            group.addElement(element);
+          }
+        });
+        groups.push(group);
+        return group;
+      }
+
+      function addRectangle(x, y) {
+        const rectangle = new Element("rectangle", x, y);
+        elements.push(rectangle);
+        clearSelection();
+        rectangle.isSelected = true;
+        selectedGroup = createGroupFromSelected();
+      }
+
+      function updateRectangleSize(x, y) {
+        if (selectedGroup) {
+          selectedGroup.elements.forEach((element) => {
+            element.width = x - element.x;
+            element.height = y - element.y;
+          });
+        } else {
+          elements.forEach((element) => {
+            element.width = x - element.x;
+            element.height = y - element.y;
+          });
+        }
+      }
+
+      function addFreeDraw(x, y) {
+        const freeDraw = new Element("freeDraw", x, y);
+        elements.push(freeDraw);
+        clearSelection();
+        freeDraw.isSelected = true;
+        selectedGroup = createGroupFromSelected();
+      }
+
+      function addPointToFreeDraw(x, y) {
+        if (selectedGroup) {
+          selectedGroup.elements.forEach((element) => {
+            element.points.push({ x, y });
+          });
+        }
+      }
+
+      function handleRotatePointerDown(x, y) {
+        const centerX = selectedGroup.x + selectedGroup.elements[0].width / 2;
+        const centerY = selectedGroup.y + selectedGroup.elements[0].height / 2;
+        const distance = Math.sqrt((x - centerX) ** 2 + (y - centerY) ** 2);
+
+        if (distance <= 15) {
+          isRotating = true;
+          offsetX = x - centerX;
+          offsetY = y - centerY;
+        }
+      }
+
+      function handleRotatePointerMove(x, y) {
+        if (isRotating) {
+          const centerX = selectedGroup.x + selectedGroup.elements[0].width / 2;
+          const centerY =
+            selectedGroup.y + selectedGroup.elements[0].height / 2;
+          const angle = Math.atan2(
+            y - centerY - offsetY,
+            x - centerX - offsetX
+          );
+          selectedGroup.rotation = angle;
+          renderScene();
+        }
+      }
+
+      function handleResizePointerDown(x, y) {
+        for (const element of selectedGroup.elements) {
+          if (
+            x >= element.x + element.width - 10 &&
+            x <= element.x + element.width + 10 &&
+            y >= element.y + element.height - 10 &&
+            y <= element.y + element.height + 10
+          ) {
+            isResizing = true;
+            offsetX = element.width - (x - element.x);
+            offsetY = element.height - (y - element.y);
+          }
+        }
+      }
+
+      function handleResizePointerMove(x, y) {
+        if (isResizing) {
+          for (const element of selectedGroup.elements) {
+            element.width = x - element.x + offsetX;
+            element.height = y - element.y + offsetY;
+          }
+          renderScene();
+        }
+      }
+
+      function handleDragPointerMove(x, y) {
+        if (selectedGroup) {
+          const deltaX = x - prevX;
+          const deltaY = y - prevY;
+          selectedGroup.x += deltaX;
+          selectedGroup.y += deltaY;
+          prevX = x;
+          prevY = y;
+          selectedGroup.elements.forEach((element) => {
+            element.x += deltaX;
+            element.y += deltaY;
+          });
+        }
+      }
+
+      function renderScene() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        for (const element of elements) {
+          renderElement(element);
+          if (element.isSelected) {
+            renderSelectionBorder(element);
+            if (currentTool === "select") {
+              renderSelectionControl(element);
+            }
+          }
+          if(selectedGroup) {
+            selectedGroup.renderSelectionBorder()
+          }
+        }
+      }
+
+      function renderElement(element) {
+        ctx.save();
+
+        ctx.rotate(element.rotation);
+
+        if (element.type === "rectangle") {
+          ctx.lineWidth = 4;
+          ctx.stroke = "white";
+          ctx.strokeRect(element.x, element.y, element.width, element.height);
+        } else if (element.type === "freeDraw") {
+          if (!element.points.length) {
+            return;
+          }
+          ctx.strokeStyle = "white";
+          ctx.lineWidth = 4;
+          ctx.lineJoin = "round";
+          ctx.lineCap = "round";
+          ctx.beginPath();
+          ctx.moveTo(element.points[0].x, element.points[0].y);
+          for (const point of element.points) {
+            ctx.lineTo(point.x, point.y);
+          }
+          ctx.stroke();
+        }
+
+        ctx.restore();
+      }
+
+      function renderSelectionBorder(element) {
+        ctx.save();
+        ctx.strokeStyle = "red";
+        ctx.lineWidth = 2;
+        ctx.strokeRect(element.x, element.y, element.width, element.height);
+        ctx.restore();
+      }
+
+      function renderSelectionControl(element) {
+        const centerX = element.x + element.width / 2;
+        const centerY = element.y + element.height / 2;
+
+        ctx.save();
+        ctx.fillStyle = "red";
+
+        // Draw rotation control
+        ctx.beginPath();
+        ctx.arc(centerX, centerY - 30, 5, 0, Math.PI * 2);
+        ctx.fill();
+
+        // Draw resizing controls
+        const resizeControls = [
+          [element.x, element.y], // Top-left
+          [element.x + element.width, element.y], // Top-right
+          [element.x + element.width, element.y + element.height], // Bottom-right
+          [element.x, element.y + element.height], // Bottom-left
+        ];
+
+        for (const control of resizeControls) {
+          ctx.fillRect(control[0] - 5, control[1] - 5, 10, 10);
+        }
+
+        ctx.restore();
+      }
+
+      bindEventToToolBtns()
+      renderScene();
+    </script>
+  </body>
+</html>

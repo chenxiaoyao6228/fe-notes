@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Page Leave Test</title>
+</head>
+<body>
+  <h1>Choose Request Type and Page Leave Action</h1>
+  <select id="requestType">
+    <option value="xhr">XHR</option>
+    <option value="image">Image</option>
+    <option value="sendBeacon">sendBeacon</option>
+    <option value="fetch">Fetch</option>
+    <option value="keepAlive">Keep-Alive</option>
+  </select>
+  <select id="leaveAction">
+    <option value="closeTab">Close Tab</option>
+    <option value="redirectBaidu">Redirect to Baidu</option>
+    <option value="reload">Reload Page</option>
+    <option value="replaceBaidu">Replace with Baidu</option>
+  </select>
+  <button id="executeButton">Execute</button>
+  <script>
+    document.getElementById('executeButton').addEventListener('click', () => {
+      const requestType = document.getElementById('requestType').value;
+      const leaveAction = document.getElementById('leaveAction').value;
+
+      // Send the request to the server
+      fetch(`/api/${requestType}/${leaveAction}`, {
+        method: 'POST',
+      }).then(response => {
+        console.log('Request sent to server.');
+        // Perform the page leave action
+        switch (leaveAction) {
+          case 'closeTab':
+            window.close();
+            break;
+          case 'redirectBaidu':
+            window.location.href = 'https://www.baidu.com';
+            break;
+          case 'reload':
+            window.location.reload();
+            break;
+          case 'replaceBaidu':
+            window.location.replace('https://www.baidu.com');
+            break;
+          default:
+            break;
+        }
+      });
+    });
+  </script>
+</body>
+</html>

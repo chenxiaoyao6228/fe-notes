@@ -1,0 +1,12 @@
+{
+    "name": "browser-requests-demo",
+    "version": "1.0.0",
+    "description": "Demo for browser requests with different methods",
+    "scripts": {
+        "start": "node server.js",
+        "start2": "node server2.js"
+    },
+    "dependencies": {
+        "express": "^4.17.1"
+    }
+}
