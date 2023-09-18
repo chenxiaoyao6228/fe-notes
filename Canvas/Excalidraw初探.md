@@ -329,3 +329,8 @@ if (
 - 所有东西都怼到一个 APPState 里面，一些与渲染状态无关的状态更新(比如切换笔的颜色)也会导致页面渲染，性能欠佳，尤其在一些低端的设备上。
 
 - 自带的国际化方案不完善，不支持动态切换语言
+
+
+## 总结
+
+<iframe width="100%" height="600" src="https://chenxiaoyao6228.github.io//excalidraw-github-viewer/?https://github.com/chenxiaoyao6228/cloudimg/blob/main/_Gragh/process.excalidraw" />
