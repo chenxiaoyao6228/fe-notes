@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Canvas.toDataUrl</title>
+    <style>
+      .wrap {
+        display: flex;
+      }
+    </style>
+  </head>
+  <body>
+    <h2>在画板上绘制并制作截图</h2>
+    <div class="wrap">
+        <canvas
+          id="drawingCanvas"
+          width="200"
+          height="100"
+          style="border: 1px solid #000"
+        ></canvas>
+        <img id="snapshotImage" style="border:1px solid black;display: none" />
+    </div>
+
+    <br />
+    <button id="snapshotButton">点击截图, 转化为base64展示</button>
+    <button id="snapshotButton2">点击截图, 转化为blob展示</button>
+
+    <script>
+      function initSnapshotListener() {
+        snapshotButton.addEventListener("click", () => {
+          const canvas = document.getElementById("drawingCanvas");
+          const snapshotDataUrl = canvas.toDataURL();
+          snapshotImage.src = snapshotDataUrl;
+          snapshotImage.style.display = "block";
+        });
+      }
+
+      function initSnapshotListener2() {
+        snapshotButton2.addEventListener("click", () => {
+          const canvas = document.getElementById("drawingCanvas");
+          canvas.toBlob((blob) => {
+            const snapshotDataUrl = URL.createObjectURL(blob);
+            snapshotImage.src = snapshotDataUrl;
+            snapshotImage.style.display = "block";
+          });
+        });
+      }
+
+      function initDrawing() {
+        const canvas = document.getElementById("drawingCanvas");
+        const context = canvas.getContext("2d");
+        const snapshotButton = document.getElementById("snapshotButton");
+        const snapshotImage = document.getElementById("snapshotImage");
+
+        let isDrawing = false;
+
+        context.lineWidth = 2;
+        context.strokeStyle = "#000";
+
+        canvas.addEventListener("pointerdown", startDrawing);
+        canvas.addEventListener("pointermove", draw);
+        canvas.addEventListener("pointerup", stopDrawing);
+        canvas.addEventListener("pointerleave", stopDrawing);
+
+        function startDrawing(event) {
+          isDrawing = true;
+          context.beginPath();
+          context.moveTo(
+            event.clientX - canvas.getBoundingClientRect().left,
+            event.clientY - canvas.getBoundingClientRect().top
+          );
+        }
+
+        function draw(event) {
+          if (!isDrawing) return;
+          context.lineTo(
+            event.clientX - canvas.getBoundingClientRect().left,
+            event.clientY - canvas.getBoundingClientRect().top
+          );
+          context.stroke();
+        }
+
+        function stopDrawing() {}
+
+        isDrawing = false;
+        context.closePath();
+
+        return canvas;
+      }
+
+      initDrawing();
+      initSnapshotListener();
+      initSnapshotListener2();
+    </script>
+  </body>
+</html>

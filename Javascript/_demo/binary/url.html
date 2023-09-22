@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>URL.createObjectURL</title>
+</head>
+<body>
+    <h2>点击选择文件展示</h1>
+    
+    <input type="file" id="imageInput" accept="image/*">
+
+    <br/>
+    
+    <img id="selectedImage" src="" alt="" style="max-width: 100%; max-height: 300px;">
+
+    <p>临时地址: <span id="tempUrl"></span>
+    </p>
+    
+    <script>
+        const imageInput = document.getElementById('imageInput');
+        const selectedImage = document.getElementById('selectedImage');
+        
+        imageInput.addEventListener('change', function() {
+            if (imageInput.files.length > 0) {
+                const selectedFile = imageInput.files[0];
+                
+                const imageUrl = URL.createObjectURL(selectedFile);
+                
+                selectedImage.src = imageUrl;
+
+                document.getElementById('tempUrl').innerText = imageUrl;    
+                
+                selectedImage.onload = function() {
+                    URL.revokeObjectURL(imageUrl);
+                };
+            } else {
+                selectedImage.src = '';
+            }
+        });
+    </script>
+</body>
+</html>
+

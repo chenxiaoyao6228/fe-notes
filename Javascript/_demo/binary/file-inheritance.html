@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>File inheritance</title>
+</head>
+<body>
+    <input type="file" id="myInput">
+    <script>
+        const myInput = document.querySelector('#myInput');
+        myInput.addEventListener('change', (e)=> {
+            const file = e.target.files[0];
+            console.log("file.__proto__", file.__proto__);
+            console.log("file.__proto__.__proto__", file.__proto__.__proto__);
+        })
+    </script>
+</body>
+</html>

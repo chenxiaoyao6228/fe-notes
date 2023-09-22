@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Blob</title>
+  </head>
+  <body>
+    <script>
+      //   var htmlParts = ['<a id="a"><b id="b">hey!<\/b><\/a>'];
+      //   var myBlob = new Blob(htmlParts, { type: "text\/xml" });
+
+      //   var a = document.createElement("a");
+      //   a.href = window.URL.createObjectURL(myBlob);
+      //   a.download = "hello-world.txt";
+      //   a.textContent = "Download Hello World!";
+
+      //   document.body.appendChild(a);
+
+      // Create an array of binary data (representing an image)
+      const base64ImageData =
+        "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/wAAAgAB/ymkpAAAAABJRU5ErkJggg==";
+
+      const binaryData = new Uint8Array(
+        atob(base64ImageData)
+          .split("")
+          .map((char) => char.charCodeAt(0))
+      );
+
+      // Create a Blob from the binary data
+      const blob = new Blob([binaryData], { type: "image/png" });
+
+      // Create a URL for the Blob
+      const blobUrl = URL.createObjectURL(blob);
+
+      // Create a link to download the Blob
+      const downloadLink = document.createElement("a");
+      downloadLink.href = blobUrl;
+      downloadLink.download = "image.png";
+      downloadLink.textContent = "Download Image";
+
+      // Append the link to the document
+      document.body.appendChild(downloadLink);
+    </script>
+  </body>
+</html>
