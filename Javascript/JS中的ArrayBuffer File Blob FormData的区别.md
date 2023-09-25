@@ -1,16 +1,42 @@
 ## 前言
 
+本文梳理 JS 中的 ArrayBuffer、File、Blob、FormData 的区别。
+
+## 计算机中的文件表示
+
+
 ## ArrayBuffer
+
+
+## Buffer
 
 ## Blob
 
 Blob（Binary Large Object）
 
+### Blob 与 base64 互转
+
+base64转blob
+
+```js
+const base64ToBlob = (dataURI: string) => {
+  const byteString = atob(dataURI.split(",")[1]);
+
+  const mimeString = dataURI.split(",")[0].split(":")[1].split(";")[0];
+  const ab = new ArrayBuffer(byteString.length);
+  const ia = new Uint8Array(ab);
+  for (let i = 0; i < byteString.length; i++) {
+    ia[i] = byteString.charCodeAt(i);
+  }
+  return new Blob([ab], { type: mimeString });
+};
+```
+
 ## File
 
 File 继承与 Blob，这个可以通过查看 File 的原型链得知。
 
-![](https://cdn.jsdelivr.net/gh/chenxiaoyao6228/cloudimg@main/2023/js-file-inheritance.png)
+![](../../cloudimg/2023/js-file-inheritance.png)
 
 File 对象同时添加了一些属性和方法，用于处理文件相关操作。
 
@@ -52,14 +78,13 @@ const selectedFile = imageInput.files[0];
 URL.createObjectURL(selectedFile);
 ```
 
-![](https://cdn.jsdelivr.net/gh/chenxiaoyao6228/cloudimg@main/2023/file-createObjectURL.png)
+![](../../cloudimg/2023/file-createObjectURL.png)
 
-完整的 demo 请看 👉 [在线效果预览](https://chenxiaoyao6228.github.io/html-preview/?https://github.com/chenxiaoyao6228/fe-notes/blob/main/Javascript/_demo/binary/url.html), 查看示例代码请点击[此处](./_demo/binary/url.html)
+完整的 demo 请看 👉 [在线效果预览](./_demo/binary/url.html), 查看示例代码请点击[此处](./_demo/binary/url.html)
 
 ### Canvas.toDataUrl 和 Canvas.toBlob
 
-Canvas中提供了两个方法，可以将 canvas 转换为 dataUrl 或者 blob 对象进行展示。
-
+Canvas 中提供了两个方法，可以将 canvas 转换为 dataUrl 或者 blob 对象进行展示。
 
 ```js
 const canvas = document.getElementById("drawingCanvas");
@@ -76,12 +101,13 @@ canvas.toBlob((blob) => {
   snapshotImage.style.display = "block";
 });
 ```
+![](../../cloudimg/2023/canvas-toDataUrl.png)
 
-![](https://cdn.jsdelivr.net/gh/chenxiaoyao6228/cloudimg@main/2023/canvas-toDataUrl.png)
+完整的 demo 请看 👉 [在线效果预览](./_demo/binary/canvas-toDataUrl.html), 查看示例代码请点击[此处](./_demo/binary/canvas-toDataUrl.html)
 
-完整的 demo 请看👉 [在线效果预览](https://chenxiaoyao6228.github.io/html-preview/?https://github.com/chenxiaoyao6228/fe-notes/blob/main/Javascript/_demo/binary/canvas-toDataUrl.html), 查看示例代码请点击[此处](./_demo/binary/canvas-toDataUrl.html)
+## FormData与File
 
-## FormData
+
 
 ## FileReader API
 
@@ -98,8 +124,10 @@ reader.onload = function () {
 };
 ```
 
+![](../../cloudimg/2023/js-binary-jszip-file-async.png)
+
 ## 参考
 
 - https://wangdoc.com/javascript/bom/arraybuffer
 - https://javascript.ruanyifeng.com/htmlapi/file.html
-- https://developer.mozilla.org/en-US/docs/Web/API/URL/URL
+- https://developer.mozilla.org/en-US/docs/Web/API/URL/createObjectURL_static
