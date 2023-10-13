@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdn.jsdelivr.net/npm/exif-js"></script>
+  </head>
+  <body>
+    <script>
+      // 创建一个画布元素
+      const canvas = document.createElement("canvas");
+      canvas.width = 1;
+      canvas.height = 1;
+
+      // 获取2D渲染上下文
+      const ctx = canvas.getContext("2d");
+
+      // 在画布上绘制一个像素点
+      ctx.fillStyle = "black"; // 设置像素点的颜色
+      ctx.fillRect(0, 0, 1, 1); // 在位置(0, 0)绘制一个1x1像素的矩形
+
+      // 将画布转换为表示1x1像素图像的数据URL
+      const dataURL = canvas.toDataURL();
+
+      // 创建一个图像元素
+      const img = document.createElement("img");
+
+      img.id = 'img1'
+
+      // 将数据URL设置为图像的源
+      img.src = dataURL;
+
+      // 将图像追加到文档中的body或其他元素中
+      document.body.appendChild(img);
+
+      // 将二进制数据记录到控制台
+      const binaryData = atob(dataURL.split(",")[1]); // 提取base64编码的二进制数据
+      const arrayBuffer = new ArrayBuffer(binaryData.length);
+      const uint8Array = new Uint8Array(arrayBuffer);
+
+      // 用二进制数据填充Uint8Array
+      for (let i = 0; i < binaryData.length; i++) {
+        uint8Array[i] = binaryData.charCodeAt(i);
+      }
+
+      console.log("二进制数据:", uint8Array);
+
+      var img1 = document.getElementById("img1");
+      debugger
+      EXIF.getData(img1, function () {
+        var make = EXIF.getTag(this, "Make");
+        var model = EXIF.getTag(this, "Model");
+
+        console.log(`${make} - ${model}`);
+      });
+    </script>
+  </body>
+</html>
