@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      // 获取Canvas元素
+      var canvas = document.getElementById("canvas");
+
+      // 在Canvas上绘制一些内容（这里假设是图像数据）
+      var ctx = canvas.getContext("2d");
+      ctx.fillStyle = "red";
+      ctx.fillRect(10, 10, 50, 50);
+
+      // 从Canvas获取图像数据（二进制数据）
+      var imageData = canvas.toDataURL("image/png");
+      var binaryData = atob(imageData.split(",")[1]); // 从Base64编码解码为二进制数据
+
+      // 将二进制数据转换为Uint8Array
+      var uint8Array = new Uint8Array(binaryData.length);
+      for (var i = 0; i < binaryData.length; i++) {
+        uint8Array[i] = binaryData.charCodeAt(i);
+      }
+
+      // 创建Blob对象，代表文件内容
+      var blobData = new Blob([uint8Array], { type: "image/png" });
+
+      // 构建一个File对象，指定文件名为example.png
+      var file = new File([blobData], "example.png", { type: "image/png" });
+
+      // 创建一个FormData对象，并将File对象添加到其中
+      var formData = new FormData();
+      formData.append("file", file);
+
+      // 创建一个XMLHttpRequest对象，用于上传文件
+      var xhr = new XMLHttpRequest();
+
+      // 配置XMLHttpRequest对象
+      xhr.open("POST", "/upload", true);
+
+      // 上传文件
+      xhr.send(formData);
+    </script>
+  </body>
+</html>
