@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>html2canvas原理示意</title>
+  </head>
+  <body>
+    <div id="content" style="background-color: red">
+      <p>This is a paragraph.</p>
+      <div style="background-color: yellow">
+        <p>图片</p>
+        <img
+          width="100"
+          height="100"
+          src="https://cdn.jsdelivr.net/gh/chenxiaoyao6228/cloudimg@main/2023/html-focus-1.png"
+        />
+      </div>
+    </div>
+    <button onclick="capture()">Capture</button>
+
+    <img id="output" src="#" alt="">
+
+    <script>
+      function capture() {
+        const contentElement = document.getElementById("content");
+        const canvas = document.createElement("canvas");
+        const context = canvas.getContext("2d");
+
+        // 设置canvas的尺寸与内容尺寸相匹配
+        canvas.width = contentElement.offsetWidth;
+        canvas.height = contentElement.offsetHeight;
+
+        // 将内容绘制到canvas上
+        drawElement(contentElement, context, 0, 0);
+
+        // 生成图片
+        document.body.appendChild(canvas);
+        // document.getElementById("output").src = canvas.toDataURL();
+      }
+
+      function drawElement(element, context, offsetX, offsetY) {
+        if (element.tagName === "P") {
+          // 绘制元素的背景颜色
+          context.fillStyle = window.getComputedStyle(element).backgroundColor;
+          context.fillRect(
+            offsetX,
+            offsetY,
+            element.offsetWidth,
+            element.offsetHeight
+          );
+
+          // 绘制元素的文本内容
+          context.fillStyle = window.getComputedStyle(element).color;
+          context.font = window.getComputedStyle(element).font;
+          context.fillText(
+            element.textContent,
+            offsetX,
+            offsetY + element.offsetHeight / 2
+          );
+        } else if (element.tagName === "IMG") {
+          // 将图片绘制到canvas上
+          context.drawImage(
+            element,
+            offsetX,
+            offsetY,
+            element.offsetWidth,
+            element.offsetHeight
+          );
+        } else if (element.tagName === "DIV") {
+          context.fillStyle = window.getComputedStyle(element).backgroundColor;
+          context.fillRect(
+            offsetX,
+            offsetY,
+            element.offsetWidth,
+            element.offsetHeight
+          );
+          // 递归绘制子元素
+          for (let i = 0; i < element.children.length; i++) {
+            drawElement(
+              element.children[i],
+              context,
+              offsetX + element.children[i].offsetLeft,
+              offsetY + element.children[i].offsetTop
+            );
+          }
+        }
+      }
+    </script>
+  </body>
+</html>

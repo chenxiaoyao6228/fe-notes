@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>前端截图</title>
+  </head>
+  <body>
+    <div id="content" style="background-color: red">
+      <p>This is a paragraph.</p>
+      <div style="background-color: yellow">
+        <p>图片</p>
+        <img
+          width="100"
+          height="100"
+          src="https://cdn.jsdelivr.net/gh/chenxiaoyao6228/cloudimg@main/2023/html-focus-1.png"
+        />
+      </div>
+    </div>
+
+    <button onclick="capture()">截图</button>
+
+    <img id="output" src="" alt="" />
+
+    <script>
+      function capture() {
+        const contentElement = document.getElementById("content");
+        const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+        const foreignObject = document.createElementNS(
+          "http://www.w3.org/2000/svg",
+          "foreignObject"
+        );
+        const image = new Image();
+
+        // 设置SVG的尺寸与内容尺寸相匹配
+        svg.setAttribute("width", contentElement.offsetWidth);
+        svg.setAttribute("height", contentElement.offsetHeight);
+
+        // 将要截图的内容包裹在foreignObject中
+        foreignObject.setAttribute("width", contentElement.offsetWidth);
+        foreignObject.setAttribute("height", contentElement.offsetHeight);
+        drawElement(contentElement, foreignObject, 0, 0);
+
+        // 将foreignObject添加到SVG中
+        svg.appendChild(foreignObject);
+
+        // 将SVG转换为DataURL
+        const svgData = new XMLSerializer().serializeToString(svg);
+        const url =
+          "data:image/svg+xml;charset=utf-8," + encodeURIComponent(svgData);
+
+        // 创建一个图像对象，加载DataURL
+        image.onload = function () {
+          const canvas = document.createElement("canvas");
+          const context = canvas.getContext("2d");
+
+          // 设置canvas的尺寸与内容尺寸相匹配
+          canvas.width = contentElement.offsetWidth;
+          canvas.height = contentElement.offsetHeight;
+
+          // 将图像绘制到canvas上
+          context.drawImage(image, 0, 0, canvas.width, canvas.height);
+
+          // 将canvas转换为DataURL
+          document.body.appendChild(canvas);
+          const imageDataURL = canvas.toDataURL();
+
+          document.getElementById("output").src = imageDataURL;
+        };
+        image.src = url;
+      }
+
+      function convertImageToBase64(img) {
+        const canvas = document.createElement("canvas");
+        canvas.width = img.width;
+        canvas.height = img.height;
+        const ctx = canvas.getContext("2d");
+        ctx.drawImage(img, 0, 0);
+        return canvas.toDataURL("image/png");
+      }
+
+      function drawElement(element, parentElement, offsetX, offsetY) {
+        if (element.tagName === "P") {
+          // 绘制元素的背景颜色
+          parentElement.style.backgroundColor =
+            window.getComputedStyle(element).backgroundColor;
+
+          // 绘制元素的文本内容
+          parentElement.textContent = element.textContent;
+        } else if (element.tagName === "IMG") {
+          // 需要处理跨域问题
+          const dataUrl = convertImageToBase64(element);
+          // 创建一个新的image元素，并设置其属性
+          const image = document.createElementNS(
+            "http://www.w3.org/1999/xhtml",
+            "img"
+          );
+          image.src = dataUrl;
+          image.alt = element.alt;
+          image.style.width = element.offsetWidth + "px";
+          image.style.height = element.offsetHeight + "px";
+
+          // 将image元素添加到父元素中
+          parentElement.appendChild(image);
+        } else if (element.tagName === "DIV") {
+          // 创建一个新的div元素，并设置其属性
+          const div = document.createElementNS(
+            "http://www.w3.org/1999/xhtml",
+            "div"
+          );
+          div.style.width = element.offsetWidth + "px";
+          div.style.height = element.offsetHeight + "px";
+
+          // 递归绘制子元素
+          for (const i = 0; i < element.children.length; i++) {
+            drawElement(
+              element.children[i],
+              div,
+              element.children[i].offsetLeft,
+              element.children[i].offsetTop
+            );
+          }
+
+          // 将div元素添加到父元素中
+          parentElement.appendChild(div);
+        }
+      }
+    </script>
+  </body>
+</html>
