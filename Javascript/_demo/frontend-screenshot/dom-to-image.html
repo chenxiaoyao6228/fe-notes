@@ -9,6 +9,7 @@
       <div style="background-color: yellow">
         <p>图片</p>
         <img
+        crossorigin="anonymous"
           width="100"
           height="100"
           src="https://cdn.jsdelivr.net/gh/chenxiaoyao6228/cloudimg@main/2023/html-focus-1.png"
@@ -60,7 +61,7 @@
           context.drawImage(image, 0, 0, canvas.width, canvas.height);
 
           // 将canvas转换为DataURL
-          document.body.appendChild(canvas);
+          // document.body.appendChild(canvas);
           const imageDataURL = canvas.toDataURL();
 
           document.getElementById("output").src = imageDataURL;
@@ -110,7 +111,7 @@
           div.style.height = element.offsetHeight + "px";
 
           // 递归绘制子元素
-          for (const i = 0; i < element.children.length; i++) {
+          for (let i = 0; i < element.children.length; i++) {
             drawElement(
               element.children[i],
               div,

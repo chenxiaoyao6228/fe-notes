@@ -9,6 +9,7 @@
       <div style="background-color: yellow">
         <p>图片</p>
         <img
+          crossorigin="anonymous"
           width="100"
           height="100"
           src="https://cdn.jsdelivr.net/gh/chenxiaoyao6228/cloudimg@main/2023/html-focus-1.png"
@@ -17,7 +18,7 @@
     </div>
     <button onclick="capture()">Capture</button>
 
-    <img id="output" src="#" alt="">
+    <img id="output" src="#" alt="" />
 
     <script>
       function capture() {
@@ -33,8 +34,8 @@
         drawElement(contentElement, context, 0, 0);
 
         // 生成图片
-        document.body.appendChild(canvas);
-        // document.getElementById("output").src = canvas.toDataURL();
+        // document.body.appendChild(canvas);
+        document.getElementById("output").src = canvas.toDataURL('image/png');
       }
 
       function drawElement(element, context, offsetX, offsetY) {
