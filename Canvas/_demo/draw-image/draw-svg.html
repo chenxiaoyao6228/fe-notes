@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SVG 到 Canvas 演示</title>
+  </head>
+  <body>
+    <canvas id="myCanvas" width="400" height="400"></canvas>
+
+    <script>
+      function drawSvgOnCanvas(canvas, svgString) {
+        var context = canvas.getContext("2d");
+
+        var img = new Image();
+
+        // 启用跨域资源共享（CORS）以加载图片
+        img.crossOrigin = "anonymous";
+
+        // 对SVG字符串进行Base64编码
+        var base64Svg = btoa(svgString);
+
+        // 从Base64编码的SVG字符串创建数据URL
+        var dataURL = "data:image/svg+xml;base64," + base64Svg;
+
+        img.src = dataURL;
+
+        // 等待图像加载完成，然后在Canvas上绘制
+        img.onload = function () {
+          context.drawImage(img, 0, 0);
+        };
+      }
+
+      document.addEventListener("DOMContentLoaded", function () {
+        // 注意：xmlns属性是必需的，不能省略
+        var svgString =
+          '<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100"><circle cx="50" cy="50" r="40" stroke="black" stroke-width="3" fill="red" /></svg>';
+
+        var canvas = document.getElementById("myCanvas");
+
+        drawSvgOnCanvas(canvas, svgString);
+      });
+    </script>
+  </body>
+</html>

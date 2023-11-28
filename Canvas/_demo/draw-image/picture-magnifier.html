@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <style>
+      #container {
+        position: relative;
+      }
+
+      #image {
+        width: 600px; /* 设置图片的宽度 */
+        height: auto; /* 根据宽度调整高度，保持图片比例 */
+        border: 1px solid #ccc;
+      }
+
+      #zoomed-in {
+        display: none;
+        position: absolute;
+        border: 1px solid #ccc;
+        width: 150px; /* 设置放大镜的宽度 */
+        height: 150px; /* 设置放大镜的高度 */
+        background-size: 300px 300px; /* 设置放大区域的大小 */
+      }
+    </style>
+  </head>
+  <body>
+    <div id="container">
+      <img
+        id="image"
+        src="https://cdn.jsdelivr.net/gh/chenxiaoyao6228/cloudimg@main/2023/bezier-curve-line-1.png"
+        alt="Your Image"
+      />
+      <div id="zoomed-in"></div>
+    </div>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        var container = document.getElementById("container");
+        var image = document.getElementById("image");
+        var zoomedIn = document.getElementById("zoomed-in");
+
+        var devicePixelRatio = window.devicePixelRatio || 1;
+
+        container.addEventListener("mousemove", function (e) {
+          var x = (e.pageX - container.offsetLeft) * devicePixelRatio;
+          var y = (e.pageY - container.offsetTop) * devicePixelRatio;
+
+          var zoomX = (x / container.clientWidth) * 100;
+          var zoomY = (y / container.clientHeight) * 100;
+
+          zoomedIn.style.backgroundImage = "url('" + image.src + "')";
+          zoomedIn.style.backgroundPosition = zoomX + "% " + zoomY + "%";
+          zoomedIn.style.display = "block";
+
+          // 设置放大区域的位置
+          zoomedIn.style.left = e.pageX - zoomedIn.clientWidth / 2 + "px";
+          zoomedIn.style.top = e.pageY - zoomedIn.clientHeight / 2 + "px";
+        });
+
+        container.addEventListener("mouseleave", function () {
+          zoomedIn.style.display = "none";
+        });
+      });
+    </script>
+  </body>
+</html>
