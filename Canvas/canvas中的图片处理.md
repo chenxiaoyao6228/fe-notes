@@ -4,10 +4,9 @@
 
 一些应用场景:
 
-- 图片放大镜效果
-- 图片添加水印(图层合并)
-- 图片裁剪
-- canvas绘制视频帧
+- 图片放大镜效果、添加水印(图层合并)、图片裁剪
+- 图片滤镜
+- canvas 绘制视频帧
 
 ## web 中的图片加载以及跨域问题
 
@@ -21,7 +20,7 @@ img.src = "https://example.com/image.jpg";
 img.crossOrigin = "anonymous";
 img.onload = function () {
   // 图片加载完成后的处理逻辑,可以将图片添加到页面上或执行其他操作
-  document.body.appendChild(img)
+  document.body.appendChild(img);
 };
 img.onerror = function (error) {
   console.error("Error fetching image:", error);
@@ -61,53 +60,52 @@ fetch("https://example.com/image.jpg", {
 
 3. 资源跨域
 
-浏览器默认对img，style, script等资源允许跨域访问的(注意这里的访问仅仅指的是可以渲染在页面上，如果进一步获取数据则会失败)，而ajax/fetch请求则不允许跨域访问. 除非显式设置响应头
+浏览器默认对 img，style, script 等资源允许跨域访问的(注意这里的访问仅仅指的是可以渲染在页面上，如果进一步获取数据则会失败)，而 ajax/fetch 请求则不允许跨域访问. 除非显式设置响应头
 
 > `Access-Control-Allow-Origin: *`，
 
 以下列两张图片为例：
 
-一是jsdelivr的图片资源，设置了跨域响应头
+一是 jsdelivr 的图片资源，设置了跨域响应头
 
 > https://cdn.jsdelivr.net/gh/chenxiaoyao6228/cloudimg@main/2023/wireshark-setting.png
 
 ![](https://cdn.jsdelivr.net/gh/chenxiaoyao6228/cloudimg@main/2023/assets-cross-orgin-server-setting.png)
 
-二是youtue视频的封面图，没有设置响应头
+二是 youtue 视频的封面图，没有设置响应头
+
 > https://img.youtube.com/vi/yWI61kpFEAA/0.jpg
 
-
-比如上述的img标签加载图片，如果图片资源服务器设置了跨域，那么就可以正常加载图片，但是如果是ajax/fetch请求，那么就需要设置跨域响应头，否则会报错。
+比如上述的 img 标签加载图片，如果图片资源服务器设置了跨域，那么就可以正常加载图片，但是如果是 ajax/fetch 请求，那么就需要设置跨域响应头，否则会报错。
 
 ![](https://cdn.jsdelivr.net/gh/chenxiaoyao6228/cloudimg@main/2023/img-cross-origin-firefox-error.png)
 
 可以看到，红色框住的部分对应的图片无法显示
 ![](https://cdn.jsdelivr.net/gh/chenxiaoyao6228/cloudimg@main/2023/image-fetch-cross-origin.png)
 
-
 重点来了：
 
 **绘制图片到 Canvas 上是一种相对宽松的操作，而直接访问图像数据则受到同源策略的限制。**
 
-**而对于canvas.drawImage而言, 只要能够加载到图片资源，就可以正常绘制**
+**而对于 canvas.drawImage 而言, 只要能够加载到图片资源，就可以正常绘制**
 
-**但是如果通过canvas.getImageData、canvas.toDataURL等API获取图片数据的时候， 就需要满足两个条件**
+**但是如果通过 canvas.getImageData、canvas.toDataURL 等 API 获取图片数据的时候， 就需要满足两个条件**
 
 1. 图片资源服务器设置了跨域响应头
 
-2. 在请求跨域资源的过程中，添加以下代码表示请求的资源应该用匿名身份进行访问，不发送用户凭据（例如cookie）：
+2. 在请求跨域资源的过程中，添加以下代码表示请求的资源应该用匿名身份进行访问，不发送用户凭据（例如 cookie）：
 
 ```js
 img.crossOrigin = "anonymous";
 ```
 
-对于ajax, 可以通过`withCredentials: false`来达到同样的效果, 而对于fetch请求，可以通过设置`credentials: "omit"`来达到同样的效果
+对于 ajax, 可以通过`withCredentials: false`来达到同样的效果, 而对于 fetch 请求，可以通过设置`credentials: "omit"`来达到同样的效果
 
 如果没有正确处理，就会出现`tainted canvas`的错误
 
 ![](https://cdn.jsdelivr.net/gh/chenxiaoyao6228/cloudimg@main/2023/tainted-canvas-error.png)
 
-完整的 demo 请看👉 [在线效果预览](https://chenxiaoyao6228.github.io/html-preview/?https://github.com/chenxiaoyao6228/fe-notes/blob/main/Canvas/_demo/image-cross-origin/taint-canvas.html), 查看示例代码请点击[此处](./_demo/image-cross-origin/taint-canvas.html)
+完整的 demo 请看 👉 [在线效果预览](https://chenxiaoyao6228.github.io/html-preview/?https://github.com/chenxiaoyao6228/fe-notes/blob/main/Canvas/_demo/image-cross-origin/taint-canvas.html), 查看示例代码请点击[此处](./_demo/image-cross-origin/taint-canvas.html)
 
 ## Canvas 中的绘图 API
 
@@ -125,7 +123,7 @@ var canvas = document.getElementById("myCanvas");
 var ctx = canvas.getContext("2d");
 var img = new Image();
 // 设置图像源
-img.src = "https://example.com/image.jpg"; 
+img.src = "https://example.com/image.jpg";
 // 等待图像加载完成后绘制到 Canvas
 img.onload = function () {
   // 在 Canvas 上绘制图像
@@ -133,18 +131,71 @@ img.onload = function () {
 };
 ```
 
+完整的 demo 请看👉 [在线效果预览](https://chenxiaoyao6228.github.io/html-preview/?https://github.com/chenxiaoyao6228/fe-notes/blob/main/Canvas/_demo/draw-image/draw-image.html), 查看示例代码请点击[此处](./_demo/draw-image/draw-image.html)
+
 ## Canvas 中绘制 svg
 
-- xmlns="http://www.w3.org/2000/svg"
-- svg 的模糊问题
+思路也是一样的，只是需要将 svg 字符串转换成 base64 编码的数据 URL，然后再绘制到 canvas 上
 
-## 离屏 Canvas
+```js
+function drawSvgOnCanvas(canvas, svgString) {
+  var context = canvas.getContext("2d");
+  var img = new Image();
+  // 启用跨域资源共享（CORS）以加载图片
+  img.crossOrigin = "anonymous";
+  // 对SVG字符串进行Base64编码
+  var base64Svg = btoa(svgString);
+  // 从Base64编码的SVG字符串创建数据URL
+  var dataURL = "data:image/svg+xml;base64," + base64Svg;
+  img.src = dataURL;
+  // 等待图像加载完成，然后在Canvas上绘制
+  img.onload = function () {
+    context.drawImage(img, 0, 0);
+  };
+}
 
+document.addEventListener("DOMContentLoaded", function () {
+  // 注意：xmlns属性是必需的，不能省略
+  var svgString =
+    '<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100"><circle cx="50" cy="50" r="40" stroke="black" stroke-width="3" fill="red" /></svg>';
+
+  var canvas = document.getElementById("myCanvas");
+
+  drawSvgOnCanvas(canvas, svgString);
+});
+```
+
+这里需要介绍下`btoa`函数，它是`Base64`编码函数，它的作用是将字符串转换成`Base64`编码的字符串，比如：
+
+```js
+var base64String = btoa(binaryString);
+```
+
+完整的 demo 请看👉 [在线效果预览](https://chenxiaoyao6228.github.io/html-preview/?https://github.com/chenxiaoyao6228/fe-notes/blob/main/Canvas/_demo/draw-image/draw-svg.html), 查看示例代码请点击[此处](./_demo/draw-image/draw-svg.html)
+
+## Canvas 中绘制 canvas
+
+```js
+document.addEventListener("DOMContentLoaded", function () {
+  // 获取第一个Canvas的上下文
+  var context1 = document.getElementById("canvas1").getContext("2d");
+
+  // 在第一个Canvas上绘制一个矩形
+  context1.fillStyle = "lightblue";
+  context1.fillRect(10, 10, 180, 180);
+
+  // 获取第二个Canvas的上下文
+  var context2 = document.getElementById("canvas2").getContext("2d");
+
+  // 将第一个Canvas的内容绘制到第二个Canvas上
+  context2.drawImage(document.getElementById("canvas1"), 0, 0);
+});
+```
+
+完整的 demo 请看👉 [在线效果预览](https://chenxiaoyao6228.github.io/html-preview/?https://github.com/chenxiaoyao6228/fe-notes/blob/main/Canvas/_demo/draw-image/draw-canvas.html), 查看示例代码请点击[此处](./_demo/draw-image/draw-canvas.html)
 
 ## 更多阅读
 
-- https://www.zhangxinxu.com/wordpress/2018/02/crossorigin-canvas-getimagedata-cors/
-- https://www.zhangxinxu.com/wordpress/2023/06/js-canvas-jspdf-export-pdf/
 - https://www.zhangxinxu.com/wordpress/2023/09/js-jpg-png-compress-tinyimg-mini/
 - https://github.com/eduardolundgren/tracking.js/
 - [UPNG.js](https://github.com/photopea/UPNG.js)
