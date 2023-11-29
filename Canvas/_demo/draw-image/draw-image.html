@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Canvas Image Demo</title>
+  </head>
+  <body>
+    <!-- <img src="https://img.youtube.com/vi/yWI61kpFEAA/0.jpg" alt=""> -->
+    <canvas
+      id="myCanvas"
+      width="400"
+      height="200"
+      style="border: 1px solid #000"
+    ></canvas>
+
+    <script>
+      // 获取 Canvas 元素
+      var canvas = document.getElementById("myCanvas");
+      var ctx = canvas.getContext("2d");
+
+      // 创建一个新的 Image 对象
+      var img = new Image();
+      // img.crossOrigin = "Anonymous"; // 解决跨域
+
+      // 设置图像源
+      // img.src = "https://cdn.jsdelivr.net/gh/chenxiaoyao6228/cloudimg@main/2023/wireshark-setting.png"; // 替换成你的图片路径
+      // img.src = "https://raw.githubusercontent.com/chenxiaoyao6228/cloudimg/main/2023/wireshark-setting.png"; // 替换成你的图片路径
+      img.src = "https://img.youtube.com/vi/yWI61kpFEAA/0.jpg"; // 替换成你的图片路径
+
+      // 等待图像加载完成后绘制到 Canvas
+      img.onload = function () {
+        document.body.appendChild(img)
+        // 在 Canvas 上绘制图像
+        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+        
+        // const data =  canvas.toDataURL("image/png");
+        // const _img = new Image();
+        // _img.src = data
+        // document.body.appendChild(_img)
+      };
+    </script>
+  </body>
+</html>

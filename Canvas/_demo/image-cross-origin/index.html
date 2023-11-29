@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>图片跨域</title>
+  </head>
+  <body>
+
+     <h2>YouTube Video Thumbnail (Ajax Request)</h2>
+    <div id="youtubeImageContainerAjax"></div>
+
+    <h2>YouTube Video Thumbnail (img Element)</h2>
+    <div id="youtubeImageContainerImg"></div>
+
+    <h2>JsDelivr Image (Ajax Request)</h2>
+    <div id="jsdelivrImageContainerAjax"></div>
+
+    <h2>JsDelivr Image (img Element)</h2>
+    <div id="jsdelivrImageContainerImg"></div>
+
+  
+    <script>
+      function loadImageAjax(url, containerId, title) {
+        var xhr = new XMLHttpRequest();
+        xhr.withCredentials = false;
+
+        xhr.onload = function () {
+          var url = URL.createObjectURL(this.response);
+          var img = new Image();
+          img.width = 100
+          img.onload = function () {
+            URL.revokeObjectURL(url);
+          };
+          img.src = url;
+
+          var container = document.getElementById(containerId);
+          container.appendChild(img);
+        };
+
+        xhr.open("GET", url, true);
+        xhr.responseType = "blob";
+        xhr.send();
+      }
+
+      function loadImageImg(url, containerId, title) {
+        var img = new Image();
+        img.src = url;
+        
+
+        var container = document.getElementById(containerId);
+        container.appendChild(img);
+      }
+
+      // Load JsDelivr Image with Ajax
+      var jsdelivrUrlAjax =
+        "https://cdn.jsdelivr.net/gh/chenxiaoyao6228/cloudimg@main/2023/bg_music_1.png";
+      loadImageAjax(jsdelivrUrlAjax, "jsdelivrImageContainerAjax", "JsDelivr Image (Ajax Request)");
+
+      // Load JsDelivr Image with <img> Element
+      var jsdelivrUrlImg =
+        "https://cdn.jsdelivr.net/gh/chenxiaoyao6228/cloudimg@main/2023/bg_music_1.png";
+      loadImageImg(jsdelivrUrlImg, "jsdelivrImageContainerImg", "JsDelivr Image (<img> Element)");
+
+      // Load YouTube Video Thumbnail with Ajax
+      var youtubeUrlAjax = "https://img.youtube.com/vi/yWI61kpFEAA/0.jpg";
+      loadImageAjax(youtubeUrlAjax, "youtubeImageContainerAjax", "YouTube Video Thumbnail (Ajax Request)");
+
+      // Load YouTube Video Thumbnail with <img> Element
+      var youtubeUrlImg = "https://img.youtube.com/vi/yWI61kpFEAA/0.jpg";
+      loadImageImg(youtubeUrlImg, "youtubeImageContainerImg", "YouTube Video Thumbnail (<img> Element)");
+    </script>
+  </body>
+</html>

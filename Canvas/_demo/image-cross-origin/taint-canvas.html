@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>tainted canvas error</title>
+  </head>
+  <body>
+    <div id="with-crossOrigin-attr">
+        <p>with-crossOrigin-attr</p>
+    </div>
+    <div id="without-crossOrigin-attr">
+        <p>without-crossOrigin-attr</p>
+    </div>
+    <script>
+      function loadImg(withCrossOrigin, containerId) {
+        var jsdelivrUrlAjax =
+          "https://cdn.jsdelivr.net/gh/chenxiaoyao6228/cloudimg@main/2023/bg_music_1.png";
+
+        var image = new Image();
+        image.src = jsdelivrUrlAjax;
+        if(withCrossOrigin){
+            image.crossOrigin = "anonymous";
+        }
+        image.onload = function () {
+          var canvas = document.createElement("canvas");
+          var ctx = canvas.getContext("2d");
+          ctx.drawImage(image, 0, 0);
+          const dataURL = canvas.toDataURL();
+          const resImage = new Image();
+          image.src = dataURL;
+          document.getElementById(containerId).appendChild(image);
+          try {
+          } catch (e) {
+            console.log(e);
+          }
+        };
+      }
+      loadImg(true, "with-crossOrigin-attr");
+      loadImg(false, "without-crossOrigin-attr");
+    </script>
+  </body>
+</html>
