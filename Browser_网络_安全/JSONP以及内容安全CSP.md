@@ -56,6 +56,6 @@ JSONP({
 })
 ```
 参考资料:
-https://www.zhihu.com/question/28890257
-https://developer.mozilla.org/zh-CN/docs/Web/Security/Same-origin_policy
-https://www.zhihu.com/search?type=content&q=jsonp%E5%AE%9E%E7%8E%B0%20
+- https://www.zhihu.com/question/28890257
+- https://developer.mozilla.org/zh-CN/docs/Web/Security/Same-origin_policy
+- https://www.zhihu.com/search?type=content&q=jsonp%E5%AE%9E%E7%8E%B0%20
