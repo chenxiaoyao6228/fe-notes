@@ -76,3 +76,33 @@ DNS系统诞生后，本地的host文件依然没有被淘汰，比如我们可�
 DNS 解析服务并不单单只有 域名 -> IP 地址一个功能，还能解析邮件服务器、CNAME 配置等
 
 
+### A记录
+
+上面一直在说的 域名 -> IP 地址 这样的 Map 记录叫做 A 记录，也即Active Record。 是最为常见的域名解析
+
+如果你购买了服务器， 并希望将域名解析到该服务器，你需要登录到你的服务器提供商的管理面板或控制台，查找服务器的公网IP地址， 然后进入你购买域名的DNS托管提供商的网站，添加一条 A 记录，将域名解析到你的服务器 IP 地址。
+
+![](https://cdn.jsdelivr.net/gh/chenxiaoyao6228/cloudimg@main/2023/dns-add-record.png)
+
+### CNAME
+
+CNAME记录用于创建一个域名的别名，将一个域名指向另一个域名。
+
+假设你有一个GitHub Pages网站，网址是yourusername.github.io，而你希望使用自定义域名yourcustomdomain.com。在这个情景中，你可以使用CNAME记录来实现这个自定义域名的映射
+
+![](https://cdn.jsdelivr.net/gh/chenxiaoyao6228/cloudimg@main/2023/github-cname-dns-setting.png)
+
+![](https://cdn.jsdelivr.net/gh/chenxiaoyao6228/cloudimg@main/2023/cname-github-page.png)
+
+### MAIL
+
+通常用于指定与电子邮件服务相关的记录
+
+
+## Nodejs 实现 DNS服务器
+
+可参考这篇[文章](https://mp.weixin.qq.com/s/Gl94ISY5N4BYyYmVT9-QFQ)
+
+## 参考
+
+- https://mp.weixin.qq.com/s/Gl94ISY5N4BYyYmVT9-QFQ
