@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CORS 示例</title>
+  <style>
+    #result-container{
+        margin-top: 30px;
+    }
+  </style>
+</head>
+<body>
+
+<h1>CORS 示例</h1>
+
+<button onclick="fetchData('GET')">发送 GET 请求</button>
+<button onclick="fetchData('POST')">发送 POST 请求</button>
+
+<ul id="result-container"></ul>
+
+<script>
+  // 发起支持 CORS 的 GET 或 POST 请求的函数
+  function fetchData(method) {
+    const url = 'http://localhost:3000/api/data'; 
+
+    fetch(url, {
+      method: method,
+      // get 请求不设置header，简单请求示例
+      headers: method === 'POST' ?{
+        'Content-Type': 'application/json',
+        'Custom-Header': 'Custom-Value',
+      }: {},
+      credentials: 'include', // 包括凭证（cookies）
+      body: method === 'POST' ? JSON.stringify({ key: 'value' }) : undefined,
+    })
+    .then(response => response.json())
+    .then(data => {
+      console.log(data);
+      displayResult(data);
+    })
+    .catch(error => {
+      console.error('发生错误:', error);
+      displayResult({ error: '请求失败' });
+    });
+  }
+
+  // 在页面上显示结果的函数
+  function displayResult(data) {
+    const resultContainer = document.getElementById('result-container');
+    const resultItem = document.createElement('li');
+    resultItem.textContent = JSON.stringify(data);
+    resultContainer.appendChild(resultItem);
+  }
+</script>
+
+</body>
+</html>

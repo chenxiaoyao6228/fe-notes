@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>JSONP示例</title>
+  </head>
+  <body>
+    <!-- 前端代码 -->
+    <script>
+      // 这里的handleResponse函数是后端返回的数据的回调函数
+      function handleResponse(data) {
+        console.log(data);
+        document.body.innerHTML = `<h1>返回的数据：${JSON.stringify(data)}</h1>`;
+      }
+
+      var script = document.createElement("script");
+      script.src = "http://localhost:3333/api/jsonp?callback=handleResponse";
+      document.body.appendChild(script);
+    </script>
+  </body>
+</html>
