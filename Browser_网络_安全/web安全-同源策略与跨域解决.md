@@ -21,7 +21,8 @@
 
 这里的同源指的是: **同协议 + 同域名 + 同端口**， 比如下面这两个 URL,`my-product.com`,以及相同的端口 443,所以我们就说这两个 URL 是同源的。
 
-> https://my-product.com/?type=0 > https://my-product.com/?type=1
+> https://my-product.com/?type=0 
+>  https://my-product.com/?type=1
 
 同源策略限制了以下几种行为:
 

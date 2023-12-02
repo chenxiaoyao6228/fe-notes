@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>XSS Demo</title>
+</head>
+<body>
+  <h1>发布你的文章</h1>
+  <form action="/submit" method="post">
+    <textarea type="text" id="userInput" name="userInput" ></textarea>
+    <br/>
+    <button type="submit">Submit</button>
+  </form>
+</body>
+</html>
