@@ -30,7 +30,7 @@ transferApp.post("/transfer", (req, res) => {
 ```
 
 同时我们有一个钓鱼的猫片网站
-![](../../cloudimg/2023/cat-movie-risk-page.png)
+![](https://cdn.jsdelivr.net/gh/chenxiaoyao6228/cloudimg@main/2023/cat-movie-risk-page.png)
 
 具体代码是这个样子:
 
@@ -78,7 +78,7 @@ transferApp.post("/transfer", (req, res) => {
 
 当用户点击上面的猫片网站，就会向转账服务后台发起一个 post 请求
 
-![](../../cloudimg/2023/cat-movie-risk-page-click-response.png)
+![](https://cdn.jsdelivr.net/gh/chenxiaoyao6228/cloudimg@main/2023/cat-movie-risk-page-click-response.png)
 
 到这里,相信你已经知道什么是 CSRF 攻击了。 **和 XSS 不同的是,CSRF 攻击不需要将恶意代码注入用戶的⻚面,仅仅是利用服务器的漏洞和用戶的登录状态来实施攻击**
 
