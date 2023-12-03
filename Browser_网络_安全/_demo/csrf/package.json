@@ -1,0 +1,20 @@
+{
+  "name": "csrf-demo",
+  "version": "1.0.0",
+  "description": "csrf-demo",
+  "main": "index.js",
+  "scripts": {
+    "dev": "node transfer-service.js && node app.js"
+  },
+  "keywords": [
+    "csrf"
+  ],
+  "author": "chenxiaoyao",
+  "license": "MIT",
+  "dependencies": {
+    "body-parser": "^1.20.2",
+    "cookie-parser": "^1.4.6",
+    "csurf": "^1.11.0",
+    "express": "^4.18.2"
+  }
+}
