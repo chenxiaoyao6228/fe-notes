@@ -128,7 +128,7 @@ const fetchEnLocaleRes = await chrome.runtime.sendMessage({
 ```
  {
     "host_permissions": [
-      "http://xx.test.seewo.com/",
+      "http://xx.test.mycompany.com/",
       "http://*/*",
       "https://*/*"
     ],
@@ -140,3 +140,10 @@ const fetchEnLocaleRes = await chrome.runtime.sendMessage({
     ]
 }
 ```
+
+
+## 参考
+
+- https://developer.chrome.com/docs/extensions/reference/
+- https://developer.chrome.com/docs/extensions/mv3/
+- https://zhuanlan.zhihu.com/p/27427557

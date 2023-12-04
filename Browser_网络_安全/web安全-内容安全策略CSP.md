@@ -47,12 +47,15 @@ Content-Security-Policy: directive1 value1; directive2 value2;
 
 而从`https://cdnjs.cloudflare.com`加载的文件就会报下面的错误
 
-![](../../cloudimg/2023/content-security-policy-1.png)
+![](https://cdn.jsdelivr.net/gh/chenxiaoyao6228/cloudimg@main/2023/content-security-policy-1.png)
 
-完整的 demo 请看 👉 [在线效果预览](./_demo/csp/1.html), 查看示例代码请点击[此处](./_demo/csp/1.html)
+完整的 demo 请看 👉 [在线效果预览](https://chenxiaoyao6228.github.io/html-preview/?https://github.com/chenxiaoyao6228/fe-notes/blob/main/Browser_网络_安全/_demo/csp/1.html), 查看示例代码请点击[此处](./_demo/csp/1.html)
 
 
 ## CSP指令详解
+
+
+### 指令的分类
 
 常见 CSP 指令分为两类：资源加载指令和行为控制指令。
 
@@ -105,10 +108,58 @@ Content-Security-Policy: directive1 value1; directive2 value2;
 - 用法示例： frame-src 'self' https://trusted-frames.com; 允许加载同一源的框架以及从 https://trusted-frames.com 加载的框架
 
 
+### 指令的选项值
+
+1. default-src：
+
+- 'none'： 不允许加载任何资源，默认情况下，只有浏览器报告违规。
+- 'self'： 只允许加载来自同一源的资源。
+- 'unsafe-inline'： 允许内联脚本和样式，但会增加 XSS 攻击的风险。
+- 'unsafe-eval'： 允许使用 eval() 和类似的动态代码执行，但增加了安全风险。
+
+2. script-src：除了上述的 default-src 选项值外，还有：
+- 'nonce-value'： 允许使用特定的 nonce 值标识的脚本。
+- 'strict-dynamic'： 启用严格动态执行模式，只允许执行经过有效签名的脚本。
+- 域名： 允许从指定域名加载脚本。
+
+3. style-src： 除了上述的 default-src 选项值外，还有：
+'nonce-value'： 允许使用特定的 nonce 值标识的样式。
+'unsafe-inline'： 允许内联样式，但会增加 XSS 攻击的风险。
+域名： 允许从指定域名加载样式。
+
+4. img-src、font-src、media-src、connect-src、object-src 等, 除了上述的 default-src 选项值外，还有：
+- 域名： 允许从指定域名加载相应类型的资源。
+- 'data:'： 允许使用 data URI。
+- 'blob:'： 允许使用 Blob URI。
+
+5. frame-ancestors：
+
+- 'none'： 不允许被嵌套在任何 `<frame>`、`<iframe>`、`<embed>`、`<applet>` 中。
+- 'self'： 只允许被嵌套在相同源的 `<frame>` 中。
+- 域名： 允许被嵌套在指定域名的 `<frame>` 中。
+
+>ps: X-Frame-Options 是一个 HTTP 头部，用于防止点击劫持攻击。点击劫持是一种攻击方式，攻击者通过将目标网站嵌套在一个透明的框架中，然后诱使用户在该框架上执行某些操作，从而实现对目标网站的攻击。[目前已由frame-ancestors 指令取代](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Frame-Options)。
+
+1. form-action, 除了上述的 default-src 选项值外，还有：
+- 域名： 允许表单提交到指定域名。
+- report-uri 或 report-to：
+
+
 ## 浏览器插件中的 CSP
 
-和网站相比，插件可以访问特权 API，因此一旦它们被恶意代码破坏，风险就更大。因此：
+和网站相比，插件可以访问特权 API，因此一旦它们被恶意代码破坏，风险就更大。因此浏览器插件默认会受到浏览器的默认 CSP 策略的影响
 
+可以通过在 manifest.json 文件中指定 content_security_policy 字段，为插件设置自定义的 CSP 策略。这个字段的值是一个字符串，表示 CSP 策略。
+
+```json
+{
+  "name": "My extension",
+  ...
+  "content_security_policy": "script-src 'self' https://example.com; object-src 'self'"
+}
+```
+
+更多请看[Manifest - Content Security Policy](https://developer.chrome.com/docs/extensions/mv3/manifest/content_security_policy/)
 
 ## Report-Only 模式
 
@@ -120,10 +171,12 @@ Content-Security-Policy: default-src 'self'; report-uri http://reportcollector.e
 ## 参考
 
 - https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP
-- https://content-security-policy.com/
-- https://developer.chrome.com/docs/extensions/mv3/content_scripts/#injecting-in-related-frames
-- https://www.ruanyifeng.com/blog/2016/09/csp.htm
 - https://web.dev/articles/csp
+- https://www.ruanyifeng.com/blog/2016/09/csp.htm
 - https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Headers/X-Frame-Options
 - [Content Security Policy Level 3](https://w3c.github.io/webappsec-csp/)
 - [WebExtensions 中的安全策略](https://developer.mozilla.org/zh-CN/docs/Mozilla/Add-ons/WebExtensions/Content_Security_Policy)
+- https://developer.chrome.com/docs/extensions/mv3/content_scripts/#injecting-in-related-frames
+- https://developer.chrome.com/docs/extensions/mv3/sandboxingEval/
+- https://developer.chrome.com/docs/extensions/mv3/cross-origin-isolation/
+- https://developer.chrome.com/docs/extensions/mv3/manifest/content_security_policy/

@@ -126,6 +126,8 @@ server.listen(port, () => {
 - 禁止想外部URL发送数据
 - 禁止加载未授权的内联脚本和样式
 
+> CSP相关的内容请查看笔者对应的文章
+
 ### 使用httpOnly
 
 http-only是cookie的一个属性,如果设置了http-only,那么通过js就无法获取到cookie的值,这样就可以防止XSS攻击者通过js获取到用户的cookie,从而防止XSS攻击者盗取用户的cookie。
