@@ -50,8 +50,9 @@
 跨域解决方案有很多：
 
 - CORS（Cross-origin resource sharing）
-- 通过 jsonp 跨域
+- node中间层代理跨域
 - nginx 代理跨域
+- 通过 JSONP 跨域
 - document.domain + iframe 跨域
 - location.hash + iframe
 - window.name + iframe 跨域
@@ -60,7 +61,7 @@
 
 这里只挑选几个常用的进行介绍
 
-### CORS(最常用)
+### CORS
 
 > CORS 是一个 W3C 标准，全称是"跨域资源共享"（Cross-origin resource sharing）它允许浏览器向跨源服务器，发出 XMLHttpRequest 请求，从而克服了 AJAX 只能同源使用的限制。
 
@@ -220,9 +221,91 @@ xhr.withCredentials = true
 res.header("Access-Control-Allow-Credentials", "true");
 ```
 
-### jsonp
+### node中间层代理跨域
 
-jsonp(json with padding, 忽略这个不知所谓的全称),是一种**利用 script 等标签没有跨域限制**进行第三方通讯的技术。
+利用node中间层，Node应用会处理所有请求，包括 /api 路径下的请求。如果没有特别处理`/api`路径以外的请求，Express会默认查找静态文件或处理其他路由
+
+```js
+const express = require('express');
+const { createProxyMiddleware } = require('http-proxy-middleware');
+
+const app = express();
+const PORT = 3000;
+
+// 添加代理中间件
+const apiProxy = createProxyMiddleware('/api', {
+  target: 'http://api.example.com',
+  changeOrigin: true,
+  pathRewrite: { '^/api': '' },
+});
+
+app.use('/api', apiProxy);
+
+// 处理默认路由，返回index.html或其他内容
+app.get('/', (req, res) => {
+  res.sendFile(__dirname + '/index.html'); // 请根据实际路径调整
+});
+
+// 添加其他路由或中间件...
+
+app.listen(PORT, () => {
+  console.log(`Server is running on http://localhost:${PORT}`);
+});
+```
+
+优点：
+
+- 不需要后台配合，前端自己能搞
+- 有了node层可以有更多的想象力，比如做ssr，比如如果前端业务想做接口聚合也很容易实现
+
+缺点：
+- 添加node层多添加了一层链路，有可能给异常的排查添加难度
+- 小应用也添加一个node层，有点大材小用
+- 需要额外处理热更新问题
+
+
+### nginx 代理跨域
+
+我们本地开发项目的时候，会使用webpack的dev-server的proxy功能来代理后台的api请求
+
+```js
+{
+  "devServer": {
+    proxy: {
+        '/api': {
+          target: 'https://api.example.com',
+          changeOrigin: true,
+          secure: false,
+        },
+      }
+  }
+}
+```
+在线上部署的时候，我们可以通过nginx做这样的处理，本质上和dev-server的proxy的效果是一样的
+
+```nginx.conf
+server {
+    listen 80;
+    server_name my-website.com; # 前端应用的地址
+
+    location /api {
+        proxy_pass http://api.example.com;  # 将请求代理到后台api域
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+    # 添加其他配置项...
+
+    location / {
+        # 处理其他请求...
+    }
+}
+```
+
+### JSONP
+
+JSONP(json with padding, 忽略这个不知所谓的全称),是一种**利用 script 等标签没有跨域限制**进行第三方通讯的技术。
 
 基本实现思路: **动态的创建 script 元素，拼接传入的参数生成 url 字符串,然后通过 src 属性去加载数据，通过 callback 这个回调方法来返回服务器数据，然后再把 script 标签移除**。换成代码就是
 
@@ -265,6 +348,7 @@ app.listen(PORT, () => {
 });
 ```
 
+
 ## 参考
 
 - https://developer.mozilla.org/zh-CN/docs/Web/Security/Same-origin_policy
@@ -273,3 +357,4 @@ app.listen(PORT, () => {
 - https://developer.mozilla.org/zh-CN/docs/Web/HTTP/CORS#Preflighted_requests
 - https://juejin.im/post/5c9c38e2e51d452db7007f66
 - https://developer.chrome.com/docs/extensions/mv3/network-requests/
+- [Nginx 代理解决跨域问题分析](https://www.cnblogs.com/fnz0/p/15803011.html)
