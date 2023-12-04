@@ -42,6 +42,9 @@
 
 2. (针对 2.3)通过 CROS(Cross-origin resource sharing)来解决跨域问题
 
+
+但没有银弹，这些缺口会导致额外的网络安全问题，我们会在后面的文章中谈到
+
 ## 跨域解决方案
 
 跨域解决方案有很多：
@@ -269,3 +272,4 @@ app.listen(PORT, () => {
 - https://developer.mozilla.org/en-US/docs/Glossary/Preflight_request
 - https://developer.mozilla.org/zh-CN/docs/Web/HTTP/CORS#Preflighted_requests
 - https://juejin.im/post/5c9c38e2e51d452db7007f66
+- https://developer.chrome.com/docs/extensions/mv3/network-requests/

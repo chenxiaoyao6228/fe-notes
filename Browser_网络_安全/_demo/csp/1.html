@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; script-src 'self' https://cdn.jsdelivr.net; style-src 'self' https://cdn.jsdelivr.net;"
+    />
+    <title>CSP 示例</title>
+    <!-- 同源的内联样式 -->
+    <style>
+      p {
+        color: green;
+      }
+    </style>
+    <!-- 从 jsdelivr.net 加载的样式 -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/antd@5.11.5/dist/reset.min.css"
+    />
+    <!--（由于 CSP 被阻止） -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/antd/4.6.6/antd.compact.min.css" />
+  </head>
+  <body>
+    <p>打开console查看效果</p>
+    <!-- 同源的内联脚本 -->
+    <script>
+      console.log("同源的内联脚本。");
+    </script>
+
+    
+    <!-- 从 cdn.jsdelivr.net 加载的脚本 -->
+    <script
+      src="https://cdn.jsdelivr.net/npm/antd@5.11.5/dist/antd.min.js"
+      crossorigin="anonymous"
+    ></script>
+
+    <!-- 外部脚本（由于 CSP 被阻止） -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/antd/4.6.6/antd.min.js"></script>
+  </body>
+</html>

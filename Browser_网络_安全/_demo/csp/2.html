@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <!-- <meta http-equiv="Content-Security-Policy" content="script-src 'self';"> -->
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self';">
+    <title>CSP 防御 XSS 攻击示例</title>
+</head>
+<body>
+    <h1>评论区</h1>
+    <div id="comments">
+        <!-- 用户输入的评论，由于 CSP，脚本不会执行 -->
+        <p>这是一条用户评论： <script>alert('恶意脚本！');</script></p>
+    </div>
+    <!-- 用户输入评论的表单 -->
+    <form>
+        <label for="comment">发表评论：</label>
+        <textarea id="comment" name="comment"></textarea>
+        <button type="submit">提交评论</button>
+    </form>
+</body>
+</html>
