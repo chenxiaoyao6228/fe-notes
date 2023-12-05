@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Long Polling with AJAX</title>
+    <script>
+        function longPolling() {
+            const xhr = new XMLHttpRequest();
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState == XMLHttpRequest.DONE) {
+                    if (xhr.status == 200) {
+                        // 处理服务器响应的数据
+                        console.log(xhr.responseText);
+                        // 发起下一次长轮询请求
+                        longPolling();
+                    } else {
+                        // 处理错误
+                        console.error("Long Polling request failed");
+                    }
+                }
+            };
+            xhr.open("GET", "/long-polling-endpoint", true);
+            xhr.send();
+        }
+
+        // 启动长轮询
+        longPolling();
+    </script>
+</head>
+<body>
+    <h1>Long Polling with AJAX</h1>
+    <!-- 页面内容 -->
+</body>
+</html>
