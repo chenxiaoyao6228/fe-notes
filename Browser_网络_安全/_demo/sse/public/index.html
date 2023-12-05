@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CICD 模拟器</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        #build-info {
+            width: 70%;
+            height: 70%;
+            margin: 20px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            background-color: #fff;
+            overflow-y: auto;
+            max-height: 300px;
+        }
+
+        p {
+            margin: 5px 0;
+            padding: 5px;
+            border-bottom: 1px solid #eee;
+        }
+    </style>
+</head>
+<body>
+
+<h1>CICD 模拟器</h1>
+
+<div id="build-info"></div>
+
+<script>
+    const eventSource = new EventSource('/sse-endpoint');
+    const buildInfoDiv = document.getElementById('build-info');
+
+    eventSource.addEventListener('message', (event) => {
+        const buildInfo = event.data;
+        appendBuildInfo(buildInfo);
+    });
+
+    eventSource.addEventListener('error', (error) => {
+        console.error('Error occurred:', error);
+    });
+
+    function appendBuildInfo(buildInfo) {
+        const buildInfoElement = document.createElement('p');
+        buildInfoElement.innerText = buildInfo;
+        buildInfoDiv.appendChild(buildInfoElement);
+        // 滚动到底部
+        buildInfoDiv.scrollTop = buildInfoDiv.scrollHeight;
+    }
+</script>
+
+</body>
+</html>

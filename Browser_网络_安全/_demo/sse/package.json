@@ -1,0 +1,14 @@
+{
+  "name": "sse",
+  "version": "1.0.0",
+  "description": "sse demo",
+  "main": "app.js",
+  "scripts": {
+    "dev": "node app.js"
+  },
+  "keywords": [
+    "sse"
+  ],
+  "author": "chenxiaoyao",
+  "license": "MIT"
+}
