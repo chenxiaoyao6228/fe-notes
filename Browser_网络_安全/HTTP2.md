@@ -95,6 +95,14 @@ HTTP/2中，**一个TCP连接上可以并行处理多个请求，每个请求都
 | Prefetch           | 浏览器资源提示               | `<link rel="prefetch" href="example.css">`                    | 在页面加载后异步预获取指定的资源(**比如在另外的组件中使用的非首屏资源**)。                                                                      |
 | Preload            | 显式资源提示                | `<link rel="preload" href="example.css" as="style">`          | 显式提示浏览器预加载和获取资源。其中as指定资源的类型                                                                         |
 
+
+## 如何查看是否使用了HTTP/2
+
+打开开发者工具，选择 Network 选项卡，右键status, 勾选Protocal, 二次刷新页面，就可以看到了
+
+![](https://cdn.jsdelivr.net/gh/chenxiaoyao6228/cloudimg@main/2023/chrome-inspect-network-protocal.png)
+
+
 ## 参考
 
 - https://web.dev/articles/performance-http2
