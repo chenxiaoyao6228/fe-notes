@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>文件下载demo</title>
+    <style>
+      button {
+        display: block;
+        margin-bottom: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>文件下载demo</h1>
+    <p>请打开控制台查看对应的请求头和响应头</p>
+
+    <button id="download-txt">下载 Text File</button>
+    <button id="download-html">下载 HTML File</button>
+    <button id="download-docx">下载 Word Document</button>
+    <button id="download-excel">下载 Excel Document</button>
+    <button id="download-pptx">下载 PowerPoint Presentation</button>
+
+    <br />
+
+    <button id="download-pdf">预览 PDF File</button>
+
+    <script>
+      function downloadFile(fileName) {
+        const xhr = new XMLHttpRequest();
+        xhr.open("GET", `/download?file=${fileName}`, true);
+        xhr.responseType = "blob";
+        xhr.onload = function () {
+          const contentType = xhr.getResponseHeader("Content-Type");
+          const blob = new Blob([xhr.response], { type: contentType });
+          const link = document.createElement("a");
+          link.href = URL.createObjectURL(blob);
+          link.download = fileName;
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+        };
+        xhr.send();
+      }
+
+      document.getElementById("download-txt").addEventListener("click", () => {
+        downloadFile("example.txt");
+      });
+
+      document.getElementById("download-html").addEventListener("click", () => {
+        downloadFile("example.html");
+      });
+
+      document.getElementById("download-pdf").addEventListener("click", () => {
+        downloadFile("example.pdf");
+      });
+
+      document.getElementById("download-docx").addEventListener("click", () => {
+        downloadFile("example.docx");
+      });
+
+      document
+        .getElementById("download-excel")
+        .addEventListener("click", () => {
+          downloadFile("example.xlsx");
+        });
+
+      document.getElementById("download-pptx").addEventListener("click", () => {
+        downloadFile("example.pptx");
+      });
+    </script>
+  </body>
+</html>
