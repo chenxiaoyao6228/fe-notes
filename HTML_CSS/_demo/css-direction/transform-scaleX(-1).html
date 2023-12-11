@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>transform: scaleX(-1)水平翻转示例</title>
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      margin: 0;
+      padding: 20px;
+      text-align: center;
+    }
+
+    /* 初始状态 */
+    .original {
+      display: inline-block;
+      margin-right: 20px;
+    }
+
+    /* 使用 transform: scaleX(-1) 实现水平翻转 */
+    .flipped {
+      display: inline-block;
+      transform: scaleX(-1);
+      margin-left: 20px;
+    }
+  </style>
+</head>
+<body>
+  <h2>transform: scaleX(-1) 水平翻转示例</h2>
+
+  <div class="original">
+    <h3>原始状态</h3>
+    <img src="https://via.placeholder.com/150" alt="Original Image">
+  </div>
+
+  <div class="flipped">
+    <h3>水平翻转</h3>
+    <img src="https://via.placeholder.com/150" alt="Flipped Image">
+  </div>
+</body>
+</html>

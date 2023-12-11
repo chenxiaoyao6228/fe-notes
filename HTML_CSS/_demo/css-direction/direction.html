@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>文本方向 CSS direction </title>
+    <style>
+      body {
+        text-align: left; /* 重置文本对齐方式为左对齐 */
+      }
+
+      /* LTR 示例 */
+      .ltr-example ul {
+        direction: ltr;
+      }
+
+      /* RTL 示例 */
+      .rtl-example ul {
+        direction: rtl;
+      }
+
+      /* 可选的列表项样式 */
+      li {
+        display: inline;
+        list-style: none;
+        margin-bottom: 5px;
+        border: 1px solid red;
+      }
+    </style>
+  </head>
+  <body>
+    <h2>LTR 示例</h2>
+    <div class="ltr-example">
+      <ul>
+        <li>123</li>
+        <li>456</li>
+        <li>789</li>
+      </ul>
+    </div>
+
+    <h2>RTL 示例</h2>
+    <div class="rtl-example">
+      <ul>
+        <li>123</li>
+        <li>456</li>
+        <li>789</li>
+      </ul>
+    </div>
+  </body>
+</html>

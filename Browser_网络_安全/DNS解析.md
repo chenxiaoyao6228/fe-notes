@@ -20,7 +20,7 @@
 为了解决IP的记忆问题，人们想到了一个办法，就是在本地维护一个host文件，这个文件中包含了域名和IP的映射关系，这样我们就可以通过域名来访问网络资源了.
 
 > www.google.com ->  xxx
-> www.baidu.com -> xxx
+> www.baidu.com -> yyy
 
 具体的实现方式如下：
 

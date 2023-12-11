@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>阿拉伯语适配示例</title>
+  <style>
+    body {
+      writing-mode: horizontal-tb; /* 默认水平排版 */
+      direction: rtl; /* 从右到左 */
+      unicode-bidi: embed; /* 嵌套处理双向文本 */
+      font-family: 'Arial', sans-serif; /* 示例字体，可根据实际项目需求更改 */
+      margin: 0; /* 重置默认的页面边距 */
+      padding: 20px; /* 添加页面内边距 */
+    }
+
+    header, nav, main, footer {
+      border: 1px solid #ccc;
+      margin-bottom: 10px;
+      padding: 10px;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>你的网站标题</h1>
+  </header>
+  <nav>
+    <ul>
+      <li><a href="#">首页</a></li>
+      <li><a href="#">关于我们</a></li>
+      <li><a href="#">联系我们</a></li>
+    </ul>
+  </nav>
+  <main>
+    <h2>欢迎来到我们的网站</h2>
+    <p>这是一个示例页面，演示如何使用 CSS 的 writing-mode 属性适配阿拉伯语。</p>
+    <p>在这个示例中，我们通过将 writing-mode 设置为 horizontal-tb，direction 设置为 rtl，来确保页面的整体布局适配阿拉伯语的阅读方向。</p>
+  </main>
+  <footer>
+    <p>&copy; 2023 你的公司名称</p>
+  </footer>
+</body>
+</html>
