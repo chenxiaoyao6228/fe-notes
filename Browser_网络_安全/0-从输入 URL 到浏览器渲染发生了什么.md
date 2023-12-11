@@ -81,6 +81,7 @@ else  301/302重定向
     网络进程 -> 浏览器进程: 301/302重定向, 浏览器会跳转到新的地址继续导航
 else 返回200
     alt content-type为text/html
+        网络进程 -> 渲染进程: 对响应进⾏解码 (例如gzip压缩)
         网络进程 -> 渲染进程: 处理200响应（HTML）
     else content-type为application/octet-stream
         渲染进程 -> 下载管理器: 处理200响应（字节流）
