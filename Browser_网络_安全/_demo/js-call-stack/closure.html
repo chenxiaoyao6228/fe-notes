@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>闭包</title>
+  </head>
+  <body>
+    <script>
+      // 定义外部函数 outer
+      function outer() {
+        var outerVar = "我是外部变量";
+
+        // 定义内部函数 inner
+        function inner() {
+          console.log(outerVar); // 在内部函数中访问外部变量 outerVar
+        }
+        // 返回内部函数，形成闭包
+        return inner;
+      }
+
+      // 调用外部函数，将返回的内部函数赋值给变量 closureFunction
+      var closureFunction = outer();
+      debugger
+
+      // 即使外部函数 outer 已经执行完成，closureFunction 仍然可以访问 outerVar
+      closureFunction(); // 输出： "我是外部变量"
+    </script>
+  </body>
+</html>

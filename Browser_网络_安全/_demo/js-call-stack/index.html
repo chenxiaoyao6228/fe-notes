@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>JS 调用栈</title>
+  </head>
+  <body>
+    <script>
+        debugger
+      var a = 2;
+      function add(b, c) {
+        return b + c;
+      }
+      function addAll(b, c) {
+        var d = 10;
+        result = add(b, c);
+        return a + result + d;
+      }
+      addAll(3, 6);
+    </script>
+  </body>
+</html>
