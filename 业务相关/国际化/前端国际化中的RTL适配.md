@@ -27,7 +27,7 @@ RTL 是 "Right-to-Left" 的缩写，表示从右到左。它是一种文本书�
 
 ## 浏览器对 RTL 的支持
 
-Web对RTL的支持是通过HTML与CSS的属性来实现的
+Web 对 RTL 的支持是通过 HTML 与 CSS 的属性来实现的
 
 #### direction
 
@@ -155,6 +155,12 @@ rtlcss styles.css styles-rtl.css
 
 在 webpack 项目中，我们可以使用[postcss-rtlcss]()
 
+另外，该方案有个缺点，就是对项目中的手写 style 无能为力，只能尽量不要在项目里面写style
+
+```js
+const mySectionStyling = {flexDirection = i18n.dir === “ltr”? “row” :“row-reverse”}
+```
+
 ### rtlcss + css 逻辑属性方案
 
 前面提到 css 逻辑属性存在兼容性问题，但是对应项目不需要适配旧版本浏览器的话，可以考虑使用该方案。
@@ -165,19 +171,19 @@ rtlcss styles.css styles-rtl.css
 
 和 rtlcss 类似，css in js 方案也是通过构建工具来自动处理样式，因为项目中没有用到，所以不做过多介绍，有兴趣可以参考[airbnb 的这个视频](https://www.youtube.com/watch?v=dZ9vQYSNVyo&ab_channel=ReactEurope)
 
+![](https://cdn.jsdelivr.net/gh/chenxiaoyao6228/cloudimg@main/2023/rtl-css-in-js-airbnb.jpg)
+
 ### 方案对比
 
-| 方案                             | 描述                                                                                   | 优点                                                                                                                                                                                                         | 缺点                                                                                                                                                  |
-|----------------------------------|----------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------|
-| direction + 手动处理样式方案      | - 在 html 根元素上设置 dir 属性<br/>- 样式表中有方向与无方向属性分离<br/>- 手动处理有方向属性 | - 完全可控，手动处理每个有方向属性<br/>- 可以在不使用构建工具的情况下实现适配                                                               | - 繁琐，容易出错<br/>- 维护成本高                                                                                                                                              |
-| less/scss 预处理语言混合指令特性   | - 创建 mixin 文件，混入使用<br/>- 自动生成 RTL 样式                                      | - 减少手动处理，提高效率<br/>- mixin 可以重复使用                                                                                                                                                        | - 仍需显式处理每个有方向属性                                                                                                                                               |
-| rtlcss 等自动化方案               | - 自动转换 CSS 样式表中的属性，如 margin-left 到 margin-right                             | - 自动处理样式，减少手动操作<br/>- 处理一些边界情况，如 border-radius、background-position 等                                                                                                         | - 需要构建工具支持，配置可能略复杂<br/>- 部分情况下需要手动干预生成的样式                                                                                                                                              |
-| rtlcss + css 逻辑属性方案         | - 使用 css 逻辑属性，如 margin-inline-start                                              | - 适用于现代浏览器，不需要特殊构建工具                                                                                                                                                                       | - 兼容性问题，可能需要使用 postcss-logical 插件进行处理                                                                                                                                              |
-| css in js 方案                     | - 通过构建工具自动处理样式                                                               | - 可以使用现代构建工具实现自动处理<br/>- 与 React 等框架集成紧密                                                                                                                                         | - 需要构建工具支持，可能需要学习新的工具和方式                                                                                                                                                                   |
+| 方案                             | 描述                                                                                          | 优点                                                                                          | 缺点                                                                      |
+| -------------------------------- | --------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------- |
+| direction + 手动处理样式方案     | - 在 html 根元素上设置 dir 属性<br/>- 样式表中有方向与无方向属性分离<br/>- 手动处理有方向属性 | - 完全可控，手动处理每个有方向属性<br/>- 可以在不使用构建工具的情况下实现适配                 | - 繁琐，容易出错<br/>- 维护成本高                                         |
+| less/scss 预处理语言混合指令特性 | - 创建 mixin 文件，混入使用<br/>- 自动生成 RTL 样式                                           | - 减少手动处理，提高效率<br/>- mixin 可以重复使用                                             | - 仍需显式处理每个有方向属性                                              |
+| rtlcss 等自动化方案              | - 自动转换 CSS 样式表中的属性，如 margin-left 到 margin-right                                 | - 自动处理样式，减少手动操作<br/>- 处理一些边界情况，如 border-radius、background-position 等 | - 需要构建工具支持，配置可能略复杂<br/>- 部分情况下需要手动干预生成的样式 |
+| rtlcss + css 逻辑属性方案        | - 使用 css 逻辑属性，如 margin-inline-start                                                   | - 适用于现代浏览器，不需要特殊构建工具                                                        | - 兼容性问题，可能需要使用 postcss-logical 插件进行处理                   |
+| css in js 方案                   | - 通过构建工具自动处理样式                                                                    | - 可以使用现代构建工具实现自动处理<br/>- 与 React 等框架集成紧密                              | - 需要构建工具支持，可能需要学习新的工具和方式                            |
 
-
-上述对比下来，考虑到项目需要在比较老的安卓机上跑，成员使用css逻辑变量等考虑，最后选定单纯的rtlcss方案，下面的内容都是基于该方案的。
-
+上述对比下来，考虑到项目需要在比较老的安卓机上跑，成员使用 css 逻辑变量等考虑，最后选定单纯的 rtlcss 方案，下面的内容都是基于该方案的。
 
 ## 改造过程记录
 
@@ -238,7 +244,6 @@ const { Mode, Source, Autorename } = require('postcss-rtlcss/options');
 ### 需要额外处理的场景
 
 上面提到，通过在 html 根元素上设置 dir 属性，可以实现大部分场景的 RTL 适配，但是还有一些场景需要额外处理，比如:
-
 
 #### 动态创建元素
 
@@ -391,10 +396,9 @@ const useForceUpdate = () => {
 
 ![](https://cdn.jsdelivr.net/gh/chenxiaoyao6228/cloudimg@main/2023/rtl-text-direction-after.gif)
 
-
 #### 数字、日期处理
 
-使用国际化组件的API进行处理
+使用国际化组件的 API 进行处理
 
 ### 其他
 
@@ -402,9 +406,7 @@ const useForceUpdate = () => {
 
 - 文字排序
 
-
 限于篇幅，这里不做过多介绍
-
 
 ### 业务组件库处理
 
@@ -514,15 +516,16 @@ export const ConfigProvider: React.FC<IConfigProviderProps> = (props) => {
 
 - rsuite, [用法](https://github.com/rsuite/rsuite/blob/main/src/CustomProvider/CustomProvider.tsx#L52), [源码](https://github.com/rsuite/rsuite/blob/main/src/CustomProvider/CustomProvider.tsx#L52)
 
-## 一些注意事项
+## 一些改进项 && TODO
 
-1. 尽量不要在 JSX 中写 style， 无法通过 postcss-rtl 插件自动处理适配，后续可以考虑添加 eslint 规则加以规范
+1. 目前无法通过 postcss-rtl 插件自动处理适配，可以考虑添加 eslint 规则加以规范
+2. babel插件对内联JSX自动化处理
+3. 样式动态加载(比如媒体查询)
+4. 将上述方案整合为一个大的plugin，方便复用到其他项目中
 
 ## 参考
 
 - https://note.youdao.com/ynoteshare/index.html?id=9ae40d5b5c2a7f55c50b11e68a9f8da4&type=note
-
-- https://m2.material.io/design/usability/bidirectionality.html#mirroring-layout
 
 - https://rtlstyling.com/posts/rtl-styling
 
