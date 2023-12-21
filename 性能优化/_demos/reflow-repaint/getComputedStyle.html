@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>getComputedStyle Demo</title>
+    <style>
+      .box {
+        width: 100px;
+        height: 100px;
+        background-color: blue;
+        transition: background-color 1s;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="box"></div>
+
+    <script>
+      const box = document.querySelector(".box");
+      box.addEventListener("click", function () {
+        // 获取计算样式
+        const computedStyle = getComputedStyle(box);
+        console.log("computedStyle", computedStyle);
+      });
+    </script>
+  </body>
+</html>

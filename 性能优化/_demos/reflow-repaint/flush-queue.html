@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Flush Queue Demo</title>
+    <style>
+      .box {
+        width: 100px;
+        height: 100px;
+        background-color: blue;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="box"></div>
+
+    <script>
+      const box = document.querySelector(".box");
+
+      box.addEventListener("click", () => {
+        // 多次修改样式，合并为一次回流和重绘
+        function performMultipleChanges() {
+          box.style.width = "200px";
+          box.style.height = "200px";
+          box.style.backgroundColor = "red";
+        }
+
+        // 调用多次修改，观察合并效果
+        performMultipleChanges();
+        performMultipleChanges();
+        performMultipleChanges();
+      });
+    </script>
+  </body>
+</html>

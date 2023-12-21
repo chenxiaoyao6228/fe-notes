@@ -7,7 +7,7 @@
 
 https://github.com/DefinitelyTyped/DefinitelyTyped/blob/a05cc538a42243c632f054e42eab483ebf1560ab/types/react/index.d.ts#L770
 
-![](../../cloudimg/2023/github-share-code-line.jpg)
+![](https://cdn.jsdelivr.net/gh/chenxiaoyao6228/cloudimg@main/2023/github-share-code-line.jpg)
 
 
 ## 直接访问github上的图片
