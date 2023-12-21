@@ -74,3 +74,25 @@ vscode作为前端开发人员的一大利器，充分利用其进行调试有�
     }
 ]
 ```
+
+
+## Jest 当前文件
+
+```json
+{
+  "type": "node",
+  "name": "test:currentFile",
+  "request": "launch",
+  "runtimeArgs": ["--experimental-vm-modules"],
+  "args": ["--env", "jsdom", "${file}", "--runInBand"],
+  "resolveSourceMapLocations": ["${workspaceFolder}/**"],
+  "cwd": "${workspaceFolder}",
+  "console": "integratedTerminal",
+  "internalConsoleOptions": "neverOpen",
+  "disableOptimisticBPs": true,
+  "program": "${workspaceFolder}/node_modules/.bin/jest",
+  "windows": {
+    "program": "${workspaceFolder}/node_modules/jest/bin/jest"
+  }
+}
+```
