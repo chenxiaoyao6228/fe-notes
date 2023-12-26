@@ -1,179 +1,204 @@
 # 实现 angluar 手记[十]模块与依赖注入
 
-## 前言
-
 angular 中的依赖注入是通过 loader 和 injector 模块来实现的, 可以把 injector 想象成为一个池子,我们可以通过类似 injector.get()的方法来获取内容, 但两者具体是怎么协作的呢? 我们先分别来看看这两个模块
 
-阅读之前需要了解[angularJS中的模块](https://docs.angularjs.org/guide/module)
+阅读之前需要了解[angularJS 中的模块](https://docs.angularjs.org/guide/module)
 
-## module 模块(loader.js)
+本节我们将实现 AngularJS 的模块和依赖注入系统， 内容包括:
 
-loader 模块的主要功能就是暴露在 angular 上定义一个 module 函数, 这个函数同时充当了 getter 和 setter 的功能, name, requires 分别代表模块名, 依赖, 当只有 name 的时候是查询模块, 有 require 参数的时候是创建模块, modules 参数是一个查询表, 用来判断 name 是否已经存在
+- 模块的创建与查找
+- 函数三种注入方式(构造函数注入，内联注入，注解注入)
+- 类的注入以及实例化
+
+本节对应的代码： [loader](https://github.com/chenxiaoyao6228/angular-tiny/blob/master/src/loader.js)以及[injector](https://github.com/chenxiaoyao6228/angular-tiny/blob/master/src/injector.js)
+
+## 模块与 angular.module
+
+从测试用例入手
 
 ```js
-  ensure(angular, 'module', function() {
-    var modules = {};
-    return function(name, requires) {
-      if (requires) {
-        return createModule(name, requires, modules);
-      } else {
-        return getModule(name, modules);
-      }
-    };
+it("has a constant that has been registered to a module", function () {
+  var module = angular.module("myModule", []);
+  module.constant("aConstant", 42);
+  var injector = createInjector(["myModule"]);
+  expect(injector.has("aConstant")).toBe(true);
+  expect(injector.get("aConstant")).toBe(42);
+});
 ```
 
-createModule, 可能比较反直觉的是, 我们在注册模块的时候, 使用类似`module.instance('a', 4)`的方法往上面挂在属性的时候, `a`并不是直接挂在我们的 module 上的, 而是通过一个 invokeQueue 来进行保存, `invokeQueue.push(['constant', [key, value]]);`, 在后续创建 injector 实例的时候会遍历这个 invokeQueue, 挂在在 injector 内部的 cache 池上。
+跟 jQuery 一样，这里的 angular 是挂在 window 上的命名空间
 
 ```js
-var createModule = function (name, requires, modules) {
-  if (name === "hasOwnProperty") {
-    throw "hasOwnProperty is not a valid module name";
-  }
-  var invokeQueue = [];
-  var moduleInstance = {
-    name: name,
-    requires: requires,
-    constant: function (key, value) {
-      invokeQueue.push(["constant", [key, value]]); // 看这里
-    },
-    _invokeQueue: invokeQueue,
+function setupModuleLoader(window) {
+  var ensure = function (obj, name, factory) {
+    return obj[name] || (obj[name] = factory());
   };
-  modules[name] = moduleInstance;
-  return moduleInstance;
-};
+  var angular = ensure(window, "angular", Object);
+}
 ```
 
-getModule 就不说了, 简单返回模块实例
+另外大致可以猜到，constant 是用来定义常量的
 
 ```js
-var getModule = function (name, modules) {
-  if (modules.hasOwnProperty(name)) {
-    return modules[name];
-  } else {
-    throw "Module " + name + " is not available!";
-  }
-};
+ensure(angular, "module", function () {
+  var modules = {}; // 用来存放模块的
+
+  var invokeQueue = []; // 用来存放需要执行的任务
+  var createModule = function (name, requires, modules) {
+    var moduleInstance = {
+      name: name,
+      requires: requires,
+      constant: function (key, value) {
+        invokeQueue.push(["constant", [key, value]]); // 这里并不直接调用 constant 方法，而是将 constant 方法的参数保存起来，具体原因后面会提到
+      },
+      _invokeQueue: invokeQueue,
+    };
+    modules[name] = moduleInstance; // 注册到 modules 中
+
+    return moduleInstance;
+  };
+
+  var getModule = function (name, modules) {
+    if (modules.hasOwnProperty(name)) {
+      return modules[name];
+    } else {
+      throw "Module " + name + " is not available!";
+    }
+  };
+
+  return function (name, requires) {
+    if (requires) {
+      return createModule(name, requires, modules);
+    } else {
+      return getModule(name, modules);
+    }
+  };
+});
 ```
 
-[完整代码](https://github.com/teropa/build-your-own-angularjs/blob/chapter11-modules-and-the-injector/src/loader.js)
+那么有个疑问: module.constant 定义的常量是如何被 injector 拿到的呢？
 
-## injector 注入器(injector.js)
+答案是： createInjector 里面直接依赖 window.angular.module
 
-inject 的功能
-
-- 获取模块上的属性
-- 依赖注入(通过函数或者构造器)
-
-### 获取模块的属性
-
-前面提到， 我们在 module 上挂在的属性， 是通过 injector 拿到的， 如 injector.get()
+另外，创建 injector 的时候会遍历\_invokeQueue 进行初始化， 并将值存放在 cache 中，这样就可以通过 injector.get 获取到了
 
 ```js
-var module = angular.module("myModule", []);
-module.constant("aConstant", 42);
-var injector = createInjector(["myModule"]);
-expect(injector.get("aConstant")).toBe(42);
-```
+function createInjector(modulesToLoad) {
+  var cache = {};
 
-那 injector 是如何拿到的呢
-
-```js
-_.forEach(modulesToLoad, function loadModule(moduleName) {
-  if (!loadedModules.hasOwnProperty(moduleName)) {
-    loadedModules[moduleName] = true;
-    var module = window.angular.module(moduleName);
-    _.forEach(module.requires, loadModule);
+  // provider, 提供值的注入， 类比React的Provider和Consumer？
+  var $provide = {
+    constant: function (key, value) {
+      cache[key] = value;
+    },
+  };
+  _.forEach(modulesToLoad, function (moduleName) {
+    var module = angular.module(moduleName);
     _.forEach(module._invokeQueue, function (invokeArgs) {
       var method = invokeArgs[0];
       var args = invokeArgs[1];
       $provide[method].apply($provide, args);
     });
-  }
-});
-```
-
-在定义完所有的 module 之后， angular 才会创建唯一的 injector 实例， 创建的时候会将 module 实例上的 ivokeQueue 进行遍历， 执行相应的函数， 将属性挂在到 injector 的 cache 上， 拿刚刚的例子
-
-```js
-module.constant("aConstant", 42);
-```
-
-前面说过，当我们在定义的时候模块属性的时候， 实际上属性并没有创建， 而是以下面这种形式挂在了 invokeQueue 上, 第一个参数为函数名, 告诉 injector 要用这个函数生成属性,后面的列表是参数
-
-```
-[
-  ['constant', ['aConstant', 42]]
-]`
-```
-
-来看看 injector 的 constant 方法, 可以看到, 我们最终以 key = aConstant, value = 42, 将 aConstant 属性挂在了 cache 上, 这样我们能通过 injector.get 从 cache 中拿到相应的参数了.
-
-```
-function createInjector(modulesToLoad, strictDi) {
-  // 顶部定义缓存
-  var cache = {};
-
-  // ...省略若干代码....
-
-  constant: function(key, value) {
-        if (key === 'hasOwnProperty') {
-          throw 'hasOwnProperty is not a valid constant name!';
-        }
-        cache[key] = value;
-      }
+  });
+  return {
+    has: function (key) {
+      return cache.hasOwnProperty(key);
+    },
+    get: function (key) {
+      return cache[key];
+    },
   };
 }
 ```
 
-当模块依赖模块的时候, 如下面的 module2, 将 module1 作为依赖, 我们希望在创建 injector 之后, 也能拿到依赖模块中的内容
+### 引入其他模块
+
+如果在引入的模块中，又引入了其他模块，那么我们需要先加载其他模块，然后再加载当前模块
 
 ```js
-var module1 = angular.module("myModule", []);
-var module2 = angular.module("myOtherModule", ["myModule"]);
-module1.constant("aConstant", 42);
-module2.constant("anotherConstant", 43);
-var injector = createInjector(["myOtherModule"]);
-expect(injector.has("aConstant")).toBe(true);
-expect(injector.has("anotherConstant")).toBe(true);
-```
-
-实际上只需要一行代码就可以了, 通过递归调用将依赖的模块导入, 和 webpack 有异曲同工的地方
-
-```js
-_.forEach(module.requires, loadModule); // 添加这行
-_.forEach(module._invokeQueue, function (invokeArgs) {
-  var method = invokeArgs[0];
-  var args = invokeArgs[1];
-  $provide[method].apply($provide, args);
+_.forEach(modulesToLoad, function loadModule(moduleName) {
+  var module = angular.module(moduleName);
+  // 🚧 递归加载依赖模块，优先加载依赖模块
+  _.forEach(module.requires, loadModule);
+  _.forEach(module._invokeQueue, function (invokeArgs) {
+    var method = invokeArgs[0];
+    var args = invokeArgs[1];
+    $provide[method].apply($provide, args);
+  });
 });
 ```
 
-[完整代码](https://github.com/teropa/build-your-own-angularjs/blob/chapter11-modules-and-the-injector/src/injector.js)
+同时我们需要解决循环依赖的问题
 
-### 依赖注入
-
-injector 的主要功能不在于或者参数, 而在于**依赖注入, 即触发函数构造对象,并自动查找构建过程中的依赖**, 主要包括两种形式, 其中需要解决的问题是**函数参数的解析**
-
-1. 函数形式
-2. 构造器形式
-
-#### 函数形式
-
-先来看一个测试用例, 我们希望 injector.invoke 在触发函数的时候, 能找到相应的参数, 而参数挂在 fn.\$inject 属性上
+对应的测试用例如下:
 
 ```js
-var module = angular.module("myModule", []);
-module.constant("a", 1);
-module.constant("b", 2);
-var injector = createInjector(["myModule"]);
-var fn = function (one, two) {
-  return one + two;
-};
-fn.$inject = ["a", "b"];
-expect(injector.invoke(fn)).toBe(3);
+it("loads each module only once", function () {
+  angular.module("myModule", ["myOtherModule"]);
+  angular.module("myOtherModule", ["myModule"]);
+  createInjector(["myModule"]);
+});
 ```
 
-可以看到, invoke 通过在 cache 上查找 a, b 属性, 然后以此作为参数调用了 fn 函数
+为了处理循环依赖，我们需要确保每个模块只加载一次。这还会产生一个效果，即当有两条（非循环的）路径指向同一个模块时，它不会被加载两次，因此避免了不必要的额外工作。
+我们将引入一个对象，用于跟踪已加载的模块。在加载模块之前，我们会检查它是否已经加载：
+
+```js
+var loadedModules = {};
+
+if (!loadedModules.hasOwnProperty(moduleName)) {
+  // 检查模块是否已经加载
+  loadedModules[moduleName] = true;
+
+  var module = angular.module(moduleName);
+  _.forEach(module.requires, loadModule);
+  _.forEach(module._invokeQueue, function (invokeArgs) {
+    var method = invokeArgs[0];
+    var args = invokeArgs[1];
+    $provide[method].apply($provide, args);
+  });
+}
+```
+
+总的来说，运用了两点技术
+
+- 模块的延迟加载
+- 模块的递归注册加载
+
+## 函数注解
+
+injector 会根据函数的参数名，自动注入对应的值，这个过程叫做模块注解
+
+注解有三种方式:
+
+- $inject 属性注解
+- 数组内联注解
+- 函数参数名注解
+
+### $inject 属性注解
+
+测试用例如下：
+
+```js
+it("invokes an annotated function with dependency injection", function () {
+  var module = angular.module("myModule", []);
+  module.constant("a", 1);
+  module.constant("b", 2);
+  var injector = createInjector(["myModule"]);
+  var fn = function (one, two) {
+    return one + two;
+  };
+  fn.$inject = ["a", "b"];
+  expect(injector.invoke(fn)).toBe(3);
+});
+```
+
+显然，injectory 要调用 fn, 并传入对应的参数 a, b, 那么问题来了:
+
+- 如何知道 fn 的参数是什么
+- 如何知道 a, b 的值是什么
+
+方法也很简单，我们只需要在 cache 中查找 fn.$inject 对应的值即可。
 
 ```js
 function invoke(fn) {
@@ -184,29 +209,84 @@ function invoke(fn) {
 }
 ```
 
-支持三种形式的参数解析
+#### this 的绑定
 
-- 函数对象上的\$inject 属性
-- 数组的形式
+在函数调用的过程中，我们还需要注意 this 的绑定问题，这里的 invoke 函数提供了第二个参数，将 fn 的 this 绑定到 obj 上
 
 ```js
-[
-  "a",
-  "b",
-  function (one, two) {
-    return one + two;
-  },
-];
+it("invokes a function with the given this context", function () {
+  var module = angular.module("myModule", []);
+  module.constant("a", 1);
+  var injector = createInjector(["myModule"]);
+  var obj = {
+    two: 2,
+    fn: function (one) {
+      return one + this.two;
+    },
+  };
+  obj.fn.$inject = ["a"];
+  expect(injector.invoke(obj.fn, obj)).toBe(3);
+});
 ```
 
-- 普通函数的形式, 最复杂, 需要调用 fn.toString 方法拿到函数字符串再经过正则解析
+```js
+function invoke(fn, self) {
+  var args = _.map(fn.$inject, function (token) {
+    if (_.isString(token)) {
+      return cache[token];
+    } else {
+      throw "Incorrect injection token! Expected a string, got " + token;
+    }
+  });
+  return fn.apply(self, args); // apply传入第二个参数，将 fn 的 this 绑定到 obj 上
+}
+```
 
-angular 定义了一个 annotate 函数来进行解析
+### 数组内联注解
+
+用例如下
+
+```js
+describe("annotate", function () {
+  it("returns the $inject annotation of a function when it has one", function () {
+    var injector = createInjector([]);
+    var fn = function () {};
+    fn.$inject = ["a", "b"];
+    expect(injector.annotate(fn)).toEqual(["a", "b"]);
+  });
+});
+```
+
+抽取一个 annotate 函数，用来获取函数的参数名, 目前支持前两种方式
+
+```js
+function annotate(fn) {
+  if (_.isArray(fn)) {
+    return fn.slice(0, fn.length - 1);
+  } else {
+    return fn.$inject;
+  }
+}
+```
+
+### 函数参数名注解
+
+最常用的一种方式，主要是通过正则表达式来获取函数的参数名
+
+使用方式如下:
+
+```js
+it("returns annotations parsed from function args when not annotated", function () {
+  var injector = createInjector([]);
+  var fn = function (a, b) {};
+  expect(injector.annotate(fn)).toEqual(["a", "b"]);
+});
+```
+
+实现方法是通过 toString 方法获取函数的源码，然后通过正则表达式匹配出参数名
 
 ```js
 var FN_ARGS = /^function\s*[^\(]*\(\s*([^\)]*)\)/m;
-var FN_ARG = /^\s*(_?)(\S+?)\1\s*$/;
-var STRIP_COMMENTS = /(\/\/.*$)|(\/\*.*?\*\/)/gm;
 
 function annotate(fn) {
   if (_.isArray(fn)) {
@@ -216,34 +296,80 @@ function annotate(fn) {
   } else if (!fn.length) {
     return [];
   } else {
-    if (strictDi) {
-      throw "fn is not using explicit annotation and cannot be invoked in strict mode";
-    }
-    var source = fn.toString().replace(STRIP_COMMENTS, "");
-    var argDeclaration = source.match(FN_ARGS);
+    var argDeclaration = fn.toString().match(FN_ARGS);
     return _.map(argDeclaration[1].split(","), function (argName) {
-      return argName.match(FN_ARG)[2];
+      return argName.match(FN_ARG)[1];
     });
   }
 }
 ```
 
-#### 构造器的形式
+重点解释下正则表达式的部分:
+
+- `^function` : 匹配以 "function" 开头。
+- `\s*` : 匹配零个或多个空白字符。
+- `[^\(]*` : 匹配零个或多个非左括号字符。
+- `\(` : 匹配左括号 "("。
+- `\s*` : 匹配零个或多个空白字符。
+- `([^\)]*)` : 匹配零个或多个非右括号字符，使用括号捕获匹配结果。
+- `\)` : 匹配右括号 ")"。
+- `/m` : 多行匹配模式，使得 ^ 和 $ 匹配每一行的开头和结尾。
+
+此部分还涉及严格模式、注释的移除等处理，这里为简化暂不做处理
+
+## 类的注入以及实例化
+
+injector 还应该支持类的实例化, 且同样支持三种注入方式
 
 ```js
-var module = angular.module("myModule", []);
-module.constant("a", 1);
-module.constant("b", 2);
-var injector = createInjector(["myModule"]);
-function Type(one, two) {
-  this.result = one + two;
-}
-Type.$inject = ["a", "b"];
-var instance = injector.instantiate(Type);
-expect(instance.result).toBe(3);
+// inject属性注解
+it("instantiates an annotated constructor function", function () {
+  var module = angular.module("myModule", []);
+  module.constant("a", 1);
+  module.constant("b", 2);
+  var injector = createInjector(["myModule"]);
+  function Type(one, two) {
+    this.result = one + two;
+  }
+  Type.$inject = ["a", "b"];
+  var instance = injector.instantiate(Type);
+  expect(instance.result).toBe(3);
+});
+
+// 数组内联注解
+
+// 参数名
+it("instantiates a non-annotated constructor function", function () {
+  var module = angular.module("myModule", []);
+  module.constant("a", 1);
+  module.constant("b", 2);
+  var injector = createInjector(["myModule"]);
+  function Type(a, b) {
+    this.result = a + b;
+  }
+  var instance = injector.instantiate(Type);
+  expect(instance.result).toBe(3);
+});
 ```
 
-对于构造器的形式,定义了一个 instantiate 方法, 需要注意的是原型链的处理
+同时需要支持原型链
+
+```js
+it("uses the prototype of the constructor when instantiating", function () {
+  function BaseType() {}
+  BaseType.prototype.getValue = _.constant(42);
+  function Type() {
+    this.v = this.getValue();
+  }
+  Type.prototype = BaseType.prototype;
+  var module = angular.module("myModule", []);
+  var injector = createInjector(["myModule"]);
+  var instance = injector.instantiate(Type);
+  expect(instance.v).toBe(42);
+});
+```
+
+instantiate 函数的实现如下:
 
 ```js
 function instantiate(Type, locals) {
@@ -253,3 +379,7 @@ function instantiate(Type, locals) {
   return instance;
 }
 ```
+
+这不就是面试常问的实现自定义 new 的方式吗？, 通过 apply 将参数传入构造函数，然后将构造函数的 this 指向 instance
+
+更多相关的可以参考[这里](https://github.com/chenxiaoyao6228/js-rocks/blob/85dd4e69ca30576138b5585a2861f38ca96821c3/packages/lodash-tiny/src/inheritance/index.js#L7)
