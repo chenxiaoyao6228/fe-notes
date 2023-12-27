@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Test</title>
+  </head>
+  <body>
+    <script>
+      var assetsMap = {
+        "src/index.js": {
+          path: "src/index.js", // 文件路径
+          code: `const { add } = require("src/add.js"); console.log(add(1, 2));`,
+        },
+        "src/add.js": {
+          path: "src/add.js", // 文件路径
+          code: `function add(a, b) {return a + b;}  exports.add = add;`,
+        },
+      };
+
+      function require(filePath) {
+        // 1. 从 map 中找到对应的文件内容
+        var file = assetsMap[filePath];
+
+        // 2. 定义一个函数，用于解析文件内容
+        function localRequire(relativePath) {
+          debugger;
+          // 2.1 根据模块路径在 map 中找到对应的模块
+          return require(relativePath);
+        }
+
+        // 3. 定义一个对象，用于存储文件执行结果
+        var exports = {};
+        var module = { exports };
+
+        // 4. 执行文件内容, 为了让文件内容能够执行，我们需要将代码转换成函数
+        var code = `
+            (function(require, module, exports) {
+                debugger;
+            ${file.code}
+            })(localRequire, module, exports)
+        `;
+
+        eval(code); // 注意这里的执行的是我们包裹后的函数
+
+        // 5. 返回文件执行结果 => 为什么要返回？
+        return exports;
+      }
+
+      require("src/index.js");
+    </script>
+  </body>
+</html>

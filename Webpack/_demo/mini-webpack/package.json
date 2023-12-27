@@ -1,0 +1,17 @@
+{
+  "name": "mini-module-loader",
+  "version": "1.0.0",
+  "description": "",
+  "main": "main.js",
+  "scripts": {
+    "build": "node webpack.js"
+  },
+  "author": "chenxiaoyao",
+  "license": "MIT",
+  "dependencies": {
+    "@babel/core": "^7.23.6",
+    "@babel/parser": "^7.23.6",
+    "@babel/preset-env": "^7.23.6",
+    "@babel/traverse": "^7.23.6"
+  }
+}
