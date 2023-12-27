@@ -1,16 +1,15 @@
-## Webpack原理解析
+## Webpack 原理解析
 
-- JS中的模块化
-- webpack基本配置
-- webpack打包流程
-- webpack中的loader
-- webpack中的plugin 
-- webpack中的tapable库
-- webpack中dev-server的工作原理
-- webpack热更新原理
-- webpack模块联邦
-
+- JS 中的模块化
+- webpack 基本配置
+- webpack 打包流程
+- webpack 中的 loader
+- webpack 中的 tapable 库
+- webpack 中的 plugin
+- webpack 中 dev-server 的工作原理
+- webpack 热更新原理
+- webpack 模块联邦
 
 ## 参考
 
-- [webpack官网](https://webpack.js.org/)
+- [webpack 官网](https://webpack.js.org/)

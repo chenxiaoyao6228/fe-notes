@@ -1,0 +1,26 @@
+{
+  "name": "mini-webpack",
+  "private": true,
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "webpack serve",
+    "build": "webpack --config webpack.config.js"
+  },
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "html-webpack-plugin": "^5.6.0",
+    "webpack": "^5.89.0",
+    "webpack-cli": "^5.1.4"
+  },
+  "dependencies": {
+    "css-loader": "^6.8.1",
+    "less": "^4.2.0",
+    "less-loader": "^11.1.3",
+    "loader-utils": "^3.2.1",
+    "lodash": "^4.17.21",
+    "style-loader": "^3.3.3"
+  }
+}
