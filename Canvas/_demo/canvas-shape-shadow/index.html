@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Canva绘制阴影</title>
+    <style>
+        canvas {
+            border: 1px solid #000;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="myCanvas" width="400" height="200"></canvas>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const canvas = document.getElementById('myCanvas');
+            const ctx = canvas.getContext('2d');
+
+            // 矩形属性
+            const rectX = 50;
+            const rectY = 50;
+            const rectWidth = 100;
+            const rectHeight = 75;
+
+            // 阴影属性
+            const shadowOffsetX = 5;
+            const shadowOffsetY = 5;
+            const shadowBlur = 5;
+            const shadowColor = 'rgba(0, 0, 0, 0.5)';
+
+            // 绘制带有阴影的矩形
+            drawRectangleWithShadow();
+
+            // 绘制带有阴影的矩形的函数
+            function drawRectangleWithShadow() {
+                // 设置阴影
+                ctx.shadowOffsetX = shadowOffsetX;
+                ctx.shadowOffsetY = shadowOffsetY;
+                ctx.shadowBlur = shadowBlur;
+                ctx.shadowColor = shadowColor;
+
+                // 绘制矩形
+                ctx.fillStyle = 'blue';
+                ctx.fillRect(rectX, rectY, rectWidth, rectHeight);
+
+                // 为将来的绘图重置阴影设置
+                ctx.shadowOffsetX = 0;
+                ctx.shadowOffsetY = 0;
+                ctx.shadowBlur = 0;
+                ctx.shadowColor = 'transparent';
+            }
+
+            // 用于演示的画布点击事件监听器
+            canvas.addEventListener('click', function () {
+                // 点击时重新绘制带有阴影的矩形
+                drawRectangleWithShadow();
+            });
+        });
+    </script>
+</body>
+</html>

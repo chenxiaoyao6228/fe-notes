@@ -379,4 +379,4 @@ module.exports = urlLoader;
 
 ## 最终效果
 
-![](../../cloudimg/2023/mini-webpack-loader.png)
+![](https://cdn.jsdelivr.net/gh/chenxiaoyao6228/cloudimg@main/2023/mini-webpack-loader.png)
