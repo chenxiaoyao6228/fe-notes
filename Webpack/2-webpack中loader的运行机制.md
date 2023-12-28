@@ -26,11 +26,74 @@
 
 完整的列表可以参考 [Webpack 官方文档](https://webpack.js.org/loaders/)。
 
+### Loader 与 Plugin 的区别
+
+|            | 作用                                                                       | 工作方式                                                                          | 示例                                                                         |
+| ---------- | -------------------------------------------------------------------------- | --------------------------------------------------------------------------------- | ---------------------------------------------------------------------------- |
+| **Loader** | 用于处理模块文件，将它们转换成可以被添加到依赖图中的有效 JavaScript 代码。 | 沿着文件的加载链应用，按照规定的顺序一个接一个地处理模块文件。                    | Babel Loader 用于将 ECMAScript 2015+ 代码转换为向后兼容的 JavaScript 版本。  |
+| **Plugin** | 用于执行更广泛范围的任务，例如打包优化、资源管理、注入环境变量等。         | 通过钩子机制与 Webpack 构建过程的不同阶段交互，允许你在构建流程中执行自定义操作。 | HtmlWebpackPlugin 用于生成 HTML 文件，并自动将打包后的脚本文件引入 HTML 中。 |
+
+简而言之，Loader 处理模块文件的转换，而 Plugin 用于执行各种构建过程的自定义任务。Loader 是一个文件级别的处理器，而 Plugin 更关注整个构建流程。在配置文件中，我们会配置一系列 Loader 来处理特定类型的文件，而 Plugin 通常是一个实例，通过 plugins 数组添加到配置中。
+
+## Loader 的输入和输出
+
+默认情况下，资源文件会被转化为 UTF-8 字符串，然后传给 loader。通过设置 raw 为 true，loader 可以接收原始的 Buffer。
+
+```js
+module.exports = function (content) {
+  // 对输入源进行处理，这里简单地在源代码前面添加一行注释
+  const processedSource = `// This is a custom loader\n${source}`;
+
+  // 返回处理后的结果
+  return processedSource;
+};
+```
+
+module.exports.raw = true;
+
+````
+
+loader 的输出内容必须是 String 或 Buffer 类型。
+
+## 同步 Loader 和异步 Loader
+
+### 同步 Loader
+
+同步 loader 是最常见的 loader 类型。它们按照 webpack 的默认处理流程，依次处理每个模块。每个同步 loader 都会在一个模块的代码被转换之后，再将结果传递给下一个 loader。这种 loader 的编写和配置非常简单。
+
+### 异步 Loader
+
+异步 loader 具有更灵活的处理方式，它们可以在处理一个模块时进行一些异步操作，例如从网络请求数据，然后在异步操作完成后继续处理模块。
+
+为了创建异步 loader，需要使用 this.async() 方法。这个方法返回一个回调函数，当异步操作完成时，你需要手动调用这个回调函数，将处理结果传递给下一个 loader。
+
+以下是一个简单的异步 loader 的例子，假设它通过网络请求获取模块内容：
+
+```js
+// async-loader.js
+module.exports = function (source) {
+  // 获取 loader 上下文，this 对象
+  const callback = this.async();
+
+  // 模拟一个异步操作（例如，从网络请求数据）
+  setTimeout(() => {
+    const simulatedData = { message: "这是模拟的异步数据" };
+    const transformedSource = source.replace(
+      "/* async-data-placeholder */",
+      JSON.stringify(simulatedData)
+    );
+
+    // 调用回调函数，将处理后的源代码传递给下一个 loader
+    callback(null, transformedSource);
+  }, 1000); // 模拟异步操作耗时 1 秒钟
+};
+````
+
 ## Loader 的工作原理和执行顺序
 
-Loader 的工作原理基于管道（pipeline）的概念。当 Webpack 加载一个模块时，它会按照从**右到左**的顺序链式调用一系列的 Loader，每个 Loader 对模块进行一些处理。每个 Loader 都会将处理后的模块传递给下一个 Loader，最终生成最终的代码。
+在 Webpack Loader 的执行过程中，有两个重要的阶段， pitch 阶段和 normal 阶段。
 
-执行顺序示例：
+假设我们有以下三个 Loader：Loader1、Loader2、Loader3，对应的配置如下:
 
 ```js
 // webpack.config.js
@@ -44,34 +107,33 @@ module: {
 }
 ```
 
-上述配置中，当处理以.js 结尾的模块时，Webpack 会先使用 loader1，然后是 loader2，最后是 loader3。这个顺序是从右到左执行的，loader3 先对模块进行处理，然后传递给 loader2，最终传递给 loader1。
+对应的 webpack 执行阶段如下图
 
-### enforce
+Pitch 阶段：
 
-在 Webpack 中，还可以使用 enforce 属性来改变 Loader 的执行顺序。enforce 属性有两个可选的值："pre" 和 "post"，用于指定 Loader 的执行顺序是在普通 Loader 之前还是之后。
+- 如果存在 pitch 方法：
 
-```js
-// webpack.config.js
-module.exports = {
-  module: {
-    rules: [
-      {
-        test: /\.js$/,
-        use: ["loader3", "loader2", "loader1"],
-        enforce: "pre", // 将 loader1 设置为预处理 Loader
-      },
-    ],
-  },
-};
-```
+  - 首先执行 loader3 的 pitch 方法。
+  - 接着执行 loader2 的 pitch 方法。
+  - 最后执行 loader1 的 pitch 方法。
+    Normal 阶段：
 
-以下三种情况可以考虑使用 enforce 属性：
+- 如果存在 normal 方法：
+  - 首先执行 loader1 的 normal 方法。
+  - 接着执行 loader2 的 normal 方法。
+  - 最后执行 loader3 的 normal 方法。
 
-- 语法检查（linting）： 在构建前对代码进行语法检查，提前发现和修复潜在的代码质量问题。
+![](https://cdn.jsdelivr.net/gh/chenxiaoyao6228/cloudimg@main/2023/webpack-loader-pitch.png)
 
-- 性能优化： 在主要编译完成后，对代码进行性能优化或其他复杂操作，确保优化不影响主要编译的速度。
+#### enforce 属性的作用：
 
-- Polyfill 添加： 在构建过程中，提前为目标环境添加必要的 Polyfill，以确保代码在目标环境中正常运行。
+enforce: "pre" 属性将 loader1 设置为预处理 Loader，这意味着在正常的 Loader 执行前，会先执行 loader1 的 pitch 方法和 normal 方法。这用于在正式加载模块之前执行一些预处理操作，例如代码静态分析或代码风格检查。
+
+#### Pitch 阶段的作用：
+
+如果某个 Loader 的 pitch 方法返回了非 undefined、非 null 或非空字符串的结果，Webpack 将停止执行 Pitch 阶段，并从该 Loader 开始执行 Normal 阶段。
+
+![](https://cdn.jsdelivr.net/gh/chenxiaoyao6228/cloudimg@main/2023/webpack-loader-pitch2.png)
 
 ## Loader 的配置
 
