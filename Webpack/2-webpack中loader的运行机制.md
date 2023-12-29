@@ -47,11 +47,9 @@ module.exports = function (content) {
   // 返回处理后的结果
   return processedSource;
 };
-```
 
 module.exports.raw = true;
-
-````
+```
 
 loader 的输出内容必须是 String 或 Buffer 类型。
 
@@ -87,7 +85,7 @@ module.exports = function (source) {
     callback(null, transformedSource);
   }, 1000); // 模拟异步操作耗时 1 秒钟
 };
-````
+```
 
 ## Loader 的工作原理和执行顺序
 
