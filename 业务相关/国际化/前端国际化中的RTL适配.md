@@ -155,7 +155,7 @@ rtlcss styles.css styles-rtl.css
 
 在 webpack 项目中，我们可以使用[postcss-rtlcss]()
 
-另外，该方案有个缺点，就是对项目中的手写 style 无能为力，只能尽量不要在项目里面写style
+另外，该方案有个缺点，就是对项目中的手写 style 无能为力，只能尽量不要在项目里面写 style
 
 ```js
 const mySectionStyling = {flexDirection = i18n.dir === “ltr”? “row” :“row-reverse”}
@@ -400,6 +400,44 @@ const useForceUpdate = () => {
 
 使用国际化组件的 API 进行处理
 
+#### js 动态 style
+
+#### boundingClientRect
+
+需要注意的是，boundingClientRect 的值在 RTL 布局下依然是从左到右的，因此需要根据方向来动态设置
+
+![](https://cdn.jsdelivr.net/gh/chenxiaoyao6228/cloudimg@main/2023/rtl-boundingClientRect.png)
+
+```js
+if (layout === "rtl") {
+  target.style.right = （window.innerWidth - rect.right） + rect.width + gap + "px"; // 注意这里的计算方式是通过window.innerWidth - rect.right来计算的
+  // target.style.left = "auto";
+} else {
+  target.style.left = rect.left + rect.width + gap + "px";
+  target.style.right = "auto";
+}
+```
+
+完整的 demo 请看 👉 [在线效果预览](https://chenxiaoyao6228.github.io/html-preview/?https://github.com/chenxiaoyao6228/fe-notes/blob/main/业务相关/_demo/css-direction/boundingClientRect.html), 查看示例代码请点击[此处](../_demo/css-direction/boundingClientRect.html)
+
+#### 三方依赖的处理
+
+##### google-drive
+
+![](https://cdn.jsdelivr.net/gh/chenxiaoyao6228/cloudimg@main/2023/rtl-google-drive.png)
+
+代码如下：
+
+```js
+const instance = picker
+  .setOAuthToken(token)
+  .addView(view)
+  .setLocale(getLang()) // 通过这里的setLocale API 来设置语言
+  .addView(new google.picker.DocsUploadView())
+  .setCallback(setCallback)
+  .build();
+```
+
 ### 其他
 
 除此之外，还有一些额外的场景需要考虑
@@ -519,9 +557,9 @@ export const ConfigProvider: React.FC<IConfigProviderProps> = (props) => {
 ## 一些改进项 && TODO
 
 1. 目前无法通过 postcss-rtl 插件自动处理适配，可以考虑添加 eslint 规则加以规范
-2. babel插件对内联JSX自动化处理
+2. babel 插件对内联 JSX 自动化处理
 3. 样式动态加载(比如媒体查询)
-4. 将上述方案整合为一个大的plugin，方便复用到其他项目中
+4. 将上述方案整合为一个大的 plugin，方便复用到其他项目中
 
 ## 参考
 

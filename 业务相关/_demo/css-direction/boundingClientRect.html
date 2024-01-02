@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Layout Switcher Demo</title>
+    <style>
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+      }
+      body {
+        text-align: left;
+      }
+
+      .container {
+        position: relative;
+        margin-bottom: 20px;
+      }
+
+      button {
+        display: block;
+        width: 100px;
+        margin-left: 10px
+      }
+     
+      [dir="rtl"] button {
+        margin-left: auto;
+        margin-right: 10px;
+      }
+
+      #target {
+        width: 100px;
+        height: 50px;
+        background-color: lightblue;
+        position: fixed;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <label for="layoutSelector">Select Layout:</label>
+      <select id="layoutSelector">
+        <option value="ltr">LTR</option>
+        <option value="rtl">RTL</option>
+      </select>
+    </div>
+
+    <div class="container">
+      <button id="button">Button</button>
+      <div id="target"></div>
+    </div>
+
+    <script>
+      const layoutSelector = document.getElementById("layoutSelector");
+      const button = document.getElementById("button");
+      const target = document.getElementById("target");
+
+      function changeLayout() {
+        const rect = button.getBoundingClientRect();
+        
+        
+        const layout = layoutSelector.value;
+        target.style.top = rect.bottom + "px";
+        
+        console.log(`dir: ${layout}, rect:  ${JSON.stringify({left: rect.left, right: rect.right})}`);
+
+        // 根据布局位置调整 target 的位置
+        const gap = 10;
+        if (layout === "rtl") {
+          target.style.left = (rect.left) - rect.width - gap + "px";
+        } else {
+            target.style.left = rect.left + rect.width + gap + "px";
+            target.style.right  = 'auto';
+        }
+      }
+
+      layoutSelector.addEventListener("change", () => {
+        document.documentElement.dir = layoutSelector.value;
+        changeLayout();
+      });
+
+      changeLayout();
+    </script>
+  </body>
+</html>
