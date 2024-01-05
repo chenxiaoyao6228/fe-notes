@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Flex 布局拆分</title>
+  <style>
+    .container {
+      display: inline-flex;
+      border: 1px solid red;
+    }
+
+    .item:first-child {
+      margin-left: 40px;
+    }
+
+    .ltr .item,
+    .rtl .item {
+      border: 2px solid #ccc; /* 修改 border 值 */
+    }
+
+    .ltr .container {
+      direction: ltr;
+    }
+
+    .rtl .container {
+      direction: rtl;
+    }
+  </style>
+</head>
+<body>
+  <h1>LTR</h1>
+  <div class="ltr">
+    <div class="container">
+      <div class="item">Item 1</div>
+      <div class="item">Item 2</div>
+      <div class="item">Item 3</div>
+    </div>
+  </div>
+
+  <h1>RTL</h1>
+  <div class="rtl">
+    <div class="container">
+      <div class="item">Item 1</div>
+      <div class="item">Item 2</div>
+      <div class="item">Item 3</div>
+    </div>
+  </div>
+</body>
+</html>

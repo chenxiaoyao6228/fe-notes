@@ -1,15 +1,28 @@
 ## 前言
 
-本文探讨下国际化 RTL 适配相关的知识, 内容包括:
+本文探讨下前端国际化 RTL 适配相关的知识, 内容包括:
 
 - RTL 适配需要了解的背景知识
-- RTL 适配需要的内容以及如何渐进修改
-- 业务代码中的 RTL
-- 基础组件库中的 RTL
+- 前端 RTL 适配方案
+- 改造过程中的一些踩坑记录
 
 ## RTL 适配基础
 
-RTL 是 "Right-to-Left" 的缩写，表示从右到左。它是一种文本书写和布局方向，与 LTR（"Left-to-Right"，从左到右）相对应。在 RTL 的布局中，文本和元素的方向是从右边开始，逐渐向左边延伸。这种方向通常用于阿拉伯语、希伯来语、波斯语等从右向左书写的语言。总的来说，需要处理下列场景:
+RTL 是 "Right-to-Left" 的缩写，表示从右到左。它是一种文本书写和布局方向，与 LTR（"Left-to-Right"，从左到右）相对应。在 RTL 的布局中，文本和元素的方向是从右边开始，逐渐向左边延伸。这种方向通常用于阿拉伯语、希伯来语、波斯语等从右向左书写的语言。
+
+为了更加直观地了解 RTL 适配，这里列举一些网站供参考:
+
+- Al Jazeera (新闻) https://www.aljazeera.net/
+
+- Asharq Al-Awsat (新闻) https://aawsat.com/
+
+- Souq (亚马逊中东，电商) https://www.souq.com/sa-en/
+
+- Emirates Airlines (航空) https://www.emirates.com/
+
+- Arabian Business (商业) https://www.arabianbusiness.com/
+
+总的来说，需要处理下列场景:
 
 - 文本方向： 所有文本都需要正确地从右到左排列。包括标题、段落、列表和按钮等。确保文本的读取方向符合 RTL 语言的习惯。
 
@@ -19,11 +32,15 @@ RTL 是 "Right-to-Left" 的缩写，表示从右到左。它是一种文本书�
 
 - 表单元素： 表单元素需要正确地适应 RTL 语言，包括输入框、复选框、单选按钮和提交按钮等。
 
-- 图标和图像： 图标和图像可能需要根据文本方向进行翻转，以确保它们在 RTL 方向下显示正确。
+- 图标和图像： 图标和图像**可能**需要根据文本方向进行翻转，以确保它们在 RTL 方向下显示正确。
 
 - 动画和过渡： 如果有动画或过渡效果，需要确保它们在 RTL 方向下表现自然且不会导致混乱。
 
-除了上述，还有一些细节需要注意，比如字体，letter-spacing, 具体可以参考 [这里](https://rtlstyling.com/posts/rtl-styling)
+除了上述，还有一些细节需要注意，比如字体，letter-spacing, 我们在设计与开发的时候，可以参考一些比较有名的 guideline：
+
+- [rtl-styling](https://rtlstyling.com/posts/rtl-styling)
+
+- [material-ui bidirectionality](https://m2.material.io/design/usability/bidirectionality.html#mirroring-layout)
 
 ## 浏览器对 RTL 的支持
 
@@ -41,9 +58,23 @@ dir 用于设置文本的书写方向, dir 属性是继承的，这意味着如�
 <html dir="rtl"></html>
 ```
 
-但这只能满足大多数场景，一些边界比如浮动，绝对定位等元素需要单独处理。
+#### direction 的不足
 
-完整的 demo 请看 👉 [在线效果预览](https://chenxiaoyao6228.github.io/html-preview/?https://github.com/chenxiaoyao6228/fe-notes/blob/main/业务相关/_demo/css-direction/direction.html), 查看示例代码请点击[此处](../_demo/css-direction/direction.html)
+通过测试可以发现 direction 只能改变 display: flex/inline-block 元素的书写方向，对于 float/绝对定位等布局就无能为力
+
+- [inline-block 布局](https://chenxiaoyao6228.github.io/html-preview/?https://github.com/chenxiaoyao6228/fe-notes/blob/main/业务相关/_demo/css-direction/direction-inline-block.html)
+
+- [flex 布局](https://chenxiaoyao6228.github.io/html-preview/?https://github.com/chenxiaoyao6228/fe-notes/blob/main/业务相关/_demo/css-direction/direction-flex.html)
+
+- [float 布局](https://chenxiaoyao6228.github.io/html-preview/?https://github.com/chenxiaoyao6228/fe-notes/blob/main/业务相关/_demo/css-direction/direction-float.html)
+
+- [绝对定位布局](https://chenxiaoyao6228.github.io/html-preview/?https://github.com/chenxiaoyao6228/fe-notes/blob/main/业务相关/_demo/css-direction/direction-positioned.html.html)
+
+另外 direction 无法改变 margin, padding, border 的水平方向，也就是说除非你的元素是居中的，否则当你的元素是不对称的话，即使你改变了元素的书写方向和顺序，margin-left 还是指向左边的，它并不会留出右边的空白。
+
+![](https://cdn.jsdelivr.net/gh/chenxiaoyao6228/cloudimg@main/2023/rtl-css-direction-margin-padding-border.png)
+
+完整的 demo 请看 👉 [在线效果预览](https://chenxiaoyao6228.github.io/html-preview/?https://github.com/chenxiaoyao6228/fe-notes/blob/main/业务相关/_demo/css-direction/direction-border-margin-padding.html)
 
 #### css 逻辑属性
 
@@ -68,7 +99,7 @@ margin-inline-start 属性在 LTR 布局中为 margin-left，在 RTL 布局中�
 
 bidi 是"bidirectional"的缩写，表示双向文字，即一段文字包含两种不同方向的文字。Unicode 双向算法是处理这种文字的常见方法，而 unicode-bidi 属性用于重写此算法。
 
-完整的 demo 请看 👉 [在线效果预览](https://chenxiaoyao6228.github.io/html-preview/?https://github.com/chenxiaoyao6228/fe-notes/blob/main/业务相关/_demo/css-direction/unicode-bidi.html), 查看示例代码请点击[此处](../_demo/css-direction/unicode-bidi.html)
+[在线效果预览](https://chenxiaoyao6228.github.io/html-preview/?https://github.com/chenxiaoyao6228/fe-notes/blob/main/业务相关/_demo/css-direction/unicode-bidi.html)
 
 ## 前端 RTL 适配方案
 
@@ -396,6 +427,16 @@ const useForceUpdate = () => {
 
 ![](https://cdn.jsdelivr.net/gh/chenxiaoyao6228/cloudimg@main/2023/rtl-text-direction-after.gif)
 
+对于图标的翻转，最好提供一个 mixin 的方式，方便复用
+
+```less
+.flip-img {
+  [dir="rtl"] & {
+    transform: scaleX(-1);
+  }
+}
+```
+
 #### 数字、日期处理
 
 使用国际化组件的 API 进行处理
@@ -422,6 +463,14 @@ if (layout === "rtl") {
 
 #### 三方依赖的处理
 
+##### 如果三方组件不支持 RTL
+
+如果三方组件暂时不支持 RTL，可以暂时在容器的最外层强制设置为 LTR
+
+```jsx
+<div id="third-party-comp-wrapper" dir="ltr"></div>
+```
+
 ##### google-drive
 
 ![](https://cdn.jsdelivr.net/gh/chenxiaoyao6228/cloudimg@main/2023/rtl-google-drive.png)
@@ -436,6 +485,20 @@ const instance = picker
   .addView(new google.picker.DocsUploadView())
   .setCallback(setCallback)
   .build();
+```
+
+#### 忽略部分样式处理
+
+有时候需要更加细粒度的控制，忽略部分样式(一种比较常见的场景是绝对定位中有绝对定位)
+
+```less
+.modal {
+  position: absolute;
+  top: 50%;
+  /*rtl:ignore*/
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
 ```
 
 ### 其他
@@ -554,6 +617,16 @@ export const ConfigProvider: React.FC<IConfigProviderProps> = (props) => {
 
 - rsuite, [用法](https://github.com/rsuite/rsuite/blob/main/src/CustomProvider/CustomProvider.tsx#L52), [源码](https://github.com/rsuite/rsuite/blob/main/src/CustomProvider/CustomProvider.tsx#L52)
 
+#### Dropdown 下拉选项框的处理
+
+对于 placement 的处理，一旦涉及到方向`left`和`right`，就需要根据方向来动态设置，比如下面的代码
+
+```tsx
+<Dropdown
+  placement={direction === "rtl" ? "bottomRight" : "bottomLeft"}
+  align={{ offset: direction === "rtl" ? [179, 45] : [-179, 45] }}></Dropdown>
+```
+
 ## 一些改进项 && TODO
 
 1. 目前无法通过 postcss-rtl 插件自动处理适配，可以考虑添加 eslint 规则加以规范
@@ -562,6 +635,8 @@ export const ConfigProvider: React.FC<IConfigProviderProps> = (props) => {
 4. 将上述方案整合为一个大的 plugin，方便复用到其他项目中
 
 ## 参考
+
+- https://m2.material.io/design/usability/bidirectionality.html#mirroring-layout
 
 - https://note.youdao.com/ynoteshare/index.html?id=9ae40d5b5c2a7f55c50b11e68a9f8da4&type=note
 

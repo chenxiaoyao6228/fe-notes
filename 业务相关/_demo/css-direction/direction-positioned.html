@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>绝对定位布局</title>
+    <style>
+      .container {
+        position: relative;
+      }
+
+      .item {
+        position: absolute;
+        margin: 10px;
+        padding: 20px;
+        border: 1px solid #ccc;
+      }
+
+      .item1 {
+        left: 0;
+      }
+      .item2 {
+        left: 100px;
+      }
+      .item3 {
+        left: 200px;
+      }
+
+      .rtl {
+        margin-top: 200px;
+      }
+
+      .rtl .item {
+        /* right: 0;
+        left: auto; */
+      }
+    </style>
+  </head>
+  <body>
+    <div class="ltr">
+        <div class="container">
+          <h1>LTR</h1>
+        <div class="item item1">Item 1</div>
+        <div class="item item2">Item 2</div>
+        <div class="item item3">Item 3</div>
+      </div>
+    </div>
+    <div class="rtl">
+        <div class="container">
+          <h1>RTL</h1>
+        <div class="item item1">Item 1</div>
+        <div class="item item2">Item 2</div>
+        <div class="item item3">Item 3</div>
+      </div>
+    </div>
+  </body>
+</html>
