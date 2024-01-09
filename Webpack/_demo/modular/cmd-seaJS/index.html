@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>seaJS项目展示</title>
+    <!-- 引入 自己写的 -->
+    <script src="scripts/miniSeaJS.js"></script>
+    <!-- 引入配置和入口脚本 -->
+    <script>
+      seajs.config({
+        base: "scripts",
+        alias: {
+          "lib-a-dep": "lib-a-dep",
+          "lib-a": "lib-a", // 不需要写.js后缀
+          "my-script": "my-script",
+        },
+      });
+      // 启动应用
+      seajs.use("my-script");
+    </script>
+  </head>
+  <body></body>
+</html>

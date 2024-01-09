@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>script内容与onload触发时间</title>
+</head>
+<body>
+    <script>
+        function onLoad(){{
+            console.log('onload 回调')
+        }}
+    </script>
+    <script src="index.js" onload="onLoad()"></script>
+</body>
+</html>
