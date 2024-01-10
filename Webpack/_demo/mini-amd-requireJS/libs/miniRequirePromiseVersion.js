@@ -37,54 +37,37 @@
   }
 
   function loadModuleAsync(url) {
-    console.log("loadModuleAsync 开始-------------", url);
     return new Promise((resolve, reject) => {
-      // if (!modules[url] || !modules[url].loaded) {
+      if (!modules[url] || !modules[url].loaded) {
         loadScriptAsync(url)
           .then(() => {
-            const _deps = modules[url].deps;
-
-            if(_deps.length === 0) {
-              return resolve();
-            }
-
             // 模块加载且执行完成, define已执行
-            return global.require(modules[url].deps, ()=> {
-              // 所有子模块加载完成，执行factory
-              var _exports = modules[url].factory.apply(null, arguments);
-              console.log("_exports", _exports);
-              resolve(_exports);
+            const _deps = modules[url].deps;
+            // 没有依赖
+            if (_deps.length === 0) {
+              modules[url].exports = modules[url].factory();
+              return resolve(modules[url].exports);
+            }
+            // 有依赖
+            return global.require(modules[url].deps).then((_dep_exports) => {
+              modules[url].exports = modules[url].factory(..._dep_exports);
+              return resolve(modules[url].exports);
             });
           })
           .catch(reject);
-      // } else {
-      //   resolve(modules[url]);
-      // }
+      } else {
+        resolve(modules[url].exports);
+      }
     });
   }
 
-  global.require = function (dependencies, callback) {
-
-
-    return new Promise((resolve, reject) => {
-      var resolvedDependencies = dependencies.map(resolvePath);
-  
-      return Promise.all(resolvedDependencies.map(loadModuleAsync)).then(
-        (dependencyModules) => {
-          console.log("All modules loaded: ", dependencyModules);
-        const _dep_exports =  dependencyModules.map((module) => module.exports);
-          resolve(_dep_exports);
-        }
-      );
-    })
-
+  global.require = function (dependencies) {
+    var resolvedDependencies = dependencies.map(resolvePath);
+    return Promise.all(resolvedDependencies.map(loadModuleAsync));
   };
 
   global.define = function (name, dependencies, factory) {
-    console.warn(` define执行, ${name}`, dependencies);
-
     var absPath = isAbsolute(name) ? name : resolvePath(name);
-
     modules[absPath] = {
       name: absPath,
       deps: dependencies,
@@ -92,15 +75,6 @@
       factory: factory,
       exports: null,
     };
-
-  
-    // return Promise.all(depAbsPaths.map(loadModuleAsync)).then(() => {
-    //   var _args = depAbsPaths.map(function (module) {
-    //     return modules[module].exports;
-    //   });
-    //   modules[absPath].exports = factory.apply(null, _args);
-    // });
-    // 此时依赖还是没有回来, 但是onload已经触发 => 把require放到onload里面!!
   };
 
   global.require.config = function (config) {
