@@ -4,13 +4,16 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>seaJS项目展示</title>
+    <!-- 引入 seaJS,  这里用了runtime-debug的版本 -->
+    <script src="libs/seaJS.js"></script>
+    
     <!-- 引入 自己写的 -->
-    <script src="libs/miniSeaJS.js"></script>
+    <!-- <script src="libs/miniSeaJS.js"></script> -->
 
     <!-- 引入配置和入口脚本 -->
     <script>
       seajs.config({
-        base: "scripts",
+        base: "./scripts",
         alias: {
           "lib-a-dep": "lib-a-dep",
           "lib-a": "lib-a", // 不需要写.js后缀

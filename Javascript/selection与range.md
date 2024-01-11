@@ -2,7 +2,7 @@
 
 本文简单总结下文本输入中的 Selection 与 Range 事件。
 
-👉 [在线效果预览](https://chenxiaoyao6228.github.io/html-preview/?https://github.com/chenxiaoyao6228/fe-notes/blob/main/文本输入/_demo/selection/input-textarea-selection.html)
+👉 [在线效果预览](https://chenxiaoyao6228.github.io/html-preview/?https://github.com/chenxiaoyao6228/fe-notes/blob/main/Javascript/_demo/selection/input-textarea-selection.html)
 
 ## ::selection && Selection
 

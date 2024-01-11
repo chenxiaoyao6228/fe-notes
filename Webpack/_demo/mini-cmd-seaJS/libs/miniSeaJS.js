@@ -15,7 +15,7 @@
     const _mapPath = paths[path];
 
     if (!_mapPath) {
-      throw new Error("路径映射不存在");
+      throw new Error(`路径映射不存在: ${path}}`);
     }
 
     var fullPath = baseUrl + "/" + _mapPath + ".js";
@@ -42,22 +42,6 @@
     }
   }
 
-  global.seajs = {
-    config: function (config) {
-      baseUrl = config.base || "";
-      paths = config.alias || {};
-    },
-
-    use: function (entryModule) {
-      var entryPath = resolvePath(entryModule);
-      loadModule(entryPath, function (module) {
-        global.require([entryPath], function () {
-          // Entry module loaded
-        });
-      });
-    },
-  };
-
   global.define = function (name, factory) {
     var absPath = resolvePath(name);
 
@@ -67,7 +51,7 @@
       var require = function (dep) {
         var depModule = modules[resolvePath(dep)];
         if (!depModule) {
-          throw new Error('Module not found: ' + dep);
+          throw new Error("Module not found: " + dep);
         }
         return depModule.exports;
       };
@@ -104,5 +88,22 @@
     resolvedDependencies.forEach(function (url) {
       loadModule(url, onModuleLoaded);
     });
+  };
+
+  // 对外API
+  global.seajs = {
+    config: function (config) {
+      baseUrl = config.base || "";
+      paths = config.alias || {};
+    },
+
+    use: function (entryModule) {
+      var entryPath = resolvePath(entryModule);
+      loadModule(entryPath, function (module) {
+        global.require([entryPath], function () {
+          // Entry module loaded
+        });
+      });
+    },
   };
 })(window);

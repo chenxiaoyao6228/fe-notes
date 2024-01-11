@@ -1,5 +1,9 @@
 ## 前言
 
+## 实现
+
+参见 \_demo/mini-tabpable
+
 ## 参考
 
 - [tabpable](https://www.npmjs.com/package/tapable)

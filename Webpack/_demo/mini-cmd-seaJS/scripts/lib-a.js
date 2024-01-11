@@ -1,4 +1,4 @@
-define('lib-a',function(require, exports, module) {
+define(function(require, exports, module) {
   var libADep = require('lib-a-dep');
   var foo = "foo";
 

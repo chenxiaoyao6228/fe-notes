@@ -1,5 +1,14 @@
-define('my-script',function(require, exports, module) {
+define(function(require, exports, module) {
+  
   var libA = require('lib-a');
-  var a = libA.foo; // "foo"
-  alert(a + '-' + libA.bar);
+  
+  function logMsg(){
+    var a = libA.foo; // "foo"
+    alert(a + '-' + libA.bar);
+  }
+
+  var button = document.createElement('button');
+  button.innerHTML = 'Click me and look at the console!';
+  button.onclick = logMsg
+  document.body.appendChild(button);  
 });
