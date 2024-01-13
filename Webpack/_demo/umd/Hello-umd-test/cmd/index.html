@@ -3,23 +3,20 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>seaJS项目展示</title>
-    <!-- 引入 seaJS,  这里用了runtime-debug的版本 -->
-    <script src="libs/seaJS.js"></script>
-    
-    <!-- 引入配置和入口脚本 -->
+    <title>CMD加载UMD</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/seajs/3.0.3/sea.js"></script>
+  </head>
+  <body>
     <script>
       seajs.config({
         base: "./scripts",
         alias: {
-          "lib-a-dep": "lib-a-dep",
-          "lib-a": "lib-a", // 不需要写.js后缀
+          hello: "hello", // 不需要写.js后缀
           "my-script": "my-script",
         },
       });
       // 启动应用
       seajs.use("my-script");
     </script>
-  </head>
-  <body></body>
+  </body>
 </html>

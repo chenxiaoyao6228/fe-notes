@@ -131,7 +131,7 @@ document.body.appendChild(button);
 
 页面加载顺序如下:
 
-![](../../cloudimg/2023/esm-script-loading.png)
+![](https://cdn.jsdelivr.net/gh/chenxiaoyao6228/cloudimg@main/2023/esm-script-loading.png)
 
 这里有几个需要注意的点：
 

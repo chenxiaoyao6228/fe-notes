@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title>J(T)SX Demo template</title>
+    <style>
+        html,
+        body {
+            margin: 10px;
+        }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/react@17.0.2/umd/react.development.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/react-dom@17.0.2/umd/react-dom.development.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@babel/standalone@7.22.13/babel.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/lodash/lodash.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/dayjs/dayjs.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/antd/dist/antd.min.js"></script>
+</head>
+
+<body>
+    <div id="root"></div>
+    <script type="text/babel">
+        const { useEffect } = React;
+        const { Button } = antd;
+        const { debounce } = _
+        // ----------------------------------------------------
+
+        //  CompA
+        function CompA(props: { name: string }) {
+            useEffect(() => {
+                console.log('11111');
+                console.log("debounce", debounce);
+            }, []);
+            return <h1>Hello, {props.name}!</h1>;
+        }
+
+        //  App
+        function App(props: { name: string }) {
+            return (<div>
+                <h1>Hello, {props.name}!</h1>
+                <Button type="primary">click me</Button>
+                <CompA name="CompA" />
+            </div>);
+        }
+
+        // ----------------------------------------------------
+        ReactDOM.render(<App name="App" />, document.getElementById('root'));
+    </script>
+</body>
+
+</html>

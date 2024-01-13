@@ -203,3 +203,33 @@ define([], function () {
 ```
 
 > 对应的代码在 \_demo/mini-amd-requireJS 目录下， 除了 Promise 版本的实现，还有回调版本的实现，可以自行查看
+
+## Webpack 中加载 amd
+
+webpack 默认不支持 amd, 如果有一些三方的库比较老，是打包成 amd 格式的话，可以使用`amd-define-loader`进行加载
+
+```js
+module.exports = {
+  resolve: {
+    // 省略后缀名 ".js"
+    extensions: [".js"],
+  },
+  module: {
+    rules: [
+      {
+        test: /\.js$/,
+        include: /node_modules\/library/, // library 像 require.js 那样编写
+        loader: "amd-define-loader",
+      },
+      {
+        test: /\.js$/,
+        include: /your_project_directory/,
+        loader: "babel-loader", // 或其他合适的 loader
+        options: {
+          presets: ["@babel/preset-env"],
+        },
+      },
+    ],
+  },
+};
+```
