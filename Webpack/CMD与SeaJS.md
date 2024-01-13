@@ -1,31 +1,54 @@
-## CMD 规范
+## 前言
 
 CMD 规范专门用于浏览器端，模块的加载是异步的，模块使用时才会加载执行。CMD 规范整合了 CommonJS 和 AMD 规范的特点。
 
-### 模块定义与加载
+## CMD 规范
 
-使用 define 函数定义模块，使用 require 函数加载模块。通过 exports 与 module.exports 对象导出模块的属性和方法。
+### 模块定义
+
+模块的定义使用 define 函数，模块的定义也接受两个参数：模块标识符和一个返回模块内容的函数。
 
 ```js
-// 定义模块
+// 定义一个模块
 define(function (require, exports, module) {
-  // 引入其他模块
-  var dependency = require("dependency");
-  // 模块导出
-  exports.someFunction = function () {
-    // ...
+  // 通过exports或者module.exports对外暴露接口
+  exports.foo = function () {
+    console.log("Hello from myModule!");
   };
 });
 ```
 
+### 模块的引入
+
+在 CMD 规范中，引入模块时使用 require 函数
+
+```js
+// 引入模块
+var myModule = require("myModule");
+myModule.foo(); // 调用模块中的函数
+```
+
+### 标志符
+
+CMD 中的模块标识符同样是一个字符串，用于唯一标识一个模块。模块标识符通常是模块的路径，可以包含文件路径或者相对路径。
+
+## 与其他规范的区别
+
+### 与 CommonJS 的区别
+
+CMD 与 CommonJS 的不同之处在于
+
+- CMD 模块需要用 define 来明确定义一个模块，而在 Node 实现中是隐式包装的
+- CMD 是异步加载模块，而 CommonJS 是同步加载模块
+
 ### 与 AMD 的区别
 
-AMD 规范推崇的是依赖前置，CMD 推崇的是依赖就近。这两个新名词看起来比较抽象，但实际上可以非常简单的理解为：
+AMD 规范推崇的是依赖前置，CMD 推崇的是依赖就近。可以非常简单的理解为：
 
 - **依赖前置**就是在模块声明/引入前，先把该模块需要的依赖先引入
 - **依赖就近**就是模块声明/引入不需要提前引入依赖，在模块内部再引入
 
-## SeaJS 同步
+## SeaJS 的使用
 
 Sea.js 由国内的玉伯创建，是一个遵循 CMD 规范的模块加载器。
 

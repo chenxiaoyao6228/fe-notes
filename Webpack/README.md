@@ -1,11 +1,11 @@
 ## Webpack 原理解析
 
 - JS 中的模块化
+- commonJS 与 nodeJS 的模块查找机制
 - amd 与 requireJS 详解
 - cmd 与 seaJS 详解
 - umd 详解
 - esm 详解
-- commonJS 与 nodeJS 的模块查找机制
 - angularJS 是如何实现模块与依赖注入的
 - webpack 基本配置
 - webpack 打包流程
@@ -22,6 +22,7 @@
 
 ## 参考
 
+- [CommonJS 规范](http://www.commonjs.org)
 - [AMD 规范](https://wiki.commonjs.org/wiki/Modules/AsynchronousDefinition)
 - [CMD 规范](https://github.com/cmdjs/specification/blob/master/draft/module.md)
 - [UMD 规范](https://github.com/umdjs/umd/)
