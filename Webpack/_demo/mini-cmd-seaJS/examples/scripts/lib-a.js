@@ -4,7 +4,7 @@ define(function(require, exports, module) {
 
   var libA = {
     foo: foo,
-    bar: libADep.bar,
+    bar: libADep.bar
   };
 
   module.exports = libA;

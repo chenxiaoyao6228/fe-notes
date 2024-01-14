@@ -1,0 +1,17 @@
+{
+  "name": "mini-cmd-seajs",
+  "version": "1.0.0",
+  "description": "a simple amd loader",
+  "main": "index.js",
+  "directories": {
+    "example": "examples"
+  },
+  "scripts": {
+    "build": "rollup  src/index.js --file examples/libs/mini-seaJS.js --format iife --watch"
+  },
+  "author": "chenxiaoyao",
+  "license": "MIT",
+  "dependencies": {
+    "rollup": "^4.9.5"
+  }
+}

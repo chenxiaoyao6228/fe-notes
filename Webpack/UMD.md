@@ -142,8 +142,10 @@ function () {
 
 执行结果如下：
 
-> -----global 环境--------
-> Hello.js:6 Hello!
+```js
+ -----global 环境--------
+ Hello.js:6 Hello!
+```
 
 完整的 demo 请看 👉 [在线效果预览](https://chenxiaoyao6228.github.io/html-preview/?https://github.com/chenxiaoyao6228/fe-notes/blob/main/Webpack/_demo/umd/Hello-umd-test/global/index.html), 查看示例代码请点击[此处](./_demo/umd/Hello-umd-test/global/index.html)
 
@@ -172,8 +174,10 @@ function () {
 
 执行结果如下：
 
-> -----commonJS 环境--------
-> Hello!
+```js
+ -----commonJS 环境--------
+ Hello!
+```
 
 查看示例代码请点击[此处](./_demo/umd/Hello-umd-test/commonjs/index.js)
 
@@ -208,8 +212,10 @@ function () {
 
 输出结果如下:
 
-> -----AMD 环境, 如 requireJS--------
-> hello.js:17 Hello!
+```
+ -----AMD 环境, 如 requireJS--------
+ hello.js:17 Hello!
+```
 
 完整的 demo 请看 👉 [在线效果预览](https://chenxiaoyao6228.github.io/html-preview/?https://github.com/chenxiaoyao6228/fe-notes/blob/main/Webpack/_demo/umd/Hello-umd-test/amd/index.html), 查看示例代码请点击[此处](./_demo/umd/Hello-umd-test/amd/index.html)
 
@@ -242,7 +248,9 @@ function () {
 
 输出结果如下：
 
-> -----CMD 环境, 如 seaJS--------
-> Hello.js:17 Hello!
+```js
+ -----CMD 环境, 如 seaJS--------
+ Hello.js:17 Hello!
+```
 
 完整的 demo 请看 👉 [在线效果预览](https://chenxiaoyao6228.github.io/html-preview/?https://github.com/chenxiaoyao6228/fe-notes/blob/main/Webpack/_demo/umd/Hello-umd-test/cmd/index.html), 查看示例代码请点击[此处](./_demo/umd/Hello-umd-test/cmd/index.html)

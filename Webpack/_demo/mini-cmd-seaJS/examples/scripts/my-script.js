@@ -1,4 +1,6 @@
 define(function(require, exports, module) {
+
+  console.log("1111", 1111);
   
   var libA = require('lib-a');
   
