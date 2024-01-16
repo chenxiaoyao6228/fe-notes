@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <style>
+      canvas {
+        border: 1px solid #000;
+        margin-top: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>RTL对Canvas内部元素的影响</h1>
+    <div>
+      <label for="directionSelect">选择文档方向：</label>
+      <select id="directionSelect" onchange="changeDirection()">
+        <option value="ltr">LTR</option>
+        <option value="rtl">RTL</option>
+      </select>
+    </div>
+
+    <canvas width="600" height="300" id="myCanvas"></canvas>
+
+    <script>
+      function renderCanvas() {
+        // 获取Canvas上下文
+        const canvas = document.getElementById("myCanvas");
+        const ctx = canvas.getContext("2d");
+
+        // 在Canvas上绘制一个矩形
+        ctx.fillStyle = "blue";
+        ctx.fillRect(0, 0, 200, 100);
+
+        // 绘制文本
+        ctx.font = "20px Arial";
+        ctx.fillStyle = "white";
+        ctx.fillText("RTL示例", 0, 20);
+      }
+
+      renderCanvas()
+
+      // 切换文档方向的函数
+      function changeDirection() {
+        const directionSelect = document.getElementById("directionSelect");
+        const selectedDirection = directionSelect.value;
+        document.documentElement.dir = selectedDirection; // 设置文档方向
+        renderCanvas()
+      }
+    </script>
+  </body>
+</html>

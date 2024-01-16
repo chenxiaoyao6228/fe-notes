@@ -1,11 +1,12 @@
 ## Webpack 原理解析
 
-- [JS 中的模块化](./重新梳理前端模块化.md)
+- [JS 中的模块化历程](./重新梳理前端模块化.md)
 - [commonJS 与 nodeJS](./CommonJS与Node.md)
 - [amd 与 requireJS 详解](./AMD与RequireJS.md)
 - [cmd 与 seaJS 详解](./CMD与SeaJS.md)
 - [umd 详解](./UMD.md)
 - [esm 详解](./ES6-module.md)
+- [package.json 中模块化相关的字段](./package.json中模块化相关的字段.md)
 - webpack 基本配置
 - [实现一个简单的 webpack](./1-实现mini-webpack.md)
 - [webpack 中的 loader](./2-webpack中loader的运行机制.md)
