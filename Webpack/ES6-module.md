@@ -207,5 +207,3 @@ Node.js 利用 V8 引擎的支持，实现了对 ECMAScript 模块的解析和�
 ### ES6 模块加载 CommonJS 模块
 
 ### 如何同时支持
-
-## package.json 中模块相关的字段详解

@@ -2,7 +2,7 @@
 
 本文主要总结下与文本输入的相关的事件。
 
-测试地址见: 👉 [在线效果预览](https://chenxiaoyao6228.github.io/html-preview/?https://github.com/chenxiaoyao6228/fe-notes/blob/main/文本输入/_demo/input-event/input-order.html)
+测试地址见: 👉 [在线效果预览](https://chenxiaoyao6228.github.io/html-preview/?https://github.com/chenxiaoyao6228/fe-notes/blob/main/Javascript/_demo/input-event/input-order.html)
 
 ## keydown 事件
 
@@ -11,7 +11,7 @@
 - `keydown`和`keyup`分别在用户按下与松开按键的时候触发
 - `keypress(不推荐)`, `beforeinput` 会在按下**可显示内容（字符键：数字/字母/符号）**后在 keydown 之后触发，非字符键(Enter, Backspace, Delete, Esc)则不会。
 
-这也就意味着如果我们想阻止默认的输入行为，就只能在keydown中进行对应的处理(此时浏览器默认行为未完成，输入框还没有更新显示)， 一般会配合`event.key`或者`event.code`来判断. 关于`keyCode`可以看看这篇[告别JS keyCode](https://www.zhangxinxu.com/wordpress/2021/01/js-keycode-deprecated/)
+这也就意味着如果我们想阻止默认的输入行为，就只能在 keydown 中进行对应的处理(此时浏览器默认行为未完成，输入框还没有更新显示)， 一般会配合`event.key`或者`event.code`来判断. 关于`keyCode`可以看看这篇[告别 JS keyCode](https://www.zhangxinxu.com/wordpress/2021/01/js-keycode-deprecated/)
 
 ## input 事件
 
@@ -31,13 +31,12 @@
 
 "compositionstart"事件标志着合成过程的开始，"compositionupdate"事件用于在合成过程中更新文本，最后，当合成文本确定时，将触发"compositionend"事件。
 
-> 对于React来说，需要做用户输入过滤拦截的时候，一定要考虑合成事件，不能简单地用onChange事件
+> 对于 React 来说，需要做用户输入过滤拦截的时候，一定要考虑合成事件，不能简单地用 onChange 事件
 
 ## 用户输入事件触发顺序
 
 在存在用户输入法输入的时候，事件的触发顺序如图：
 ![](https://cdn.jsdelivr.net/gh/chenxiaoyao6228/cloudimg@main/2023/html-input-order-composition.gif)
-
 
 ## 总结
 
@@ -45,6 +44,6 @@
 
 ## 参考
 
-- [告别JS keyCode](https://www.zhangxinxu.com/wordpress/2021/01/js-keycode-deprecated/)
-- [可能这些是你想要的H5软键盘兼容方案](https://segmentfault.com/a/1190000018959389)
-- [textarea的中文输入判断与搜狗输入法的特殊行为](https://stackoverflow.com/questions/51395393/how-to-trigger-paste-event-manually-in-javascript)
+- [告别 JS keyCode](https://www.zhangxinxu.com/wordpress/2021/01/js-keycode-deprecated/)
+- [可能这些是你想要的 H5 软键盘兼容方案](https://segmentfault.com/a/1190000018959389)
+- [textarea 的中文输入判断与搜狗输入法的特殊行为](https://stackoverflow.com/questions/51395393/how-to-trigger-paste-event-manually-in-javascript)

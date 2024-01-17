@@ -15,9 +15,10 @@
 - webpack 中 dev-server 的工作原理
 - [webpack 热更新原理](./webpack-hmr.md)
 - webpack 模块联邦
-- angularJS 是如何实现模块与依赖注入的
+- [angularJS 是如何实现模块与依赖注入的](../AngularJS/build-your-own-angular-cp10-module-injection.md)
 - vite 的工作原理
-- rollup 以及 tree-shaking 的工作原理
+- rollup 的工作原理
+- [tree-shaking 的工作原理](./tree-shaking.md)
 - SystemJs 的实现流程
 - 微前端框架的工作原理
 
@@ -38,3 +39,9 @@
 - [JS 模块加载器加载原理是怎么样的？](https://www.zhihu.com/question/21157540)
 - [LABjs、RequireJS、SeaJS 哪个最好用？为什么？](https://www.zhihu.com/question/20342350/answer/32484869)
 - [从 rollup 初版源码学习打包原理](https://github.com/woai3c/Front-end-articles/issues/5)
+
+## Packages
+
+- estree-walker
+- https://github.com/rollup/rollup-plugin-commonjs
+- https://github.com/webpack/enhanced-resolve
