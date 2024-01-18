@@ -33,7 +33,7 @@ OBB（Oriented Bounding Box）包围盒是一种以物体的朝向为基础的�
 
 以下面的矩形为例，当我们顺时针旋转 45 度时，AABB 包围盒的边就会与物体的边不重合，这时候就需要 OBB 包围盒来更准确地包围物体。
 
-![](../../cloudimg/2023/canvas-bounding-box-rotation.png)
+![](https://cdn.jsdelivr.net/gh/chenxiaoyao6228/cloudimg@main/2023/canvas-bounding-box-rotation.png)
 
 OBB 包围盒通常由以下要素定义：
 

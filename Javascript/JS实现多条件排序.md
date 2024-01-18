@@ -1,3 +1,6 @@
+## 代码实现
+
+```ts
 type Comparator<T> = (a: T, b: T) => number;
 
 /*
@@ -68,3 +71,4 @@ const customSort = createSortingFunction<Person>(
 const sortedData = customSort(data);
 
 console.log(sortedData);
+```

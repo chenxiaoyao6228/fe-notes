@@ -110,4 +110,4 @@ Android 上的深度链接类似于 URL 方案，但更强大。它可以通过 
 </html>
 ```
 
-完整的 demo 请看 👉 [在线效果预览](./_demo/appLauncher/index.html), 查看示例代码请点击[此处](./_demo/appLauncher/index.html)
+完整的 demo 请看 👉 [在线效果预览](https://chenxiaoyao6228.github.io/html-preview/?https://github.com/chenxiaoyao6228/fe-notes/blob/main/跨端开发/_demo/appLauncher/index.html), 查看示例代码请点击[此处](./_demo/appLauncher/index.html)

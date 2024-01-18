@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>策略模式与表单校验</title>
+    <style></style>
+    <script src="https://cdn.jsdelivr.net/npm/react@17.0.2/umd/react.development.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/react-dom@17.0.2/umd/react-dom.development.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@babel/standalone@7.22.13/babel.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/lodash/lodash.min.js"></script>
+    <style>
+      body {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+        margin: 0;
+      }
+
+      form {
+        width: 300px;
+        padding: 20px;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      }
+
+      div {
+        margin-bottom: 15px;
+      }
+
+      label {
+        display: block;
+        margin-bottom: 5px;
+      }
+
+      input {
+        width: 100%;
+        padding: 8px;
+        margin-top: 5px;
+        box-sizing: border-box;
+      }
+
+      p {
+        margin-top: 5px;
+        font-size: 14px;
+      }
+
+      button {
+        width: 100%;
+        padding: 10px;
+        background-color: #4caf50;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+      }
+      button:disabled {
+        background-color: #ccc;
+        cursor: not-allowed;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div id="root"></div>
+    <script type="text/babel">
+      // -------------------formValidator.js---------------------------------
+      /**
+       * 表单校验工具
+       * @export
+       * @param {*} [strategies={}]
+       * @return {*}
+       */
+      const { curry, isFunction } = _;
+      function formValidator(strategies = {}) {
+        const validators = [];
+
+        function getVaildator() {
+          // 函数柯里化
+          return curry(async function (vaildator, errMessage, value) {
+            const pass = await vaildator(value);
+            if (!pass) {
+              return errMessage;
+            } else {
+              return null;
+            }
+          });
+        }
+
+        function add(check, errMessage) {
+          let checkFun = null;
+
+          if (!check || (!isFunction(check) && !strategies[check])) {
+            console.error(
+              `不存在名为 ${check} 的校验项，请检查函数formValidator的参数`
+            );
+            return false;
+          }
+
+          checkFun = isFunction(check) ? check : strategies[check];
+
+          validators.push(getVaildator()(checkFun, errMessage || ""));
+        }
+
+        async function check(value) {
+          for (let i = 0; i < validators.length; i++) {
+            const validator = validators[i];
+            const error = await validator(value);
+            if (error) return error;
+          }
+          return null;
+        }
+
+        return {
+          add,
+          check,
+        };
+      }
+
+      // -------------------Demo---------------------------------
+      // 自定义校验策略---邮箱
+      const emailFormatReg = /^[\w\.-]+@[\w\.-]+(\.[\w\.-]+)+$/;
+      const emailSpecialSymbolReg = /^[a-zA-Z0-9_@.-]+$/;
+      const emailFormStrategies = {
+        checkEmpty: (value) => !!value,
+        checkFormat: (value) => emailFormatReg.test(value),
+        checkHasSpecialSymbol: (value) => emailSpecialSymbolReg.test(value),
+      };
+      const emailValidator = formValidator(emailFormStrategies);
+
+      emailValidator.add("checkEmpty", "邮箱不能为空");
+      emailValidator.add("checkFormat", "邮箱格式不正确");
+      emailValidator.add("checkHasSpecialSymbol", "邮箱不能包含特殊字符");
+
+      // 自定义校验策略---密码
+      const pwdFormatReg =
+        /^((?![(~!@#\$%^&\\*()\+\-=,\./;|<>\?)]+$)(?![\d]+$)(?![a-zA-Z]+$)[\d(~!@#\$%^&\\*()\+\-=,\./;|<>\?)a-zA-Z]+)$/;
+
+      const pwdSpecialSymbolReg =
+        /^[a-zA-Z\d(~!@#\$%^&\\*()\+\-=,\./;|<>\?)]+$/;
+
+      const passwordStrategies = {
+        checkEmpty: (value) => !!value,
+        checkNotEqual: (equalValue, value) => value !== equalValue,
+        checkEqual: (equalValue, value) => equalValue === value,
+        checkLength: (value) => value.length >= 8 && value.length <= 16,
+        checkFormat: (value) => pwdFormatReg.test(value),
+        checkHasSpecialSymbol: (value) => pwdSpecialSymbolReg.test(value),
+      };
+
+      const passwordValidator = formValidator(passwordStrategies);
+
+      passwordValidator.add("checkEmpty", "密码不能为空");
+      passwordValidator.add("checkNotEqual", "密码不能和邮箱相同", "email");
+      passwordValidator.add("checkLength", "密码长度必须为8-16位");
+      passwordValidator.add("checkFormat", "密码必须包含字母、数字、特殊字符");
+
+      // -------------------index.js---------------------------------
+
+      const { useEffect, useState } = React;
+
+      // 表单组件
+      const MyForm = () => {
+        const [formData, setFormData] = useState({
+          email: "",
+          password: "",
+        });
+
+        const [emailError, setEmailError] = useState("");
+        const [passwordError, setPasswordError] = useState("");
+
+        const handleInputChange = (e) => {
+          const { name, value } = e.target;
+          setFormData((prevData) => ({ ...prevData, [name]: value }));
+        };
+
+        const handleEmailBlur = async () => {
+          const error = await emailValidator.check(formData.email);
+          setEmailError(error || "");
+        };
+
+        const handlePasswordBlur = async () => {
+          const error = await passwordValidator.check(formData.password);
+          setPasswordError(error || "");
+        };
+
+        const handleSubmit = async (e) => {
+          
+
+          e.preventDefault();
+
+          if (!emailError && !passwordError) {
+            // 执行提交逻辑，这里假设提交成功
+            alert("登录成功！");
+          } else {
+            alert("登录失败，请检查输入。");
+          }
+        };
+
+        return (
+          <form onSubmit={handleSubmit}>
+            <div>
+              <label>Email:</label>
+              <input
+                type="text"
+                name="email"
+                placeholder="请输入邮箱"
+                value={formData.email}
+                onChange={handleInputChange}
+                onBlur={handleEmailBlur}
+              />
+              {emailError && <p style={{ color: "red" }}>{emailError}</p>}
+            </div>
+
+            <div>
+              <label>Password:</label>
+              <input
+                placeholder="请输入密码"
+                type="password"
+                name="password"
+                value={formData.password}
+                onChange={handleInputChange}
+                onBlur={handlePasswordBlur}
+              />
+              {passwordError && <p style={{ color: "red" }}>{passwordError}</p>}
+            </div>
+
+            <button type="submit" disabled={emailError || passwordError || !formData.email || !formData.password}>登录</button>
+          </form>
+        );
+      };
+
+      // ----------------------------------------------------
+      ReactDOM.render(<MyForm />, document.getElementById("root"));
+    </script>
+  </body>
+</html>
