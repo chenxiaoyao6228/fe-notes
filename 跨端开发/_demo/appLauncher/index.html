@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>唤起ZOOM或者TEAMS app</title>
+  </head>
+  <body>
+    <button id="btn1">唤起zoom(msteams://)</button>
+    <button id="btn2">唤起teams(zoommtg://zoom.us)</button>
+    <script>
+      document.querySelector("#btn1").addEventListener("click", () => {
+        const urlSchemaOfTeams = "msteams://";
+        appLauncher(urlSchemaOfTeams);
+      });
+
+      document.querySelector("#btn2").addEventListener("click", () => {
+        const urlSchemaOfZoom = "zoommtg://zoom.us";
+        appLauncher(urlSchemaOfZoom);
+      });
+
+      function appLauncher(protocalUrl) {
+        openUriWithHiddenFrame(
+          protocalUrl,
+          () => {
+            // 浏览器弹窗提示
+            alert("检测到已安装了客户端");
+          },
+          () => {
+            alert("检测到未安装客户端");
+          }
+        );
+
+        function _registerEvent(target, eventType, cb) {
+          if (target.addEventListener) {
+            target.addEventListener(eventType, cb);
+            return {
+              remove: function () {
+                target.removeEventListener(eventType, cb);
+              },
+            };
+          } else {
+            target.attachEvent(eventType, cb);
+            return {
+              remove: function () {
+                target.detachEvent(eventType, cb);
+              },
+            };
+          }
+        }
+
+        function _createHiddenIframe(target, uri) {
+          var iframe = document.createElement("iframe");
+          iframe.src = uri;
+          iframe.id = "hiddenIframe";
+          iframe.style.display = "none";
+          target.appendChild(iframe);
+          return iframe;
+        }
+
+        function openUriWithHiddenFrame(uri, successCb, failCb) {
+          var timeout = setTimeout(function () {
+            failCb();
+            handler.remove();
+          }, 1000);
+
+          var iframe = document.querySelector("#hiddenIframe");
+          if (!iframe) {
+            iframe = _createHiddenIframe(document.body, "about:blank");
+          }
+
+          var handler = _registerEvent(window, "blur", onBlur);
+
+          function onBlur() {
+            clearTimeout(timeout);
+            handler.remove();
+            successCb();
+          }
+
+          iframe.contentWindow.location.href = uri;
+        }
+      }
+    </script>
+  </body>
+</html>
