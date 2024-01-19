@@ -75,7 +75,324 @@ var __webpack_modules__ = {
 };
 ```
 
+现在开启下 production 模式
+
+```js
+module.exports = {
+  entry: "./src/index.js",
+  devtool: false,
+  output: {
+    filename: "main.js",
+    path: path.resolve(__dirname, "dist"),
+  },
+  mode: "production",
+};
+```
+
+看看打包出来的文件, 可以看到，minus 函数相关的内容已经被删除了。
+
+```js
+(() => {
+  "use strict";
+  document.body.appendChild(
+    (function () {
+      const e = document.createElement("button");
+      return (
+        (e.innerHTML = "Hello webpack"),
+        e.addEventListener("click", () => {
+          console.log(Number(Math.random().toFixed(1)) + 2);
+        }),
+        e
+      );
+    })()
+  );
+})();
+```
+
 ### sideEffects
+
+sideEffects 字段用于向 Webpack 提供有关模块副作用的提示。它可以是文件通配符或特定文件路径的数组。如果一个模块在 sideEffects 数组中列出，Webpack 会假定该模块具有副作用，因此在 tree shaking 过程中不会将其消除。
+
+## Webpack tree-shaking 工作原理
+
+### 代码静态分析，标注代码使用情况
+
+通过搜索 webpack 源码，包含 harmony export 的部分，发现对 used export 和 unused export 的标注具体实现：
+
+```js
+//  lib/dependencies/HarmoneyExportInitFragment.js
+
+class HarmonyExportInitFragment extends InitFragment {
+  /**
+   * @param {string} exportsArgument the exports identifier
+   * @param {Map<string, string>} exportMap mapping from used name to exposed variable name
+   * @param {Set<string>} unusedExports list of unused export names
+   */
+  constructor(
+    exportsArgument,
+    exportMap = EMPTY_MAP,
+    unusedExports = EMPTY_SET
+  ) {
+    super(undefined, InitFragment.STAGE_HARMONY_EXPORTS, 1, "harmony-exports");
+    this.exportsArgument = exportsArgument;
+    this.exportMap = exportMap;
+    this.unusedExports = unusedExports;
+  }
+
+  merge(other) {
+    let exportMap;
+    if (this.exportMap.size === 0) {
+      exportMap = other.exportMap;
+    } else if (other.exportMap.size === 0) {
+      exportMap = this.exportMap;
+    } else {
+      exportMap = new Map(other.exportMap);
+      for (const [key, value] of this.exportMap) {
+        if (!exportMap.has(key)) exportMap.set(key, value);
+      }
+    }
+    let unusedExports;
+    if (this.unusedExports.size === 0) {
+      unusedExports = other.unusedExports;
+    } else if (other.unusedExports.size === 0) {
+      unusedExports = this.unusedExports;
+    } else {
+      unusedExports = new Set(other.unusedExports);
+      for (const value of this.unusedExports) {
+        unusedExports.add(value);
+      }
+    }
+    return new HarmonyExportInitFragment(
+      this.exportsArgument,
+      exportMap,
+      unusedExports
+    );
+  }
+
+  /**
+   * @param {GenerateContext} generateContext context for generate
+   * @returns {string|Source} the source code that will be included as initialization code
+   */
+  getContent({ runtimeTemplate, runtimeRequirements }) {
+    runtimeRequirements.add(RuntimeGlobals.exports);
+    runtimeRequirements.add(RuntimeGlobals.definePropertyGetters);
+
+    const unusedPart =
+      this.unusedExports.size > 1
+        ? `/* unused harmony exports ${joinIterableWithComma(
+            this.unusedExports
+          )} */\n`
+        : this.unusedExports.size > 0
+        ? `/* unused harmony export ${
+            this.unusedExports.values().next().value
+          } */\n`
+        : "";
+    const definitions = [];
+    for (const [key, value] of this.exportMap) {
+      definitions.push(
+        `\n/* harmony export */   ${JSON.stringify(
+          key
+        )}: ${runtimeTemplate.returningFunction(value)}`
+      );
+    }
+    const definePart =
+      this.exportMap.size > 0
+        ? `/* harmony export */ ${RuntimeGlobals.definePropertyGetters}(${
+            this.exportsArgument
+          }, {${definitions.join(",")}\n/* harmony export */ });\n`
+        : "";
+    return `${definePart}${unusedPart}`;
+  }
+}
+```
+
+### 添加 harmoney export
+
+getContent 处理 exportMap，对原来的 export 进行 replace
+
+```js
+const definePart =
+  this.exportMap.size > 0
+    ? `/* harmony export */ ${RuntimeGlobals.definePropertyGetters}(${
+        this.exportsArgument
+      }, {${definitions.join(",")}\n/* harmony export */ });\n`
+    : "";
+return `${definePart}${unusedPart}`;
+```
+
+### 处理 unExportMap
+
+getContent 处理 unExportMap，对原来的 export 进行 replace
+
+```js
+const unusedPart =
+  this.unusedExports.size > 1
+    ? `/* unused harmony exports ${joinIterableWithComma(
+        this.unusedExports
+      )} */\n`
+    : this.unusedExports.size > 0
+    ? `/* unused harmony export ${
+        this.unusedExports.values().next().value
+      } */\n`
+    : "";
+```
+
+### replace 替换
+
+声明 used 和 unused，调用 harmoneyExportInitFragment 进行 replace 掉源码里的 export。
+
+```js
+// lib/dependencies/HarmonyExportSpecifierDependency.js
+
+HarmonyExportSpecifierDependency.Template = class HarmonyExportSpecifierDependencyTemplate extends (
+  NullDependency.Template
+) {
+  /**
+   * @param {Dependency} dependency the dependency for which the template should be applied
+   * @param {ReplaceSource} source the current replace source which can be modified
+   * @param {DependencyTemplateContext} templateContext the context object
+   * @returns {void}
+   */
+  apply(
+    dependency,
+    source,
+    { module, moduleGraph, initFragments, runtimeRequirements, runtime }
+  ) {
+    const dep = /** @type {HarmonyExportSpecifierDependency} */ (dependency);
+    const used = moduleGraph
+      .getExportsInfo(module)
+      .getUsedName(dep.name, runtime);
+    if (!used) {
+      const set = new Set();
+      set.add(dep.name || "namespace");
+      initFragments.push(
+        new HarmonyExportInitFragment(module.exportsArgument, undefined, set)
+      );
+      return;
+    }
+
+    const map = new Map();
+    map.set(used, `/* binding */ ${dep.id}`);
+    initFragments.push(
+      new HarmonyExportInitFragment(module.exportsArgument, map, undefined)
+    );
+  }
+};
+```
+
+### getExports
+
+传入 moduleGraph 获取所有 export 的 name 值
+
+```js
+// lib/dependencies/HarmonyExportSpecifierDependency.js
+    /**
+     * Returns the exported names
+     * @param {ModuleGraph} moduleGraph module graph
+     * @returns {ExportsSpec | undefined} export names
+     */
+    getExports(moduleGraph) {
+        return {
+            exports: [this.name],
+            terminalBinding: true,
+            dependencies: undefined
+        };
+    }
+```
+
+### 建立 moduleGraph
+
+lib/ModuleGraph.js (该处代码量过多，不作展示)
+
+```js
+class ModuleGraph {
+    constructor() {
+        /** @type {Map<Dependency, ModuleGraphDependency>} */
+        this._dependencyMap = new Map();
+        /** @type {Map<Module, ModuleGraphModule>} */
+        this._moduleMap = new Map();
+        /** @type {Map<Module, Set<ModuleGraphConnection>>} */
+        this._originMap = new Map();
+        /** @type {Map<any, Object>} */
+        this._metaMap = new Map();
+
+        // Caching
+        this._cacheModuleGraphModuleKey1 = undefined;
+        this._cacheModuleGraphModuleValue1 = undefined;
+        this._cacheModuleGraphModuleKey2 = undefined;
+        this._cacheModuleGraphModuleValue2 = undefined;
+        this._cacheModuleGraphDependencyKey = undefined;
+        this._cacheModuleGraphDependencyValue = undefined;
+    }
+// ...
+```
+
+在不同的处理阶段调用对应的 ModuleGraph 里面的 function 做代码静态分析，构建 moduleGraph 为 export 和 import 标注等等操作做准备。
+
+### Compilation
+
+lib/Compilation.js （部分代码） 在 编译阶段 中将分析所得 的 module 入栈到 ModuleGraph。
+
+```js
+    /**
+     * @param {Chunk} chunk target chunk
+     * @param {RuntimeModule} module runtime module
+     * @returns {void}
+     */
+    addRuntimeModule(chunk, module) {
+        // Deprecated ModuleGraph association
+        ModuleGraph.setModuleGraphForModule(module, this.moduleGraph);
+
+        // add it to the list
+        this.modules.add(module);
+        this._modules.set(module.identifier(), module);
+
+        // connect to the chunk graph
+        this.chunkGraph.connectChunkAndModule(chunk, module);
+        this.chunkGraph.connectChunkAndRuntimeModule(chunk, module);
+
+        // attach runtime module
+        module.attach(this, chunk);
+
+        // Setup internals
+        const exportsInfo = this.moduleGraph.getExportsInfo(module);
+        exportsInfo.setHasProvideInfo();
+        if (typeof chunk.runtime === "string") {
+            exportsInfo.setUsedForSideEffectsOnly(chunk.runtime);
+        } else if (chunk.runtime === undefined) {
+            exportsInfo.setUsedForSideEffectsOnly(undefined);
+        } else {
+            for (const runtime of chunk.runtime) {
+                exportsInfo.setUsedForSideEffectsOnly(runtime);
+            }
+        }
+        this.chunkGraph.addModuleRuntimeRequirements(
+            module,
+            chunk.runtime,
+            new Set([RuntimeGlobals.requireScope])
+        );
+
+        // runtime modules don't need ids
+        this.chunkGraph.setModuleId(module, "");
+
+        // Call hook
+        this.hooks.runtimeModule.call(module, chunk);
+    }
+```
+
+## 总结分析
+
+- webpack 在编译阶段将发现的 modules 放入 ModuleGraph
+- HarmoneyExportSpecifierDependency 和 HarmoneyImportSpecifierDependency 识别 import 和 export 的 module
+- HarmoneyExportSpecifierDependency 识别 used export 和 unused export
+- used 和 unused
+  - 把 used export 的 export 替换为 ` / *harmony export ([type])* /`
+  - 把 unused export 的 export 替换为 ` / *unused harmony export [FuncName]* /`
+
+# 总结
+
+1.  使用 ES6 模块语法编写代码，这样 tree shaking 才能生效
+2.  工具类函数尽量单独输出，不要集中成一个对象或类，避免打包对象和类为使用的部分
 
 ## 参考
 
