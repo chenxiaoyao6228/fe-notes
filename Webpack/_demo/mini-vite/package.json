@@ -1,0 +1,12 @@
+{
+  "name": "mini-vite",
+  "version": "1.0.0",
+  "main": "index.js",
+  "bin": "cli/index.js",
+  "license": "MIT",
+  "author": "chenxiaoyao",
+  "dependencies": {
+    "koa": "^2.15.0",
+    "koa-static": "^5.0.0"
+  }
+}

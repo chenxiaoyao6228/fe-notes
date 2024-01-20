@@ -16,7 +16,7 @@
 - [webpack 热更新原理](./webpack-hmr.md)
 - webpack 模块联邦
 - [angularJS 是如何实现模块与依赖注入的](../AngularJS/build-your-own-angular-cp10-module-injection.md)
-- vite 的工作原理
+- [vite 的工作原理](./vite.md)
 - rollup 的工作原理
 - [tree-shaking 的工作原理](./tree-shaking.md)
 - SystemJs 的实现流程
