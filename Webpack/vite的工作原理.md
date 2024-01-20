@@ -12,8 +12,7 @@ Vite 是一个基于浏览器原生 ES imports 的开发服务器。利用浏览
 
 - 项目搭建
 - 实现 cli
-- 起静态服务器
-- nodemon 监听文件修改，执行 vite 命令
+- 起静态服务器, nodemon 监听文件修改，执行 vite 命令
 - 处理 index.html
 - 处理 js，处理 node_modules 的引入
 - 中间件拆分
@@ -122,4 +121,263 @@ yarn add nodemon -D
 
 执行，可以看到控制台打印出 mini-vite server 启动成功！同时在浏览器中打开 http://localhost:8000/ 可以看到项目已经跑起来了。(这里的端口号是 8000，是因为 create-vite-app 默认的端口号是 3000，所以这里我们用 8000)
 
+同时修改 server.js 也可以看到 terminal 中打印出修改成功。
+
 ![](../../cloudimg/2023/mini-vite-static-server.png)
+
+## 处理 jsx
+
+现在我们已经可以返回静态文件了，但是在返回 index.html 中后，浏览器随即发起了 src/main.jsx 的请求
+
+```html
+<script type="module" src="/src/main.jsx"></script>
+```
+
+然后就报错了，因为浏览器无法解析 jsx 文件，所以我们需要对.jsx 进行处理，将 src/main.jsx 改为 src/main.js
+
+> main.jsx:1 Failed to load module script: Expected a JavaScript module script but the server responded with a MIME type of "text/jsx". Strict MIME type checking is enforced for module scripts per HTML spec.
+
+首先是 jsx 的转换
+
+在 mini-vite 目录安装依赖：
+
+```bash
+# mini-vite
+yarn add  @babel/core @babel/plugin-transform-react-jsx
+```
+
+添加 transformJsx 函数
+
+```js
+function transformJsx(jsxCode) {
+  const babel = require("@babel/core");
+
+  const options = {
+    // presets: ['@babel/preset-env'], // 注意这里不要使用 @babel/preset-env，因为它会将所有的代码都转换成 ES5，包括import
+    plugins: [
+      [
+        "@babel/plugin-transform-react-jsx",
+        {
+          pragma: "React.createElement",
+          pragmaFrag: "React.Fragment",
+        },
+      ],
+    ],
+  };
+
+  const { code } = babel.transform(jsxCode, options);
+
+  return code;
+}
+```
+
+修改 src/server.js 的代码， 进行了一点重构， 添加中间件的机制
+
+```js
+// server.js
+const Koa = require("koa");
+const KoaStatic = require("koa-static");
+
+function createServer() {
+  const app = new Koa();
+
+  const context = {
+    app,
+    rootPath: process.cwd(),
+  };
+  const resolvePlugins = [moduleRewirePlugin, serverStaticPlugin];
+
+  resolvePlugins.forEach((plugin) => plugin(context));
+}
+
+createServer();
+
+function serverStaticPlugin({ app, rootPath }) {
+  app.use(KoaStatic(rootPath));
+  app.use(KoaStatic(rootPath, "/public"));
+
+  app.listen(8000, () => {
+    console.log("mini-vite server启动成功！");
+  });
+}
+
+function moduleRewirePlugin({ app, context }) {
+  app.use(async (ctx, next) => {
+    await next();
+    if (ctx.body && ctx.response.is("jsx")) {
+      // 初始的 ctx.body 是一个 Readable 流，需要转换成字符串
+      const jsxCode = await readBody(ctx.body);
+      // 通过babel转换jsx代码
+      const transformedCode = transformJsx(jsxCode);
+
+      ctx.type = "application/javascript";
+      ctx.body = transformedCode;
+    }
+  });
+}
+
+function transformJsx(jsxCode) {
+  const babel = require("@babel/core");
+
+  const options = {
+    // presets: ['@babel/preset-env'], // 注意这里不要使用 @babel/preset-env，因为它会将所有的代码都转换成 ES5，包括import
+    plugins: [
+      [
+        "@babel/plugin-transform-react-jsx",
+        {
+          pragma: "React.createElement",
+          pragmaFrag: "React.Fragment",
+        },
+      ],
+    ],
+  };
+
+  const { code } = babel.transform(jsxCode, options);
+
+  return code;
+}
+
+function readBody(stream) {
+  return new Promise((resolve, reject) => {
+    if (!stream.readable) {
+      resolve(stream);
+    } else {
+      let res = "";
+      stream.on("data", (data) => {
+        res += data;
+      });
+      stream.on("end", () => {
+        resolve(res);
+      });
+      stream.on("error", (err) => {
+        reject(err);
+      });
+    }
+  });
+}
+```
+
+可以看到此时浏览器已经成功请求到了 main.js， 并且我们的 jsx 语法也被转换成了 React.createElement
+
+![](../../cloudimg/2023/mini-vite-transformed-jsx.png)
+
+但此时浏览器报错了
+
+> Uncaught TypeError: Failed to resolve module specifier "react". Relative references must start with either "/", "./", or "../".
+
+原因是我们在 main.js 中引入了 react，但是浏览器无法解析 node_modules 中的模块，所以我们需要对 node_modules 中的模块进行处理。
+
+## 处理 node_modules
+
+添加自定义的 babel 插件
+
+```js
+module.exports = function ({ types: t }) {
+  return {
+    visitor: {
+      ImportDeclaration(path, state) {
+        const { node } = path;
+        const id = node.source.value;
+        // 简化场景： 不是以 / . 开头的，都是第三方模块，不考虑alias等其他情况
+        if (/^[^\/\.]/.test(id)) {
+          node.source = t.stringLiteral("/@modules/" + id);
+        }
+      },
+    },
+  };
+};
+```
+
+服务端做对应的处理
+
+```js
+const customAliasPlugin = require("./babel-plugin-custom-alias");
+
+const regex = /^\/@modules\//;
+function moduleResolvePlugin({ app, context }) {
+  app.use(async (ctx, next) => {
+    if (!regex.test(ctx.path)) {
+      return next();
+    }
+    const id = ctx.path.replace(regex, "");
+    console.log("id", id);
+
+    const mapping = {
+      // 从package.json中读取esm读出来的字段，这里只是简化了一下，正常应该从package.json中读取esm导出
+      react: path.resolve(process.cwd(), "node_modules/react/index.js"),
+      "react-dom/client": path.resolve(
+        process.cwd(),
+        "node_modules/react-dom/client.js"
+      ),
+    };
+
+    ctx.type = "application/javascript";
+
+    const content = fs.readFileSync(mapping[id], "utf-8");
+
+    ctx.body = content;
+  });
+}
+```
+
+上述操作遇到一个问题就是，react 没有提供 esm 的版本！
+
+看了下 React 官方的 package.json 的 export 字段
+
+```json
+{
+  "exports": {
+    ".": {
+      "react-server": "./react.shared-subset.js",
+      "default": "./index.js"
+    },
+    "./package.json": "./package.json",
+    "./jsx-runtime": "./jsx-runtime.js",
+    "./jsx-dev-runtime": "./jsx-dev-runtime.js"
+  }
+}
+```
+
+找到对应的 index.js
+
+```js
+"use strict";
+
+if (process.env.NODE_ENV === "production") {
+  module.exports = require("./cjs/react.production.min.js");
+} else {
+  module.exports = require("./cjs/react.development.js");
+}
+```
+
+这里也提到了：https://segmentfault.com/q/1010000043780457
+
+两种方案
+
+- 1. 找一个有 esm 的版本，比如 https://github.com/esm-bundle/react
+- 2. 还是原来的包，但是需要在服务端做一些处理，将 cjs 的包转换成 esm 的包
+
+看看 vite-plugin-react 是如何这个问题的, 还是回到浏览器，查看正常 vite 打包出来的文件
+
+```js
+import __vite__cjsImport0_react_jsxDevRuntime from "/node_modules/.vite/deps/react_jsx-dev-runtime.js?v=78b1e259";
+const jsxDEV = __vite__cjsImport0_react_jsxDevRuntime["jsxDEV"];
+import __vite__cjsImport1_react from "/node_modules/.vite/deps/react.js?v=78b1e259";
+const React = __vite__cjsImport1_react.__esModule
+  ? __vite__cjsImport1_react.default
+  : __vite__cjsImport1_react;
+import __vite__cjsImport2_reactDom_client from "/node_modules/.vite/deps/react-dom_client.js?v=78b1e259";
+const ReactDOM = __vite__cjsImport2_reactDom_client.__esModule
+  ? __vite__cjsImport2_reactDom_client.default
+  : __vite__cjsImport2_reactDom_client;
+import App from "/src/App.jsx";
+// ReactDOM.createRoot(document.getElementById("root")).render
+```
+
+看了下 node_modules/.vite/deps/react.js，确实是把代码 copy 了一份，然后把 cjs 的包转换成了 esm 的包
+
+![](../../cloudimg/2023/mini-vite-react-plugin-import.png)
+
+## 参考
+
+- [vite-plugin-react](https://github.com/vitejs/vite-plugin-react)
