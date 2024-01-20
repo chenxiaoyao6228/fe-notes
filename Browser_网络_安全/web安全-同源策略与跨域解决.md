@@ -21,8 +21,7 @@
 
 这里的同源指的是: **同协议 + 同域名 + 同端口**， 比如下面这两个 URL,`my-product.com`,以及相同的端口 443,所以我们就说这两个 URL 是同源的。
 
-> https://my-product.com/?type=0 
->  https://my-product.com/?type=1
+> https://my-product.com/?type=0 > https://my-product.com/?type=1
 
 同源策略限制了以下几种行为:
 
@@ -42,7 +41,6 @@
 
 2. (针对 2.3)通过 CROS(Cross-origin resource sharing)来解决跨域问题
 
-
 但没有银弹，这些缺口会导致额外的网络安全问题，我们会在后面的文章中谈到
 
 ## 跨域解决方案
@@ -50,7 +48,7 @@
 跨域解决方案有很多：
 
 - CORS（Cross-origin resource sharing）
-- node中间层代理跨域
+- node 中间层代理跨域
 - nginx 代理跨域
 - 通过 JSONP 跨域
 - document.domain + iframe 跨域
@@ -93,9 +91,22 @@
 非简单请求是那种对服务器有特殊要求的请求：
 
 - 请求方法是 PUT 或 DELETE
--  Content-Type 字段的类型是 application/json。
+- Content-Type 字段的类型是 application/json。
 
 对于复杂的跨域请求（例如使用自定义请求头或非简单请求方法），浏览器会首先会自动添加一些附加的头信息，发送一个预检请求（Preflight Request），使用 OPTIONS 方法来检查服务器是否允许实际请求，这一切都是浏览器自动完成，不需要用户参与。对于开发者来说，CORS 通信与同源的 AJAX 通信没有差别，代码完全一样。浏览器一旦发现 AJAX 请求跨源，就会自动添加一些附加的头信息，有时还会多出一次附加的请求，但用户不会有感觉。(**因为是新规范，所以过于老旧的浏览器会不支持**)。服务器需处理这个预检请求并在响应头中提供相应的信息
+
+服务端的响应头字段表格如下
+
+| 响应头字段                         | 描述                                                                          |
+| ---------------------------------- | ----------------------------------------------------------------------------- |
+| `Access-Control-Allow-Origin`      | 指定允许访问资源的域（例如，"\*" 表示允许任意域的请求或特定域名）。           |
+| `Access-Control-Allow-Methods`     | 指定实际请求允许使用的 HTTP 方法（例如，"GET, POST, PUT"）。                  |
+| `Access-Control-Allow-Headers`     | 指定浏览器允许实际请求携带的首部信息（例如，"Content-Type, Authorization"）。 |
+| `Access-Control-Allow-Credentials` | 表示服务器是否允许发送 Cookie（例如，"true" 或 "false"）。                    |
+| `Access-Control-Max-Age`           | 指定预检请求结果可以被缓存的时间，单位为秒。                                  |
+| `Access-Control-Expose-Headers`    | 指定哪些响应头信息可以暴露给前端 JavaScript。                                 |
+
+来看一个简单的例子:
 
 client 代码如下:
 
@@ -189,11 +200,9 @@ app.listen(PORT, () => {
 });
 ```
 
-
-可以看到，对于简单的get请求，没有发起预检请求，直接返回了数据，但是对于复杂的请求，还是会发起预检请求
+可以看到，对于简单的 get 请求，没有发起预检请求，直接返回了数据，但是对于复杂的请求，还是会发起预检请求
 
 ![](https://cdn.jsdelivr.net/gh/chenxiaoyao6228/cloudimg@main/2023/cors-request-demo.png)
-
 
 查看示例代码请点击[此处](./_demo/same-origin/cors/client.html)
 
@@ -207,43 +216,45 @@ res.header("Access-Control-Max-Age", "86400"); // 24小时
 
 ![](https://cdn.jsdelivr.net/gh/chenxiaoyao6228/cloudimg@main/2023/cors-request-demo-2.png)
 
-
-#### cookie携带
+#### cookie 携带
 
 另外，对应跨域请求， 如果要携带 cookie,
 
-则需要在xhr设置 withCredentials 为 true
+则需要在 xhr 设置 withCredentials 为 true
+
 ```js
-xhr.withCredentials = true
+xhr.withCredentials = true;
 ```
+
 同时，服务端也需要设置对应的响应头
+
 ```js
 res.header("Access-Control-Allow-Credentials", "true");
 ```
 
-### node中间层代理跨域
+### node 中间层代理跨域
 
-利用node中间层，Node应用会处理所有请求，包括 /api 路径下的请求。如果没有特别处理`/api`路径以外的请求，Express会默认查找静态文件或处理其他路由
+利用 node 中间层，Node 应用会处理所有请求，包括 /api 路径下的请求。如果没有特别处理`/api`路径以外的请求，Express 会默认查找静态文件或处理其他路由
 
 ```js
-const express = require('express');
-const { createProxyMiddleware } = require('http-proxy-middleware');
+const express = require("express");
+const { createProxyMiddleware } = require("http-proxy-middleware");
 
 const app = express();
 const PORT = 3000;
 
 // 添加代理中间件
-const apiProxy = createProxyMiddleware('/api', {
-  target: 'http://api.example.com',
+const apiProxy = createProxyMiddleware("/api", {
+  target: "http://api.example.com",
   changeOrigin: true,
-  pathRewrite: { '^/api': '' },
+  pathRewrite: { "^/api": "" },
 });
 
-app.use('/api', apiProxy);
+app.use("/api", apiProxy);
 
 // 处理默认路由，返回index.html或其他内容
-app.get('/', (req, res) => {
-  res.sendFile(__dirname + '/index.html'); // 请根据实际路径调整
+app.get("/", (req, res) => {
+  res.sendFile(__dirname + "/index.html"); // 请根据实际路径调整
 });
 
 // 添加其他路由或中间件...
@@ -256,17 +267,17 @@ app.listen(PORT, () => {
 优点：
 
 - 不需要后台配合，前端自己能搞
-- 有了node层可以有更多的想象力，比如做ssr，比如如果前端业务想做接口聚合也很容易实现
+- 有了 node 层可以有更多的想象力，比如做 ssr，比如如果前端业务想做接口聚合也很容易实现
 
 缺点：
-- 添加node层多添加了一层链路，有可能给异常的排查添加难度
-- 小应用也添加一个node层，有点大材小用
-- 需要额外处理热更新问题
 
+- 添加 node 层多添加了一层链路，有可能给异常的排查添加难度
+- 小应用也添加一个 node 层，有点大材小用
+- 需要额外处理热更新问题
 
 ### nginx 代理跨域
 
-我们本地开发项目的时候，会使用webpack的dev-server的proxy功能来代理后台的api请求
+我们本地开发项目的时候，会使用 webpack 的 dev-server 的 proxy 功能来代理后台的 api 请求
 
 ```js
 {
@@ -281,7 +292,8 @@ app.listen(PORT, () => {
   }
 }
 ```
-在线上部署的时候，我们可以通过nginx做这样的处理，本质上和dev-server的proxy的效果是一样的
+
+在线上部署的时候，我们可以通过 nginx 做这样的处理，本质上和 dev-server 的 proxy 的效果是一样的
 
 ```nginx.conf
 server {
@@ -347,7 +359,6 @@ app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
 ```
-
 
 ## 参考
 

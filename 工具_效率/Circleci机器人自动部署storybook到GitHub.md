@@ -46,7 +46,7 @@ ssh-keygen -m PEM -t rsa -b 4096 -C "chenxiaoyao6228@163.com"
 
 circleci 的要求 passphrase 不填，因此直接回车
 
-![](../../cloudimg/2023/mac-ssh-key.jpg)
+![](https://cdn.jsdelivr.net/gh/chenxiaoyao6228/cloudimg@main/2023/mac-ssh-key.jpg)
 
 进入到 ssh 对应的文件夹，
 
@@ -62,11 +62,11 @@ cat id_ed25591_circleci.pub
 
 在 github 项目的配置中
 
-![](../../cloudimg/2023/github-deploy-key.jpg)
+![](https://cdn.jsdelivr.net/gh/chenxiaoyao6228/cloudimg@main/2023/github-deploy-key.jpg)
 
 添加示例
 
-![](../../cloudimg/2023/github-deploy-key-demo.jpg)
+![](https://cdn.jsdelivr.net/gh/chenxiaoyao6228/cloudimg@main/2023/github-deploy-key-demo.jpg)
 
 打印私钥并复制
 
@@ -76,15 +76,15 @@ cat id_ed25591_circleci
 
 在 circleci 中找到对应的项目，添加你的私钥配置
 
-![](../../cloudimg/2023/circel-ci-private-key.jpg)
+![](https://cdn.jsdelivr.net/gh/chenxiaoyao6228/cloudimg@main/2023/circel-ci-private-key.jpg)
 
 填完完成之后如图
 
-![](../../cloudimg/2023/circel-ci-private-key-finish.jpg)
+![](https://cdn.jsdelivr.net/gh/chenxiaoyao6228/cloudimg@main/2023/circel-ci-private-key-finish.jpg)
 
 合并 pull request 之后就可以在 circleci 中看到了
 
-![](../../cloudimg/2023/circel-ci-pr.jpg)
+![](https://cdn.jsdelivr.net/gh/chenxiaoyao6228/cloudimg@main/2023/circel-ci-pr.jpg)
 
 build:storybook 部署到 github page 没有使用官方的工具，而是自己写了个 sh 脚本， 需要在 circleci 上建立这样一个环境变量 GITHUB_TOKEN, 用的就是刚刚的私钥
 

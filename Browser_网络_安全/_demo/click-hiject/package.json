@@ -1,0 +1,14 @@
+{
+  "name": "click-hiject",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "runApp": "node app.js",
+    "runAppWithXFrameOption": "node app-with-xFrameOption.js",
+    "runMalicious": "node malicious.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}

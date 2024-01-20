@@ -78,3 +78,7 @@ const dbStorage = new DBStorage("my-project", "kv");
 //   console.log('获取元素elements...', res)
 // })
 ```
+
+## 参考
+
+- https://github.com/mozilla-b2g/gaia/blob/master/shared/js/async_storage.js

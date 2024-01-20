@@ -92,7 +92,7 @@ transferApp.post("/transfer", (req, res) => {
 
 ## 如何预防 CSRF 攻击
 
-经过上面的解释你大概知道黑客利用的是
+经过上面的解释你大概知道黑客利用的是其他站点登录状态来实施攻击，因此我们要做的就是**限制第三方站点对用户 Cookie 的访问**，从而减少 CSRF 攻击的风险。
 
 ### 利用 Cookie 的 sameSite 属性
 

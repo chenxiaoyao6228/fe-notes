@@ -437,6 +437,25 @@ module.exports = urlLoader;
 }
 ```
 
-## 最终效果
+最终效果如下：
 
 ![](https://cdn.jsdelivr.net/gh/chenxiaoyao6228/cloudimg@main/2023/mini-webpack-loader.png)
+
+## 一些业务实践
+
+1. 去除 antd 中的 selection
+
+```js
+// rm-selection-loader.js
+// 去除样式文件中的 ::selection，原因是::selection难以被取消
+module.exports = function runtime(params) {
+  return params.replace(/::selection \{[^}]+\}/g, "");
+};
+
+// config.js
+config.module
+  .rule("less-in-node_modules")
+  .use("custom")
+  .before("css-loader")
+  .loader(path.resolve(__dirname, "./rm-selection-loader.js"));
+```
