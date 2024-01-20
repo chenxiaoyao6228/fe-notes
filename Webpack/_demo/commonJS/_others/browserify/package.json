@@ -1,0 +1,16 @@
+{
+  "name": "browserify",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "npx browserify src/main.js -o dist/bundle.js ",
+    "build:debug": "npx browserify src/main.js -o dist/bundle.js --debug"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "browserify": "^17.0.0"
+  }
+}

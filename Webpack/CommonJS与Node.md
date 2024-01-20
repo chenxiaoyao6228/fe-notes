@@ -23,8 +23,6 @@ module.exports = {
 };
 ```
 
-exports 与 module.exports 的区别:
-
 ### 模块引用
 
 在 CommonJS 模块系统中，使用 require() 函数来引入一个模块。例如:
@@ -216,10 +214,6 @@ const wrapped = `
 
 ## 进阶
 
-- exports 与 module.exports 的区别
-- 如何处理循环依赖
-- 前后端通用性与 browserify
-
 ### exports 与 module.exports 的区别
 
 初学 Nodejs 的时候曾经纠结过为何存在 exports 的情况下，还存在 module.exports。理想情况下，只要赋值给 exports 即可：
@@ -315,3 +309,162 @@ _exports in change function { a: 2 }
 _module outside change function { _exports: { a: 3 } }
 _exports outside change function { a: 3 }
 ```
+
+### 循环依赖的情况
+
+```js
+// a.js
+console.log("a starting");
+exports.done = false;
+const b = require("./b.js");
+console.log("in a, b.done = %j", b.done);
+exports.done = true;
+console.log("a done");
+
+// b.js
+console.log("b starting");
+exports.done = false;
+const a = require("./a.js");
+console.log("in b, a.done = %j", a.done);
+exports.done = true;
+console.log("b done");
+
+// main.js
+console.log("main starting");
+const a = require("./a.js");
+const b = require("./b.js");
+console.log("in main, a.done = %j, b.done = %j", a.done, b.done);
+```
+
+> 代码在： /Webpack/\_demo/commonJS/\_others/mutual-reference
+
+执行结果如下：
+
+```
+main starting
+a starting
+b starting
+in b, a.done = false
+b done
+in a, b.done = true
+a done
+in main, a.done = true, b.done = true
+```
+
+执行过程分析：
+
+```
+- 执行 main.js，打印 main starting
+- main.js 执行 require('./a.js')，发现 a.js 还没有加载，所以会加载 a.js
+- a.js 执行， 打印 a starting， 运行到 exports.done = false， 此时 exports 对象为 {done: false}
+- a.js 执行 require('./b.js')，发现 b.js 还没有加载，所以会加载 b.js
+- b.js 执行， 打印 b starting，
+- b.js 执行 require('./a.js')，发现 a.js 已经加载，所以不会重复加载，直接返回 exports 对象，此时 a.js 的 exports 对象为 {done: false}
+- b.js 执行完毕，打印 b done，返回， 此时 b.js exports 对象为 {done: true}
+- a.js 执行，打印 b.done = true,
+- a.js 执行 exports.done = true，返回，此时 a.js 的 exports 对象为 {done: true}
+- main.js 执行，打印 in main, a.done = true, b.done = true
+```
+
+### 前后端通用性与 browserify
+
+Browserify 是一个用于在浏览器环境中使用 CommonJS 模块的工具。它的基本原理是将 Node.js 风格的模块（采用 CommonJS 规范）转换为浏览器可以理解和执行的代码。
+
+```bash
+npm install browserify --save-dev
+```
+
+文件创建
+
+```js
+// module.js
+module.exports = function (message) {
+  console.log("Hello, " + message);
+};
+
+// main.js
+var myModule = require("./module");
+myModule("World");
+```
+
+执行打包
+
+```bash
+npx browserify src/main.js -o dist/bundle.js --debug
+```
+
+打包结果如下:
+
+```js
+(function () {
+  function r(e, n, t) {
+    function o(i, f) {
+      if (!n[i]) {
+        if (!e[i]) {
+          var c = "function" == typeof require && require;
+          if (!f && c) return c(i, !0);
+          if (u) return u(i, !0);
+          var a = new Error("Cannot find module '" + i + "'");
+          throw ((a.code = "MODULE_NOT_FOUND"), a);
+        }
+        var p = (n[i] = { exports: {} });
+        e[i][0].call(
+          p.exports,
+          function (r) {
+            var n = e[i][1][r];
+            return o(n || r);
+          },
+          p,
+          p.exports,
+          r,
+          e,
+          n,
+          t
+        );
+      }
+      return n[i].exports;
+    }
+    for (
+      var u = "function" == typeof require && require, i = 0;
+      i < t.length;
+      i++
+    )
+      o(t[i]);
+    return o;
+  }
+  return r;
+})()(
+  {
+    1: [
+      function (require, module, exports) {
+        // main.js
+        var myModule = require("./module");
+        myModule("World");
+      },
+      { "./module": 2 },
+    ],
+    2: [
+      function (require, module, exports) {
+        // module.js
+        module.exports = function (message) {
+          console.log("Hello, " + message);
+        };
+      },
+      {},
+    ],
+  },
+  {},
+  [1]
+);
+```
+
+代码在： Webpack/\_demo/commonJS/\_others/browserify
+
+#### Browserify 打包的基本原理:
+
+- 依赖解析： 当你使用 require 导入一个模块时，Browserify 会进行依赖解析。它会递归查找模块的所有依赖关系，并构建一个依赖图
+- 打包： 一旦依赖图形成，Browserify 将这些模块打包到一个单独的文件中。这个文件包含了所有的模块代码，以及必要的代码来处理模块之间的依赖关系。
+- 转换为浏览器可执行的代码： Browserify 会对打包后的代码进行一些转换，以确保它能够在浏览器环境中正确执行。这可能包括对 require 的替换和其他一些浏览器不支持的 Node.js 特性的处理。
+- 输出： 最终，Browserify 生成一个可以在浏览器中运行的 JavaScript 文件。你可以在 HTML 文件中引入这个生成的文件，使得你的 CommonJS 模块能够在浏览器中正常工作。
+
+其实可以看到，无论是 browserify, webpack 还是 rollup， 打包的基本原理都是一样的，只是实现的方式不同。
