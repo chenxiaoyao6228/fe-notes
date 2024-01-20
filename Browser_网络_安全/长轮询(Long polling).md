@@ -100,5 +100,3 @@ app.listen(port, () => {
 ## 参考
 
 - https://javascript.info/long-polling
-
----

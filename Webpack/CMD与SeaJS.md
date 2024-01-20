@@ -100,6 +100,17 @@ define(function (require, exports, module) {
 
 ## SeaJS 的关键原理
 
+仔细观察上面的代码，我们会发现 seaJS 的写法与 requireJS 的写法不同，更符合 nodeJS 对模块的同步写法
+
+```js
+var libA = require("lib-a");
+console.log("libA", libA); // 如何保证libA已经加载完成了呢？
+```
+
+那么问题来了，nodejs 运行在服务端，同步加载模块是没有问题的，
+
+但是实际上 seaJS 是异步加载的，那么 seaJS 是如何实现这种同步的写法的呢？
+
 ### 如何解析加载依赖
 
 - 通过回调函数的 Function.toString 函数，使用正则表达式来捕捉内部的 require 字段，找到 require('lib-a')内部依赖的模块 lib-a
@@ -108,7 +119,9 @@ define(function (require, exports, module) {
 - 回调函数内部依赖的 js 全部加载（暂不调用）完后，调用回调函数
 - 当回调函数调用 require('lib-a')，即执行绑定在'lib-a'这个 id 上的 js 文件，即刻执行，并将返回值传给 var libA
 
-## 实现
+### 实现
+
+seaJs 的操作确实有点骚，简易好好看下下面的实现代码
 
 ```js
 (function () {
