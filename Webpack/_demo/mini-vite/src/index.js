@@ -3,6 +3,9 @@ const fs = require("fs");
 const Koa = require("koa");
 const KoaStatic = require("koa-static");
 const customAliasPlugin = require("./babel-plugin-custom-alias");
+const babel = require("@babel/core");
+
+let mapping = {};
 
 function createServer() {
   const app = new Koa();
@@ -11,7 +14,7 @@ function createServer() {
     app,
     rootPath: process.cwd(),
   };
-  
+
   const resolvePlugins = [
     moduleRewirePlugin, // 重写路径为 /@modules/xxx
     moduleResolvePlugin, //
@@ -38,21 +41,9 @@ function moduleResolvePlugin({ app, context }) {
     const id = ctx.path.replace(regex, "");
     console.log("id", id);
 
-    const mapping = {
-      react: path.resolve(process.cwd(), "node_modules/.mini-vite/react.js"),
-      "react-dom/client": path.resolve(
-        process.cwd(),
-        "node_modules/.mini-vite/react-dom.js"
-      ),
-      scheduler: path.resolve(
-        process.cwd(),
-        "node_modules/.mini-vite/scheduler.js"
-      ),
-    };
-
     ctx.type = "application/javascript";
 
-    const content = fs.readFileSync(mapping[id], "utf-8");
+    const content = fs.readFileSync(mapping[id].targetPath, "utf-8");
 
     ctx.body = content;
   });
@@ -70,7 +61,12 @@ function moduleRewirePlugin({ app, context }) {
       // 初始的 ctx.body 是一个 Readable 流，需要转换成字符串
       const jsxCode = await readBody(ctx.body);
       // 通过babel转换jsx代码
-      const transformedCode = transformJsx(jsxCode);
+      const transformedCode = babel.transform(jsxCode, {
+        plugins: [
+          "@babel/plugin-transform-react-jsx-development", // 引入jsx
+          customAliasPlugin,
+        ],
+      }).code;
 
       ctx.type = "application/javascript";
       ctx.body = transformedCode;
@@ -97,30 +93,6 @@ function readBody(stream) {
   });
 }
 
-function transformJsx(jsxCode) {
-  const babel = require("@babel/core");
-
-  const options = {
-    // presets: ['@babel/preset-env'], // 注意这里不要使用 @babel/preset-env，因为它会将所有的代码都转换成 ES5，包括import
-    plugins: [
-      [
-        "@babel/plugin-transform-react-jsx",
-        {
-          pragma: "React.createElement",
-          pragmaFrag: "React.Fragment",
-        },
-      ],
-      customAliasPlugin,
-    ],
-  };
-
-  const { code } = babel.transform(jsxCode, options);
-
-  // console.log("code", code);
-
-  return code;
-}
-
 /**
  * 依赖预构建，将react, react-dom, scheduler等第三方库转换成ES Module， 写入开发临时文件夹
  * @param {*} rootPath
@@ -132,10 +104,9 @@ function setupDevDepsAssets(rootPath) {
   if (!fs.existsSync(tempDevDir)) {
     fs.mkdirSync(tempDevDir);
   }
-
   // 将项目中的 react, react-dom, scheduler 等第三方库转换成 ES Module，写入到 node_modules/.mini-vite 目录下
   // 这里只是简化，实际上要从index.html中开始递归查找依赖，然后再转换
-  const mapping = {
+   mapping = {
     react: {
       sourcePath: path.resolve(
         rootPath,
@@ -157,6 +128,13 @@ function setupDevDepsAssets(rootPath) {
       ),
       targetPath: path.resolve(tempDevDir, "scheduler.js"),
     },
+    ['react/jsx-dev-runtime']: {
+      sourcePath: path.resolve(
+        rootPath,
+        "node_modules/react/cjs/react-jsx-dev-runtime.development.js"
+      ),
+      targetPath: path.resolve(tempDevDir, "jsx-dev-runtime.js"),
+    },
   };
 
   Object.keys(mapping).forEach((key) => {
@@ -175,7 +153,9 @@ function setupDevDepsAssets(rootPath) {
 
     // 转换CommonJS代码为esm
     const transformedCode = babel.transform(content, {
-      plugins: ["transform-commonjs"],
+      plugins: [
+        "transform-commonjs",
+      ],
     }).code;
 
     // 路径重写，将 require('react') 转换成 require('/@modules/react')

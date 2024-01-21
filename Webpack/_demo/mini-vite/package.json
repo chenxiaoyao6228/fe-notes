@@ -7,8 +7,9 @@
   "author": "chenxiaoyao",
   "dependencies": {
     "@babel/core": "^7.23.7",
-    "@babel/plugin-transform-modules-commonjs": "^7.23.3",
     "@babel/plugin-transform-react-jsx": "^7.23.4",
+    "@babel/plugin-transform-react-jsx-development": "^7.22.5",
+    "babel-plugin-transform-commonjs": "^1.1.6",
     "koa": "^2.15.0",
     "koa-static": "^5.0.0"
   }

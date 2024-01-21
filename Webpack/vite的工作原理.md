@@ -123,7 +123,7 @@ yarn add nodemon -D
 
 同时修改 index.js 也可以看到 terminal 中打印出修改成功。
 
-![](../../cloudimg/2024/mini-vite-static-server.png)
+![](https://cdn.jsdelivr.net/gh/chenxiaoyao6228/cloudimg@main/2024/mini-vite-static-server.png)
 
 ## 处理 jsx
 
@@ -259,7 +259,7 @@ function readBody(stream) {
 
 可以看到此时浏览器已经成功请求到了 main.js， 并且我们的 jsx 语法也被转换成了 React.createElement
 
-![](../../cloudimg/2024/mini-vite-transformed-jsx.png)
+![](https://cdn.jsdelivr.net/gh/chenxiaoyao6228/cloudimg@main/2024/mini-vite-transformed-jsx.png)
 
 但此时浏览器报错了
 
@@ -376,16 +376,21 @@ import App from "/src/App.jsx";
 
 看了下 node_modules/.vite/deps/react.js，确实是把代码 copy 了一份，然后把 cjs 的包转换成了 esm 的包，这个过程在 vite 中称为 optimizeDeps
 
-![](../../cloudimg/2024/mini-vite-react-plugin-import.png)
+![](https://cdn.jsdelivr.net/gh/chenxiaoyao6228/cloudimg@main/2024/mini-vite-react-plugin-import.png)
 
 ## 处理 commonJS
 
 vite 内部用了 esbuild 去处理，这里我们就不用 esbuild 了，直接用 babel 去处理
 
 ```bash
-yarn add @babel/core @babel/plugin-transform-modules-commonjs
+yarn add @babel/core babel-plugin-transform-commonjs
 
 ```
+
+🚧🚧🚧： 注意，这里有两个包
+
+1.  @babel/plugin-transform-modules-commonjs: 将 esm 转换成 cjs
+2.  @babel/plugin-transform-commonjs: 将 cjs 转换成 esm
 
 我们在启动服务的时候，添加一个 setupDevDepsAssets 的过程
 
@@ -466,7 +471,7 @@ function setupDevDepsAssets(rootPath) {
 
 看到控制台有报错，原因是在 App.js 中没有引入 React
 
-![](../../cloudimg/2024/mini-vite-react-auto-import-in-comp.png)
+![](https://cdn.jsdelivr.net/gh/chenxiaoyao6228/cloudimg@main/2024/mini-vite-react-auto-import-in-comp.png)
 
 ## React 自动引入
 
@@ -479,7 +484,55 @@ function App() {
 }
 ```
 
-但是在 React17 之后，我们不需要手动引入 React 了，因为 React 会自动注入到全局中，所以我们需要在 App.js 中添加 React 的引入
+但是在 React17 之后，我们不需要手动引入 React 了, 有兴趣可以看看[官网介绍](https://legacy.reactjs.org/blog/2020/09/22/introducing-the-new-jsx-transform.html), 因为 React 会自动注入到全局中，所以我们需要在 App.js 中添加 React 的引入
+
+安装
+
+```bash
+yarn add  @babel/plugin-transform-react-jsx-development
+```
+
+我们在代码转化中添加自动引入的逻辑
+
+```js
+const transformedCode = babel.transform(jsxCode, {
+  plugins: [
+    "@babel/plugin-transform-react-jsx-development", // 引入jsx
+    customAliasPlugin,
+  ],
+}).code;
+```
+
+可以看到代码成功做了转化
+
+![](https://cdn.jsdelivr.net/gh/chenxiaoyao6228/cloudimg@main/2024/mini-vite-react-jsx-dev.png)
+
+接着是 `import { jsxDEV as _jsxDEV } from "/@modules/react/jsx-dev-runtime";`的处理
+
+在原来的 mapping 中添加 jsx-dev-runtime 的引入
+
+```js
+mapping = {
+  react: {
+    sourcePath: path.resolve(
+      rootPath,
+      "node_modules/react/cjs/react.development.js"
+    ),
+    targetPath: path.resolve(tempDevDir, "react.js"),
+  },
+  ["react/jsx-dev-runtime"]: {
+    sourcePath: path.resolve(
+      rootPath,
+      "node_modules/react/cjs/react-jsx-dev-runtime.development.js"
+    ),
+    targetPath: path.resolve(tempDevDir, "jsx-dev-runtime.js"),
+  },
+};
+```
+
+可以看到 hello world1 已经成功渲染到页面上了
+
+![](https://cdn.jsdelivr.net/gh/chenxiaoyao6228/cloudimg@main/2024/mini-vite-react-hello-world.png)
 
 ## 参考
 
