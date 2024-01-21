@@ -83,10 +83,10 @@ yarn link mini-vite
 yarn add koa koa-static
 ```
 
-在 src 目录下新建 server.js
+在 src 目录下新建 index.js
 
 ```js
-// src/server.js
+// src/index.js
 const Koa = require("koa");
 const KoaStatic = require("koa-static");
 
@@ -121,9 +121,9 @@ yarn add nodemon -D
 
 执行，可以看到控制台打印出 mini-vite server 启动成功！同时在浏览器中打开 http://localhost:8000/ 可以看到项目已经跑起来了。(这里的端口号是 8000，是因为 create-vite-app 默认的端口号是 3000，所以这里我们用 8000)
 
-同时修改 server.js 也可以看到 terminal 中打印出修改成功。
+同时修改 index.js 也可以看到 terminal 中打印出修改成功。
 
-![](../../cloudimg/2023/mini-vite-static-server.png)
+![](../../cloudimg/2024/mini-vite-static-server.png)
 
 ## 处理 jsx
 
@@ -171,10 +171,10 @@ function transformJsx(jsxCode) {
 }
 ```
 
-修改 src/server.js 的代码， 进行了一点重构， 添加中间件的机制
+修改 src/index.js 的代码， 进行了一点重构， 添加中间件的机制
 
 ```js
-// server.js
+// index.js
 const Koa = require("koa");
 const KoaStatic = require("koa-static");
 
@@ -259,7 +259,7 @@ function readBody(stream) {
 
 可以看到此时浏览器已经成功请求到了 main.js， 并且我们的 jsx 语法也被转换成了 React.createElement
 
-![](../../cloudimg/2023/mini-vite-transformed-jsx.png)
+![](../../cloudimg/2024/mini-vite-transformed-jsx.png)
 
 但此时浏览器报错了
 
@@ -374,9 +374,112 @@ import App from "/src/App.jsx";
 // ReactDOM.createRoot(document.getElementById("root")).render
 ```
 
-看了下 node_modules/.vite/deps/react.js，确实是把代码 copy 了一份，然后把 cjs 的包转换成了 esm 的包
+看了下 node_modules/.vite/deps/react.js，确实是把代码 copy 了一份，然后把 cjs 的包转换成了 esm 的包，这个过程在 vite 中称为 optimizeDeps
 
-![](../../cloudimg/2023/mini-vite-react-plugin-import.png)
+![](../../cloudimg/2024/mini-vite-react-plugin-import.png)
+
+## 处理 commonJS
+
+vite 内部用了 esbuild 去处理，这里我们就不用 esbuild 了，直接用 babel 去处理
+
+```bash
+yarn add @babel/core @babel/plugin-transform-modules-commonjs
+
+```
+
+我们在启动服务的时候，添加一个 setupDevDepsAssets 的过程
+
+```js
+setupDevDepsAssets(process.cwd());
+```
+
+```js
+/**
+ * 依赖预构建，将react, react-dom, scheduler等第三方库转换成ES Module， 写入开发临时文件夹
+ * @param {*} rootPath
+ */
+function setupDevDepsAssets(rootPath) {
+  //查看node_modules/.mini-vite
+  const tempDevDir = path.resolve(rootPath, "node_modules", ".mini-vite");
+
+  if (!fs.existsSync(tempDevDir)) {
+    fs.mkdirSync(tempDevDir);
+  }
+
+  // 将项目中的 react, react-dom, scheduler 等第三方库转换成 ES Module，写入到 node_modules/.mini-vite 目录下
+  // 这里只是简化，实际上要从index.html中开始递归查找依赖，然后再转换
+  const mapping = {
+    react: {
+      sourcePath: path.resolve(
+        rootPath,
+        "node_modules/react/cjs/react.development.js"
+      ),
+      targetPath: path.resolve(tempDevDir, "react.js"),
+    },
+    "react-dom/client": {
+      sourcePath: path.resolve(
+        rootPath,
+        "node_modules/react-dom/cjs/react-dom.development.js"
+      ),
+      targetPath: path.resolve(tempDevDir, "react-dom.js"),
+    },
+    scheduler: {
+      sourcePath: path.resolve(
+        rootPath,
+        "node_modules/scheduler/cjs/scheduler.development.js"
+      ),
+      targetPath: path.resolve(tempDevDir, "scheduler.js"),
+    },
+  };
+
+  Object.keys(mapping).forEach((key) => {
+    const { sourcePath, targetPath } = mapping[key];
+    transformCjsToEsm(sourcePath, targetPath);
+  });
+
+  /**
+   * 将 CommonJS 转换成 ES Module，部分三方库没有提供 ES Module 版本，比如React
+   * @param {*} sourcePath
+   * @param {*} targetPath
+   */
+  function transformCjsToEsm(sourcePath, targetPath) {
+    const content = fs.readFileSync(sourcePath, "utf-8");
+    const babel = require("@babel/core");
+
+    // 转换CommonJS代码为esm
+    const transformedCode = babel.transform(content, {
+      plugins: ["transform-commonjs"],
+    }).code;
+
+    // 路径重写，将 require('react') 转换成 require('/@modules/react')
+    // TODO: 两段代码合并
+    const pathRewritedCode = babel.transform(transformedCode, {
+      plugins: [customAliasPlugin],
+    }).code;
+
+    fs.writeFileSync(targetPath, pathRewritedCode);
+  }
+}
+```
+
+添加之后查看网络请求，可以看到已经成功请求到了 react.js 和 react-dom.js
+
+看到控制台有报错，原因是在 App.js 中没有引入 React
+
+![](../../cloudimg/2024/mini-vite-react-auto-import-in-comp.png)
+
+## React 自动引入
+
+熟悉 React 的朋友都知道，在 React17 之前， 我们在使用 React 的时候，需要手动引入 React，原因是 JSX 语法会被转换成 React.createElement。
+
+```js
+import React from "react";
+function App() {
+  return <div>hello world1</div>;
+}
+```
+
+但是在 React17 之后，我们不需要手动引入 React 了，因为 React 会自动注入到全局中，所以我们需要在 App.js 中添加 React 的引入
 
 ## 参考
 

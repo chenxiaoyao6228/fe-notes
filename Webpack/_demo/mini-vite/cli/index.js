@@ -2,4 +2,4 @@
 
 // console.log("mini-vite!");
 
-require('../src/server.js')
+require('../src/index.js')
