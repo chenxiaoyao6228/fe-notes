@@ -1,9 +1,11 @@
 
+
 # fe-notes(前端开发笔记)
 
 > I'm a slow walker, but I never walk backwards. — Abragam Lincoln.
 
 本仓库旨在收集整理前端基础知识以及开发实践。包括前端八股，最佳实践，踩坑汇总等，既有完整的系列，也有零碎的思考。
+
 
 
 ## 目录
@@ -83,9 +85,15 @@
   - [HTML中的焦点管理](Javascript%2FHTML%E4%B8%AD%E7%9A%84%E7%84%A6%E7%82%B9%E7%AE%A1%E7%90%86.md)
   - [JS 中的事件捕获与冒泡](Javascript%2FJS%20%E4%B8%AD%E7%9A%84%E4%BA%8B%E4%BB%B6%E6%8D%95%E8%8E%B7%E4%B8%8E%E5%86%92%E6%B3%A1.md)
   - [JS中使用IndexDB](Javascript%2FJS%E4%B8%AD%E4%BD%BF%E7%94%A8IndexDB.md)
+  - [JS中的BigInt](Javascript%2FJS%E4%B8%AD%E7%9A%84BigInt.md)
+  - [JS中的proxy和defineProperty](Javascript%2FJS%E4%B8%AD%E7%9A%84proxy%E5%92%8CdefineProperty.md)
   - [JS中的二进制](Javascript%2FJS%E4%B8%AD%E7%9A%84%E4%BA%8C%E8%BF%9B%E5%88%B6.md)
+  - [JS中的位运算](Javascript%2FJS%E4%B8%AD%E7%9A%84%E4%BD%8D%E8%BF%90%E7%AE%97.md)
+  - [JS中的类型转换](Javascript%2FJS%E4%B8%AD%E7%9A%84%E7%B1%BB%E5%9E%8B%E8%BD%AC%E6%8D%A2.md)
+  - [JS中的精度问题](Javascript%2FJS%E4%B8%AD%E7%9A%84%E7%B2%BE%E5%BA%A6%E9%97%AE%E9%A2%98.md)
   - [JS实现多条件排序](Javascript%2FJS%E5%AE%9E%E7%8E%B0%E5%A4%9A%E6%9D%A1%E4%BB%B6%E6%8E%92%E5%BA%8F.md)
   - [JS正则表达式速查笔记](Javascript%2FJS%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F%E9%80%9F%E6%9F%A5%E7%AC%94%E8%AE%B0.md)
+  - [Set和Map](Javascript%2FSet%E5%92%8CMap.md)
     - UnderScore源码
       - [underscore源码学习笔记(一)如何读underscore源码](Javascript%2FUnderScore%E6%BA%90%E7%A0%81%2Funderscore%E6%BA%90%E7%A0%81%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0(%E4%B8%80)%E5%A6%82%E4%BD%95%E8%AF%BBunderscore%E6%BA%90%E7%A0%81.md)
       - [underscore源码学习笔记(三)初始化以及两种调用方式](Javascript%2FUnderScore%E6%BA%90%E7%A0%81%2Funderscore%E6%BA%90%E7%A0%81%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0(%E4%B8%89)%E5%88%9D%E5%A7%8B%E5%8C%96%E4%BB%A5%E5%8F%8A%E4%B8%A4%E7%A7%8D%E8%B0%83%E7%94%A8%E6%96%B9%E5%BC%8F.md)
@@ -200,6 +208,7 @@
   - [控制反转与依赖注入](%E6%A8%A1%E5%BC%8F_%E6%9E%B6%E6%9E%84%2F%E6%8E%A7%E5%88%B6%E5%8F%8D%E8%BD%AC%E4%B8%8E%E4%BE%9D%E8%B5%96%E6%B3%A8%E5%85%A5.md)
   - [策略模式](%E6%A8%A1%E5%BC%8F_%E6%9E%B6%E6%9E%84%2F%E7%AD%96%E7%95%A5%E6%A8%A1%E5%BC%8F.md)
 - Node
+  - [ Node中事件循环](Node%2F%20Node%E4%B8%AD%E4%BA%8B%E4%BB%B6%E5%BE%AA%E7%8E%AF.md)
   - [koa源码学习笔记](Node%2Fkoa%E6%BA%90%E7%A0%81%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0.md)
 - SVG
   - [SVG入门指南](SVG%2FSVG%E5%85%A5%E9%97%A8%E6%8C%87%E5%8D%97.md)
