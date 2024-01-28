@@ -85,7 +85,7 @@ DNS 查询的结果通常会在本地域名服务器中进行缓存，如果本�
 
 - 该 IP 处的 Web 服务器返回要在浏览器中呈现的网页
 
-![](../../cloudimg/2024/dns-resolver.png)
+![](https://cdn.jsdelivr.net/gh/chenxiaoyao6228/cloudimg@main/2024/dns-resolver.png)
 
 ## DNS 解析 CNAME 等
 
