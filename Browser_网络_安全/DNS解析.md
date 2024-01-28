@@ -13,7 +13,7 @@
 
 在本地开发的时候，我们会通过 webpack 或者 vite 等开发工具启动一个本地服务，然后通过浏览器访问 ip 来访问这个服务。
 
-而在互联网发展的早期，当还没有域名系统（DNS）之前，人们主要通过使用 IP 地址直接访问网络资源。这意味着用户必须知道目标服务器的确切 IP 地址，难度很大。
+而在互联网发展的早期，当还没有域名系统(DNS)之前，人们主要通过使用 IP 地址直接访问网络资源。这意味着用户必须知道目标服务器的确切 IP 地址，难度很大。
 
 ### host 文件
 
@@ -37,17 +37,17 @@ DNS 系统诞生后，本地的 host 文件依然没有被淘汰，比如我们�
 
 域名的结构是分层的，从右到左分为不同的部分，每个部分都有特定的含义。
 
-1. 顶级域名（Top-Level Domain，TLD）：顶级域名是域名层次结构中的最高级别，位于域名的最右侧。顶级域名可以分为两类：
+1. 顶级域名(Top-Level Domain，TLD)顶级域名是域名层次结构中的最高级别，位于域名的最右侧。顶级域名可以分为两类：
 
-- 通用顶级域名（Generic Top-Level Domains，gTLD）： 这包括常见的域名后缀，如.com、.net、.org 等，通常不受特定国家或地区的限制。
-- 国家代码顶级域名（Country Code Top-Level Domains，ccTLD）： 这些是与特定国家或地区相关联的域名后缀，如.us（美国）、.uk（英国）、.cn（中国）等.
+- 通用顶级域名(Generic Top-Level Domains，gTLD) 这包括常见的域名后缀，如.com、.net、.org 等，通常不受特定国家或地区的限制。
+- 国家代码顶级域名(Country Code Top-Level Domains，ccTLD) 这些是与特定国家或地区相关联的域名后缀，如.us(美国）、.uk(英国）、.cn(中国）等.
 -
 
-2. 二级域名（Second-Level Domain，SLD）：二级域名是位于顶级域名下面的部分，是由域名注册者自定义的。在www.example.com中，"example"是二级域名。
+2. 二级域名(Second-Level Domain，SLD)二级域名是位于顶级域名下面的部分，是由域名注册者自定义的。在www.example.com中，"example"是二级域名。
 
-3. 子域名（Subdomain）：子域名是位于二级域名之下的部分，也是由域名注册者自定义的。例如，在 blog.example.com 中，"blog"是子域名。
+3. 子域名(Subdomain)子域名是位于二级域名之下的部分，也是由域名注册者自定义的。例如，在 blog.example.com 中，"blog"是子域名。
 
-4. 主机名（Hostname）：主机名是域名中最左侧的部分，通常是用来指定某台服务器的。在 www.example.com 中，"www"是主机名。其他的主机名还有 mail、ftp、pop 等。
+4. 主机名(Hostname)主机名是域名中最左侧的部分，通常是用来指定某台服务器的。在 www.example.com 中，"www"是主机名。其他的主机名还有 mail、ftp、pop 等。
 
 ### DNS 服务器的分类
 
@@ -55,9 +55,9 @@ DNS 服务器的数量是有限的，如果只有一个 DNS 服务器，那么�
 
 DNS 服务器分为以下几类：
 
-- 根域名服务器（Root DNS Server）： 根域名服务器是最高层次的 DNS 服务器，它管理顶级域名服务器的信息。根域名服务器的数量非常有限，目前全球只有 13 台根域名服务器，它们的名称分别是 a.root-servers.net 到 m.root-servers.net。
-- 顶级域名服务器（Top-Level DNS Server）： 顶级域名服务器管理各自顶级域名下的权威域名服务器的信息。比如，.com 顶级域名服务器管理所有 .com 域名的权威域名服务器的信息。
-- 权威域名服务器（Authoritative DNS Server）： 权威域名服务器管理某个域名的具体解析信息。比如，juejin.cn 域名的权威域名服务器就管理着 juejin.cn 域名的解析信息。
+- 根域名服务器(Root DNS Server) 根域名服务器是最高层次的 DNS 服务器，它管理顶级域名服务器的信息。根域名服务器的数量非常有限，目前全球只有 13 台根域名服务器，它们的名称分别是 a.root-servers.net 到 m.root-servers.net。
+- 顶级域名服务器(Top-Level DNS Server) 顶级域名服务器管理各自顶级域名下的权威域名服务器的信息。比如，.com 顶级域名服务器管理所有 .com 域名的权威域名服务器的信息。
+- 权威域名服务器(Authoritative DNS Server) 权威域名服务器管理某个域名的具体解析信息。比如，juejin.cn 域名的权威域名服务器就管理着 juejin.cn 域名的解析信息。
 
 ## DNS 的解析过程
 
@@ -145,7 +145,7 @@ CNAME(Canonical Name),别名记录用于创建一个域名的别名，将一个�
 
 ### DNSSEC
 
-域名系统安全扩展（DNS Security Extensions），简称 DNSSEC。它是通过数字签名来保证 DNS 应答报文的真实性和完整性，可有效防止 DNS 欺骗和缓存污染等攻击，能够保护用户不被重定向到非预期地址，从而提高用户对互联网的信任。
+域名系统安全扩展(DNS Security Extensions），简称 DNSSEC。它是通过数字签名来保证 DNS 应答报文的真实性和完整性，可有效防止 DNS 欺骗和缓存污染等攻击，能够保护用户不被重定向到非预期地址，从而提高用户对互联网的信任。
 
 ## Nodejs 实现 DNS 服务器
 
