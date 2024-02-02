@@ -33,19 +33,17 @@ box-sizing 的默认值是 content-box
 
 ```javascript
 // 只能获取内联样式设置的宽高
-dom.style.width/height
+dom.style.width / height;
 
 // 获取渲染后即使运行的宽高，只支持IE
-dom.currentStyle.width/height
+dom.currentStyle.width / height;
 
 // 获取渲染后即时运行的宽高，兼容性很好
-dom.getComputedStyle.width/height
+dom.getComputedStyle.width / height;
 
 // 获取渲染后即使运行的宽高，兼容性很好，一般用来获取元素的绝对位置
-dom.getBoundingClientRect().width/height
+dom.getBoundingClientRect().width / height;
 ```
-
-
 
 ## BFC
 
@@ -95,7 +93,132 @@ CSS3 规范中要求使用双冒号(::) 表示伪元素，单冒号(:) 表示伪
 
 ## 两栏布局
 
+左边定宽,右边自适应方案:
+
+- float + margin
+- float + calc
+
+```css
+/* 方案1 */
+.left {
+  width: 120px;
+  float: left;
+}
+.right {
+  margin-left: 120px;
+} /* 方案2 */
+.left {
+  width: 120px;
+  float: left;
+}
+.right {
+  width: calc(100% - 120px);
+  float: left;
+}
+```
+
 ## 三栏布局
+
+左右两边定宽, 中间自适应:
+
+- float
+- float + calc
+- 圣杯布局 (设置 BFC , margin 负值法)
+- flex
+
+```css
+.wrap {
+  width: 100%;
+  height: 200px;
+}
+.wrap > div {
+  height: 100%;
+}
+/* 方案1 */
+.left {
+  width: 120px;
+  float: left;
+}
+.right {
+  float: right;
+  width: 120px;
+}
+.center {
+  margin: 0 120px;
+}
+/* 方案2 */
+.left {
+  width: 120px;
+  float: left;
+}
+.right {
+  float: right;
+  width: 120px;
+}
+.center {
+  width: calc(100% - 240px);
+  margin-left: 120px;
+}
+/* 方案3 */
+.wrap {
+  display: flex;
+}
+.left {
+  width: 120px;
+}
+.right {
+  width: 120px;
+}
+.center {
+  flex: 1;
+}
+```
 
 ## 水平垂直居中
 
+- 定高: margin , position + margin (负值)
+- 不定高: position + transform , flex , IFC + vertical-align:middle
+
+```css
+/* 定高方案1 */
+.center {
+  height: 100px;
+  margin: 50px 0;
+}
+/* 定高方案2 */
+.center {
+  height: 100px;
+  position: absolute;
+  top: 50%;
+  margin-top: -25px;
+}
+/* 不定高方案1 */
+.center {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+}
+/* 不定高方案2 */
+.wrap {
+  display: flex;
+  align-items: center;
+}
+.center {
+  width: 100%;
+}
+/* 不定高方案3 */
+/* 设置 inline-block 则会在外层产生 IFC, 高度设为 100% 撑开 wrap 的高度 */
+.wrap::before {
+  content: "";
+  height: 100%;
+  display: inline-block;
+  vertical-align: middle;
+}
+.wrap {
+  text-align: center;
+}
+.center {
+  display: inline-block;
+  vertical-align: middle;
+}
+```

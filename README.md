@@ -1,11 +1,13 @@
 
 
 
+
 # fe-notes(前端开发笔记)
 
 > I'm a slow walker, but I never walk backwards. — Abragam Lincoln.
 
 本仓库旨在收集整理前端基础知识以及开发实践。包括前端八股，最佳实践，踩坑汇总等，既有完整的系列，也有零碎的思考。
+
 
 
 
@@ -189,6 +191,7 @@
   - [实现eventBus](%E4%BB%A3%E7%A0%81%E6%89%8B%E5%86%99%E9%A2%98%2F%E5%AE%9E%E7%8E%B0eventBus.md)
   - [实现resolvablePromise](%E4%BB%A3%E7%A0%81%E6%89%8B%E5%86%99%E9%A2%98%2F%E5%AE%9E%E7%8E%B0resolvablePromise.md)
   - [实现几个 fp 相关的方法(partial,curry, pipe)](%E4%BB%A3%E7%A0%81%E6%89%8B%E5%86%99%E9%A2%98%2F%E5%AE%9E%E7%8E%B0%E5%87%A0%E4%B8%AA%20fp%20%E7%9B%B8%E5%85%B3%E7%9A%84%E6%96%B9%E6%B3%95(partial%2Ccurry%2C%20pipe).md)
+  - [实现深拷贝](%E4%BB%A3%E7%A0%81%E6%89%8B%E5%86%99%E9%A2%98%2F%E5%AE%9E%E7%8E%B0%E6%B7%B1%E6%8B%B7%E8%B4%9D.md)
   - [异步串行钩子](%E4%BB%A3%E7%A0%81%E6%89%8B%E5%86%99%E9%A2%98%2F%E5%BC%82%E6%AD%A5%E4%B8%B2%E8%A1%8C%E9%92%A9%E5%AD%90.md)
   - [批量请求函数](%E4%BB%A3%E7%A0%81%E6%89%8B%E5%86%99%E9%A2%98%2F%E6%89%B9%E9%87%8F%E8%AF%B7%E6%B1%82%E5%87%BD%E6%95%B0.md)
   - [红绿灯](%E4%BB%A3%E7%A0%81%E6%89%8B%E5%86%99%E9%A2%98%2F%E7%BA%A2%E7%BB%BF%E7%81%AF.md)
