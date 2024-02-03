@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>实现React合成事件</title>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script>
+      const _fiberNodeKey = "_reactFiber";
+      function render(parentElement, vdomNode, parentFiberNode) {
+        let element = null;
+
+        switch (vdomNode.type) {
+          case "element":
+            element = document.createElement(vdomNode.tagName);
+            break;
+          case "text":
+            element = document.createTextNode(vdomNode.value);
+          default:
+            break;
+        }
+
+        // vdom节点转fiber节点
+        let fiberNode = {
+          stateNode: element,
+          props: vdomNode.props,
+          return: parentFiberNode, // 与parent节点建立关联
+        };
+
+        parentFiberNode.next = fiberNode; // 与parentFiberNode建立连接
+        // 真实元素与fiber节点之间建立连接，方便后面事件合成的时候从event.target中拿到想要的props中的事件
+        element[_fiberNodeKey] = fiberNode;
+
+        parentElement.appendChild(element);
+
+        if (vdomNode.chidren && vdomNode.chidren.length > 0) {
+          vdomNode.chidren.forEach((childVdomNode) => {
+            render(element, childVdomNode, fiberNode);
+          });
+        }
+      }
+
+      const ReactDOM = {
+        render: (container, vdomNode) => {
+          let rootFiberNode = {
+            stateNode: container,
+            next: null,
+            return: null,
+            props: {},
+          };
+          render(container, vdomNode, rootFiberNode);
+          console.log("rootFiberNode", rootFiberNode);
+
+          // 遍历收集注册事件
+          initEvents(container);
+        },
+      };
+
+      function initEvents(container) {
+        ["click"].forEach(function (eventType) {
+          container.addEventListener(eventType, (e) => {
+            dispatchEvent(container, eventType, e);
+          });
+        });
+
+        function dispatchEvent(container, eventType, e) {
+          const targetElement = e.target;
+          // 递归查找
+          const { capture, bubble } = collectPath(
+            targetElement,
+            container,
+            eventType
+          );
+
+          console.log("capture, bubble", capture, bubble);
+
+          // 创建合成事件
+          const se = createSyntheticEvent(e);
+
+          // 分别触发capture与bubble
+          traverseEventFlow(capture, se);
+
+          if (!se.__stopPropagation) {
+            traverseEventFlow(bubble, se);
+          }
+        }
+
+        function collectPath(targetElement, container, eventType) {
+          // 从targetElement中通过_reactFiber拿到对应的事件
+          const paths = {
+            capture: [],
+            bubble: [],
+          };
+
+          while (targetElement && targetElement !== container) {
+            const fiberNode = targetElement[_fiberNodeKey];
+            const elementProps = fiberNode.props; // 从fiberNode上拿到对应的事件
+            if (elementProps) {
+              const callbackNameList =
+                getEventCallbackNameFromEventType(eventType);
+              callbackNameList.forEach((callbackName, i) => {
+                const eventCallback = elementProps[callbackName];
+
+                if (eventCallback) {
+                  if (i === 0) {
+                    // capture
+                    paths.capture.unshift(eventCallback);
+                  } else {
+                    // bubble
+                    paths.bubble.push(eventCallback);
+                  }
+                }
+              });
+            }
+
+            targetElement = targetElement.parentNode;
+          }
+
+          return paths;
+        }
+
+        function getEventCallbackNameFromEventType(eventType) {
+          const mapping = {
+            click: ["onClickCapture", "onClick"],
+          };
+          return mapping[eventType];
+        }
+
+        function traverseEventFlow(paths, se) {
+          for (let i = 0; i < paths.length; i++) {
+            const callback = paths[i];
+            callback.call(null, se);
+            if (se.__stopPropagation) {
+              break;
+            }
+          }
+        }
+
+        function createSyntheticEvent(e) {
+          const syntheticEvent = e;
+          syntheticEvent.__stopPropagation = false;
+          const originStopPropagation = e.stopPropagation;
+          syntheticEvent.stopPropagation = () => {
+            syntheticEvent.__stopPropagation = true;
+            originStopPropagation && originStopPropagation.call(e);
+          };
+          return syntheticEvent;
+        }
+      }
+
+      const vdomTree = {
+        type: "element",
+        tagName: "div",
+        props: {
+          onClickCapture: () => {
+            console.log("parent click capture");
+          },
+          onClick: () => {
+            console.log("parent click bubble");
+          },
+        },
+        chidren: [
+          {
+            type: "element",
+            tagName: "button",
+            props: {
+              onClickCapture: () => {
+                console.log("child click capture");
+              },
+              onClick: () => {
+                console.log("child click bubble");
+              },
+            },
+            chidren: [{ type: "text", value: "click me" }],
+          },
+        ],
+      };
+
+      ReactDOM.render(document.querySelector("#root"), vdomTree);
+    </script>
+  </body>
+</html>

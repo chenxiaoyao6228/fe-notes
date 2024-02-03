@@ -2,11 +2,15 @@
 
 
 
+
+
 # fe-notes(前端开发笔记)
 
 > I'm a slow walker, but I never walk backwards. — Abragam Lincoln.
 
 本仓库旨在收集整理前端基础知识以及开发实践。包括前端八股，最佳实践，踩坑汇总等，既有完整的系列，也有零碎的思考。
+
+
 
 
 
@@ -140,6 +144,9 @@
       - [react中的fiber架构](React%E6%BA%90%E7%A0%81%2Ffiber%2Freact%E4%B8%AD%E7%9A%84fiber%E6%9E%B6%E6%9E%84.md)
     - scheduler
       - [任务调度的基本原理](React%E6%BA%90%E7%A0%81%2Fscheduler%2F%E4%BB%BB%E5%8A%A1%E8%B0%83%E5%BA%A6%E7%9A%84%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86.md)
+    - 合成事件
+      - [React合成事件](React%E6%BA%90%E7%A0%81%2F%E5%90%88%E6%88%90%E4%BA%8B%E4%BB%B6%2FReact%E5%90%88%E6%88%90%E4%BA%8B%E4%BB%B6.md)
+      - [实现React合成事件](React%E6%BA%90%E7%A0%81%2F%E5%90%88%E6%88%90%E4%BA%8B%E4%BB%B6%2F%E5%AE%9E%E7%8E%B0React%E5%90%88%E6%88%90%E4%BA%8B%E4%BB%B6.md)
 - React相关
   - [React Hook实战-封装Audio](React%E7%9B%B8%E5%85%B3%2FReact%20Hook%E5%AE%9E%E6%88%98-%E5%B0%81%E8%A3%85Audio.md)
   - [React-dev-inspector的工作原理](React%E7%9B%B8%E5%85%B3%2FReact-dev-inspector%E7%9A%84%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86.md)

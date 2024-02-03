@@ -23,7 +23,7 @@
       const list = document.getElementById("myList");
 
       list.addEventListener("click", function (event) {
-        if (event.target.tagName === "LI") {
+        if (event.target.tagName.toLowerCase() === "li") {
           document.querySelector('.container').innerHTML = `点击了: ${event.target.textContent}`
         }
       });

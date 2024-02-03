@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+        ul {
+            border: 1px solid red;
+        }
+        li {
+           border: 1px solid blue; 
+           list-style-type: none;
+        }
+    </style>
+  </head>
+  <body>
+    <ul id="myList">
+      <li>Item 1</li>
+      <li class="li-2">Item 2</li>
+      <li>Item 3</li>
+      <li>Item 4</li>
+    </ul>
+    <div class="container"></div>
+    <script>
+      function eventDelegate(parentSelector, targetSelector, events, foo) {
+        const parent = document.querySelector(parentSelector);
+
+        if (!parent) {
+          console.error(
+            `Parent element with selector '${parentSelector}' not found.`
+          );
+          return;
+        }
+
+        parent.addEventListener(events, function (event) {
+          const targetElement = event.target.closest(targetSelector);
+
+          if (targetElement && this.contains(targetElement)) {
+            foo.call(targetElement, event);
+          }
+        });
+      }
+
+      // 示例使用
+      eventDelegate("#myList", "li.li-2", "click", function (event) {
+        // 处理事件的代码
+        document.querySelector(
+          ".container"
+        ).innerHTML = `点击了: ${this.textContent}`;
+      });
+    </script>
+  </body>
+</html>
