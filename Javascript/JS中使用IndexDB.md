@@ -16,6 +16,10 @@ IndexDB（Indexed Database）是一种用于在浏览器中存储大量结构化
 
 - 存储大量数据： 适用于需要在客户端存储大量数据的应用，例如离线 Web 应用或需要快速访问数据的应用。
 
+## 查看 IndexDB
+
+https://developer.chrome.com/docs/devtools/storage/indexeddb
+
 ## 基于 IndexDB 封装的仿 localStage 用法的工具
 
 ```js

@@ -1,0 +1,2 @@
+Hello, this is file A.
+How are you doing?

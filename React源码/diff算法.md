@@ -1,8 +1,42 @@
 ## 前言
 
-本节总结 dom diff 算法的实现。
+本节总结 VDOM diff 算法的实现。
 
-## 原理
+## 什么是 diff 算法
+
+diff 算法不是 VDOM 的专利，比如 linux 中就有 diff 命令, 对两个文件进行 diff 处理
+
+```bash
+diff a.txt b.txt
+```
+
+Git 工具也提供了类似的 diff 功能，用于比较代码文件在不同版本之间的差异。
+
+```bash
+git diff <commit or branch> <commit or branch> -- <file>
+```
+
+例如，要比较当前分支与另一个分支之间的差异
+
+```bash
+git diff mybranch master -- myfile.txt
+```
+
+## VDOM diff 算法
+
+VDOM diff 的基本思想是在更新用户界面时，先生成新的虚拟 DOM 树，然后将新旧两棵树进行比较，找出它们之间的差异。这些差异通常被称为变更集（或补丁），它们描述了需要对实际 DOM 进行的修改操作。然后，VDOM diff 算法会根据这些差异来最小化对实际 DOM 的操作，从而提高性能。
+
+VDOM diff 算法不是某个单一的算法，而是一系列算法的集合, 有些作为单独的包， 有些则整合在对应的框架中
+
+- snabbdom.js
+- React.js
+- Inferno.js
+
+需要提前的是，写一个完整的 dom diff 库需要耗费很大的精力，考虑很多的边界场景，比如《Vue.js 设计与实现》中就整整用了三章来介绍 diff 算法
+
+## 实现简单的 diff 算法
+
+下面我们来实现一个比较简单的 diff 算法，步骤如下：
 
 - 利用 JavaScript 创建 DOM 树
 - 树的 diff，同层对比，输出 patchs(listDiff / diffChildren / diffProps)
@@ -16,13 +50,11 @@
   - 遍历 patchs，把需要更改的节点取出来
   - 局部更新 DOM
 
-## 实现
-
 ```js
 function diff(oldTree, newTree) {
   const patchs = {}; // 差异收集
   dfs(oldTree, newTree, 0, patchs);
-  return patchs; // 为什么patches要用object
+  return patchs;
 }
 
 function dfs(oldNode, newNode, index, patchs) {
@@ -134,6 +166,8 @@ function diffList(oldList, newList, index, patchs) {
   return { change, list };
 }
 ```
+
+## React diff 算法的优势
 
 ## 参考
 

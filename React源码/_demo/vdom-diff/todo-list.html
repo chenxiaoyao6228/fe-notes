@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>TodoList with Input and Custom DOM Diff</title>
+  </head>
+  <body>
+    <div id="app"></div>
+
+    <script>
+      // 新的 diff 算法的实现
+      function diff(oldTree, newTree) {
+        debugger
+        const patches = {};
+        dfs(oldTree, newTree, 0, patches);
+        return patches;
+      }
+
+      function dfs(oldNode, newNode, index, patches) {
+        const curPatches = [];
+        if (newNode) {
+          if (
+            oldNode.tagName === newNode.tagName &&
+            oldNode.key === newNode.key
+          ) {
+            const propsPatches = diffProps(oldNode.props, newNode.props);
+
+            if(propsPatches.length > 0){
+              curPatches.push({ type: "changeProps", props: propsPatches });
+            }
+
+            diffChildren(oldNode.children, newNode.children, index, patches);
+          } else {
+            curPatches.push({ type: "replaceNode", node: newNode });
+          }
+        }
+
+        if (curPatches.length) {
+          if (patches[index]) {
+            patches[index] = patches[index].concat(curPatches);
+          } else {
+            patches[index] = curPatches;
+          }
+        }
+      }
+
+      function diffProps(oldProps, newProps) {
+        const propsPatches = [];
+        for (const key in oldProps) {
+          if (!newProps.hasOwnProperty(key)) {
+            propsPatches.push({ type: "remove", prop: key });
+          } else if (oldProps[key] !== newProps[key]) {
+            propsPatches.push({
+              type: "change",
+              prop: key,
+              value: newProps[key],
+            });
+          }
+        }
+
+        for (const key in newProps) {
+          if (!oldProps.hasOwnProperty(key)) {
+            propsPatches.push({
+              type: "add",
+              prop: key,
+              value: newProps[key],
+            });
+          }
+        }
+
+        return propsPatches;
+      }
+
+      function diffChildren(oldChild, newChild, index, patches) {
+        const { change, list } = diffList(oldChild, newChild, index, patches);
+        if (change.length) {
+          if (patches[index]) patches[index] = patches[index].concat(change);
+          else patches[index] = change;
+        }
+
+        oldChild.forEach((item, i) => {
+          const keyIndex = list.indexOf(item.key);
+          if (keyIndex !== -1) {
+            const node = newChild[keyIndex];
+            dfs(item, node, index, patches);
+          }
+        });
+      }
+
+      function diffList(oldList, newList, index, patches) {
+        const change = [];
+        const list = [];
+        const newKeys = newList.map((item) => item.key);
+        oldList.forEach((item) => {
+          if (newKeys.includes(item.key)) list.push(item.key);
+          else list.push(null);
+        });
+
+        for (let i = list.length - 1; i >= 0; i--) {
+          if (!list[i]) {
+            list.splice(i, 1);
+            change.push({ type: "remove", index: i });
+          }
+        }
+
+        newList.forEach((item, i) => {
+          const { key } = item;
+          const index = list.indexOf(key);
+          if (index === -1 || key === null) {
+            change.push({ type: "add", node: item, index: i });
+            list.splice(i, 0, key);
+          } else if (index !== i) {
+            change.push({ type: "move", from: index, to: i });
+            move(list, index, i);
+          }
+        });
+
+        return { change, list };
+      }
+
+      function move(arr, from, to) {
+        const item = arr.splice(from, 1)[0];
+        arr.splice(to, 0, item);
+      }
+
+      // 简化的虚拟 DOM 实现
+      function h(tag, props, children) {
+        return { tag, props, children };
+      }
+
+      // 根据vnode创建真实DOM
+      function createElement(vnode) {
+        if (typeof vnode === "string") {
+          return document.createTextNode(vnode);
+        }
+
+        const el = document.createElement(vnode.tag);
+
+        if (vnode.props) {
+          for (const key in vnode.props) {
+            if (key === "value") {
+              el.value = vnode.props[key];
+            } else if (key === "onClick") {
+              el.addEventListener("click", vnode.props[key]);
+            } else {
+              el.setAttribute(key, vnode.props[key]);
+            }
+          }
+        }
+
+        if (vnode.children) {
+          vnode.children.forEach((child) => {
+            el.appendChild(createElement(child));
+          });
+        }
+
+        return el;
+      }
+
+      // 更新节点
+      function updateElement(parent, oldVNode, newVNode) {
+        const oldEl = parent.querySelector(`[data-key="${oldVNode.key}"]`);
+        const newEl = createElement(newVNode);
+        parent.replaceChild(newEl, oldEl);
+        return newEl;
+      }
+
+      // 应用更新
+      function applyPatches(parent, patches) {
+        applyPatch(parent, patches);
+
+        function applyPatch(parent, patch) {
+          if (parent && patch && typeof patch === "object") {
+            for (const key in patch) {
+              if (patch.hasOwnProperty(key)) {
+                const index = parseInt(key, 10);
+                applyPatch(parent.childNodes[index], patch[key]);
+              }
+            }
+          } else if (Array.isArray(patch)) {
+            patch.forEach((p) => applyPatch(parent, p));
+          } else if (parent && patch) {
+            switch (patch.type) {
+              case "replaceNode":
+                parent.replaceChild(
+                  createElement(patch.node),
+                  parent.firstChild
+                );
+                break;
+              case "changeProps":
+                patch.props.forEach((propPatch) =>
+                  applyPropPatch(parent.firstChild, propPatch)
+                );
+                break;
+              case "remove":
+                if (parent.childNodes[patch.index]) {
+                  parent.removeChild(parent.childNodes[patch.index]);
+                }
+                break;
+              case "add":
+                const newNode = createElement(patch.node);
+                if (parent.childNodes[patch.index]) {
+                  parent.insertBefore(newNode, parent.childNodes[patch.index]);
+                } else {
+                  parent.appendChild(newNode);
+                }
+                break;
+              case "move":
+                if (parent.childNodes[patch.from]) {
+                  const movedNode = parent.removeChild(
+                    parent.childNodes[patch.from]
+                  );
+                  if (parent.childNodes[patch.to]) {
+                    parent.insertBefore(movedNode, parent.childNodes[patch.to]);
+                  } else {
+                    parent.appendChild(movedNode);
+                  }
+                }
+                break;
+            }
+          }
+        }
+
+        function applyPropPatch(element, propPatch) {
+          if (element) {
+            switch (propPatch.type) {
+              case "remove":
+                element.removeAttribute(propPatch.prop);
+                break;
+              case "change":
+                element.setAttribute(propPatch.prop, propPatch.value);
+                break;
+              case "add":
+                element.setAttribute(propPatch.prop, propPatch.value);
+                break;
+            }
+          }
+        }
+      }
+
+      // TodoList 应用
+      let todos = [];
+
+      function renderTodos() {
+        const todoList = h("div", { id: "app" }, [
+          {
+            tag: "div",
+            props: { id: "todo-list-container" },
+            children: [
+              {
+                tag: "input",
+                props: {
+                  type: "text",
+                  id: "newTodo",
+                  placeholder: "Add a new todo",
+                },
+                children: null,
+              },
+              {
+                tag: "button",
+                props: { onClick: addTodo },
+                children: ["Add Todo"],
+              },
+              {
+                tag: "ul",
+                props: { class: "todo-list" },
+                children: todos.map((todo) => {
+                  return {
+                    tag: "li",
+                    props: { "data-key": todo.id },
+                    children: [
+                      {
+                        tag: "input",
+                        props: {
+                          type: "checkbox",
+                          checked: todo.completed,
+                          onchange: () => toggleTodo(todo.id),
+                        },
+                        children: null,
+                      },
+                      {
+                        tag: "span",
+                        props: null,
+                        children: [todo.text],
+                      },
+                      {
+                        tag: "button",
+                        props: { onClick: () => removeTodo(todo.id) },
+                        children: ["Remove"],
+                      },
+                    ],
+                  };
+                }),
+              },
+            ],
+          },
+        ]);
+
+        const patches = diff(appVNode, todoList);
+
+        console.log("patches", patches);
+
+        applyPatches(document.getElementById("app"), patches);
+
+        // 更新vdom节点
+        appVNode = todoList;
+      }
+
+      let appVNode = h("div", { id: "app" }, []);
+      renderTodos();
+
+      const container = document.getElementById("app");
+      container.appendChild(createElement(appVNode));
+
+      // -----------------------------
+
+      function addTodo() {
+        const newTodoText = document.getElementById("newTodo").value.trim();
+        if (newTodoText) {
+          const newTodo = {
+            id: Date.now(),
+            text: newTodoText,
+            completed: false,
+          };
+          todos.push(newTodo);
+          renderTodos();
+          document.getElementById("newTodo").value = "";
+        }
+      }
+
+      function toggleTodo(id) {
+        todos = todos.map((todo) =>
+          todo.id === id ? { ...todo, completed: !todo.completed } : todo
+        );
+        renderTodos();
+      }
+
+      function removeTodo(id) {
+        todos = todos.filter((todo) => todo.id !== id);
+        renderTodos();
+      }
+    </script>
+  </body>
+</html>
