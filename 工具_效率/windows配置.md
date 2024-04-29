@@ -60,7 +60,7 @@ scoop install windows-terminal
 
 打开并设置`WSL`
 
-![https://github.com/chenxiaoyao6228/cloudimg/2024/windows-terminal-config.png](../../cloudimg/2024/windows-terminal-config.png)
+![https://github.com/chenxiaoyao6228/cloudimg/2024/windows-terminal-config.png](https://cdn.jsdelivr.net/gh/chenxiaoyao6228/cloudimg@main/2024/windows-terminal-config.png)
 
 ### oh-my-zsh
 

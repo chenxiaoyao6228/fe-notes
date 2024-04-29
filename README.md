@@ -4,11 +4,15 @@
 
 
 
+
+
 # fe-notes(前端开发笔记)
 
 > I'm a slow walker, but I never walk backwards. — Abragam Lincoln.
 
 本仓库旨在收集整理前端基础知识以及开发实践。包括前端八股，最佳实践，踩坑汇总等，既有完整的系列，也有零碎的思考。
+
+
 
 
 
@@ -79,6 +83,7 @@
   - [Gzip工作原理](%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96%2FGzip%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86.md)
   - [React profile优化React应用](%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96%2FReact%20profile%E4%BC%98%E5%8C%96React%E5%BA%94%E7%94%A8.md)
   - [React代码优化](%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96%2FReact%E4%BB%A3%E7%A0%81%E4%BC%98%E5%8C%96.md)
+  - [css优化](%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96%2Fcss%E4%BC%98%E5%8C%96.md)
   - [react-ssr原理分析](%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96%2Freact-ssr%E5%8E%9F%E7%90%86%E5%88%86%E6%9E%90.md)
   - [script标签中的async与defer](%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96%2Fscript%E6%A0%87%E7%AD%BE%E4%B8%AD%E7%9A%84async%E4%B8%8Edefer.md)
   - [webpack构建优化](%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96%2Fwebpack%E6%9E%84%E5%BB%BA%E4%BC%98%E5%8C%96.md)
@@ -140,6 +145,8 @@
   - [实现一个按钮相关的单行布局效果](HTML_CSS%2F%E5%AE%9E%E7%8E%B0%E4%B8%80%E4%B8%AA%E6%8C%89%E9%92%AE%E7%9B%B8%E5%85%B3%E7%9A%84%E5%8D%95%E8%A1%8C%E5%B8%83%E5%B1%80%E6%95%88%E6%9E%9C.md)
   - [文字布局基础](HTML_CSS%2F%E6%96%87%E5%AD%97%E5%B8%83%E5%B1%80%E5%9F%BA%E7%A1%80.md)
 - React源码
+  - [React和Vue对比](React%E6%BA%90%E7%A0%81%2FReact%E5%92%8CVue%E5%AF%B9%E6%AF%94.md)
+  - [diff算法](React%E6%BA%90%E7%A0%81%2Fdiff%E7%AE%97%E6%B3%95.md)
     - fiber
       - [react中的fiber架构](React%E6%BA%90%E7%A0%81%2Ffiber%2Freact%E4%B8%AD%E7%9A%84fiber%E6%9E%B6%E6%9E%84.md)
     - scheduler
@@ -181,6 +188,7 @@
   - [iterms2-antigen-to-improve-your-work-experience](%E5%B7%A5%E5%85%B7_%E6%95%88%E7%8E%87%2Fiterms2-antigen-to-improve-your-work-experience.md)
   - [plantUML入门](%E5%B7%A5%E5%85%B7_%E6%95%88%E7%8E%87%2FplantUML%E5%85%A5%E9%97%A8.md)
   - [prettier-eslint-vscode-实现前端代码格式化](%E5%B7%A5%E5%85%B7_%E6%95%88%E7%8E%87%2Fprettier-eslint-vscode-%E5%AE%9E%E7%8E%B0%E5%89%8D%E7%AB%AF%E4%BB%A3%E7%A0%81%E6%A0%BC%E5%BC%8F%E5%8C%96.md)
+  - [windows配置](%E5%B7%A5%E5%85%B7_%E6%95%88%E7%8E%87%2Fwindows%E9%85%8D%E7%BD%AE.md)
   - [在vscode上进行markdown写作](%E5%B7%A5%E5%85%B7_%E6%95%88%E7%8E%87%2F%E5%9C%A8vscode%E4%B8%8A%E8%BF%9B%E8%A1%8Cmarkdown%E5%86%99%E4%BD%9C.md)
   - [在vscode中快速调试你的前端项目](%E5%B7%A5%E5%85%B7_%E6%95%88%E7%8E%87%2F%E5%9C%A8vscode%E4%B8%AD%E5%BF%AB%E9%80%9F%E8%B0%83%E8%AF%95%E4%BD%A0%E7%9A%84%E5%89%8D%E7%AB%AF%E9%A1%B9%E7%9B%AE.md)
   - [如何在线预览github的html页面](%E5%B7%A5%E5%85%B7_%E6%95%88%E7%8E%87%2F%E5%A6%82%E4%BD%95%E5%9C%A8%E7%BA%BF%E9%A2%84%E8%A7%88github%E7%9A%84html%E9%A1%B5%E9%9D%A2.md)
@@ -210,7 +218,6 @@
       - [单点登录](%E4%B8%9A%E5%8A%A1%E7%9B%B8%E5%85%B3%2F%E7%BB%9F%E4%B8%80%E7%99%BB%E5%BD%95%2F%E5%8D%95%E7%82%B9%E7%99%BB%E5%BD%95.md)
 - 踩坑汇总
   - [egg获取不到cookie的值](%E8%B8%A9%E5%9D%91%E6%B1%87%E6%80%BB%2Fegg%E8%8E%B7%E5%8F%96%E4%B8%8D%E5%88%B0cookie%E7%9A%84%E5%80%BC.md)
-  - [position:fixed一定相对视口计算吗](%E8%B8%A9%E5%9D%91%E6%B1%87%E6%80%BB%2Fposition%3Afixed%E4%B8%80%E5%AE%9A%E7%9B%B8%E5%AF%B9%E8%A7%86%E5%8F%A3%E8%AE%A1%E7%AE%97%E5%90%97.md)
   - [如何在页面卸载前发送请求](%E8%B8%A9%E5%9D%91%E6%B1%87%E6%80%BB%2F%E5%A6%82%E4%BD%95%E5%9C%A8%E9%A1%B5%E9%9D%A2%E5%8D%B8%E8%BD%BD%E5%89%8D%E5%8F%91%E9%80%81%E8%AF%B7%E6%B1%82.md)
   - [如何处理翻译软件翻译掉占位符](%E8%B8%A9%E5%9D%91%E6%B1%87%E6%80%BB%2F%E5%A6%82%E4%BD%95%E5%A4%84%E7%90%86%E7%BF%BB%E8%AF%91%E8%BD%AF%E4%BB%B6%E7%BF%BB%E8%AF%91%E6%8E%89%E5%8D%A0%E4%BD%8D%E7%AC%A6.md)
   - [子元素transform后父元素依然占据空间](%E8%B8%A9%E5%9D%91%E6%B1%87%E6%80%BB%2F%E5%AD%90%E5%85%83%E7%B4%A0transform%E5%90%8E%E7%88%B6%E5%85%83%E7%B4%A0%E4%BE%9D%E7%84%B6%E5%8D%A0%E6%8D%AE%E7%A9%BA%E9%97%B4.md)
