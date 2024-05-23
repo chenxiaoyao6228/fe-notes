@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SVG绘制弧形</title>
+  </head>
+  <body>
+    <svg width="400" height="200" xmlns="http://www.w3.org/2000/svg">
+      <!-- large-arc-flag=0, sweep-flag=0 -->
+      <path d="M 50 50 A 30 30 0 0 0 150 50" fill="none" stroke="black" />
+      <!-- large-arc-flag=0, sweep-flag=1 -->
+      <path d="M 200 50 A 30 30 0 0 1 300 50" fill="none" stroke="red" />
+      <!-- large-arc-flag=1, sweep-flag=0 -->
+      <path d="M 50 150 A 30 30 0 1 0 150 150" fill="none" stroke="blue" />
+      <!-- large-arc-flag=1, sweep-flag=1 -->
+      <path d="M 200 150 A 30 30 0 1 1 300 150" fill="none" stroke="green" />
+    </svg>
+  </body>
+</html>

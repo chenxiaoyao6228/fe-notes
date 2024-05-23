@@ -3,7 +3,7 @@
 - [JS 中的模块化历程](./重新梳理前端模块化.md)
 - [commonJS 与 nodeJS 的模块查找机制以及 Browserify](./CommonJS与Node.md)
 - [amd 与 requireJS 详解，实现 miniRequireJS](./AMD与RequireJS.md)
-- [cmd 与 seaJS 详解, 实现 miniRequireJS](./CMD与SeaJS.md)
+- [cmd 与 seaJS 详解, 实现 minSeaJS](./CMD与SeaJS.md)
 - [umd 详解](./UMD.md)
 - [esm 详解](./ES6-module.md)
 - [package.json 中模块化相关的字段](./package.json中模块化相关的字段.md)

@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Canvas Rectangle Rotation</title>
+    <style>
+      #canvas {
+        border: 1px solid red;
+      }
+      #controls {
+        margin-top: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <canvas id="canvas" width="400" height="400"></canvas>
+    <div id="controls">
+      <label for="angleInput">Rotation Angle (degrees):</label>
+      <input type="number" id="angleInput" value="30" />
+      <button id="rotateButton">Rotate Rectangle</button>
+    </div>
+
+    <script type="module">
+      class Matrix {
+        constructor(a = 1, b = 0, c = 0, d = 1, tx = 0, ty = 0) {
+          this.a = a;
+          this.b = b;
+          this.c = c;
+          this.d = d;
+          this.tx = tx;
+          this.ty = ty;
+        }
+
+        translate(x, y) {
+          this.tx += x;
+          this.ty += y;
+          return this;
+        }
+
+        rotate(angle) {
+          const cos = Math.cos(angle);
+          const sin = Math.sin(angle);
+
+          const { a, b, c, d, tx, ty } = this;
+
+          this.a = a * cos - b * sin;
+          this.b = a * sin + b * cos;
+          this.c = c * cos - d * sin;
+          this.d = c * sin + d * cos;
+          this.tx = tx * cos - ty * sin;
+          this.ty = tx * sin + ty * cos;
+
+          return this;
+        }
+        apply(pos, newPos) {
+          const x = pos.x;
+          const y = pos.y;
+
+          newPos = newPos || pos;
+
+          newPos.x = this.a * x + this.c * y + this.tx;
+          newPos.y = this.b * x + this.d * y + this.ty;
+
+          return newPos;
+        }
+
+        set(a, b, c, d, tx, ty) {
+          this.a = a;
+          this.b = b;
+          this.c = c;
+          this.d = d;
+          this.tx = tx;
+          this.ty = ty;
+          return this;
+        }
+      }
+
+      class Rectangle {
+        constructor(id, width, height, strokeColor, strokeWidth) {
+          this.id = id;
+          this.width = width;
+          this.height = height;
+          this.strokeColor = strokeColor;
+          this.strokeWidth = strokeWidth;
+          this.matrix = new Matrix(1, 0, 0, 1, 50, 50);
+        }
+
+        draw(ctx) {
+          ctx.save();
+          ctx.setTransform(
+            this.matrix.a,
+            this.matrix.b,
+            this.matrix.c,
+            this.matrix.d,
+            this.matrix.tx,
+            this.matrix.ty
+          );
+          ctx.strokeStyle = this.strokeColor;
+          ctx.lineWidth = this.strokeWidth;
+          ctx.strokeRect(0, 0, this.width, this.height);
+          ctx.restore();
+        }
+
+        rotate(angle) {
+          const { x: centerX, y: centerY } = this.getCenter();
+
+          console.log("center", centerX, centerY);
+
+          this.matrix.translate(-centerX, -centerY);
+          this.matrix.rotate(angle);
+          this.matrix.translate(centerX, centerY);
+        }
+
+        getCenter() {
+          const center = {
+            x: this.width / 2,
+            y: this.height / 2,
+          };
+          return this.matrix.apply(center);
+        }
+      }
+
+      class Scene {
+        constructor(canvasId) {
+          this.canvas = document.getElementById(canvasId);
+          this.ctx = this.canvas.getContext("2d");
+          this.rectangles = [];
+        }
+
+        addRectangle(rect) {
+          this.rectangles.push(rect);
+        }
+
+        draw() {
+          this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+          this.rectangles.forEach((rect) => rect.draw(this.ctx));
+        }
+      }
+
+      const scene = new Scene("canvas");
+      const rectangle = new Rectangle("4", 100, 100, "red", 2);
+      scene.addRectangle(rectangle);
+      scene.draw();
+
+      document.getElementById("rotateButton").addEventListener("click", () => {
+        const inputAngle = parseFloat(
+          document.getElementById("angleInput").value
+        );
+        const radian = (inputAngle * Math.PI) / 180;
+        rectangle.rotate(radian);
+        scene.draw();
+      });
+    </script>
+  </body>
+</html>
