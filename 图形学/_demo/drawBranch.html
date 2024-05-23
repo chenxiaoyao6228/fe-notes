@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Draw Branch</title>
+  </head>
+  <body>
+    <canvas id="canvas"></canvas>
+    <script src="./Vector2D.js"></script>
+    <script>
+      const canvas = document.getElementById("canvas");
+      canvas.width = 800;
+      canvas.height = 600;
+
+      const ctx = canvas.getContext("2d");
+      ctx.translate(0, 600);
+      ctx.scale(1, -1);
+
+      /**
+       * 绘制树枝
+       * @param {CanvasRenderingContext2D} context
+       * @param {Object} v0 起始点
+       * @param {number} length 长度
+       * @param {number} thickness 粗细
+       * @param {number} dir 方向, 与x轴夹角,  弧度
+       * @param {number} bias 偏移
+       */
+      function drawBranch(context, v0, length, thickness, dir, bias) {
+        // 向量计算终点坐标
+        const v = new Vector2D(1, 0).rotate(dir).scale(length);
+        const v1 = v0.copy().add(v); // 终点坐标
+
+        // 绘制
+        context.beginPath();
+        context.moveTo(v0.x, v0.y);
+        context.lineTo(v1.x, v1.y);
+        context.strokeStyle = "#000";
+        context.lineWidth = thickness;
+        context.stroke();
+        context.closePath();
+
+        // 递归
+        if (thickness > 2) {
+          const left = dir + 0.2;
+          console.log("Left: drawBranch------------->", v0, v1);
+          drawBranch(
+            context,
+            v1,
+            length * 0.8,
+            thickness * 0.7,
+            left
+            // bias * 0.9
+          );
+          const right = dir - 0.2;
+          console.log("Right: draw Branch------------->", v0, v1);
+          drawBranch(
+            context,
+            v1,
+            length * 0.8,
+            thickness * 0.7,
+            right
+            // bias * 0.9
+          );
+        }
+      }
+      const startPoint = { x: 300, y: 0 };
+      drawBranch(
+        ctx,
+        new Vector2D(startPoint.x, startPoint.y),
+        100,
+        30,
+        Math.PI / 2,
+        1
+      );
+    </script>
+  </body>
+</html>
