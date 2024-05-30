@@ -1,10 +1,18 @@
 
 
+
+
+
+
 # fe-notes(前端开发笔记)
 
 > I'm a slow walker, but I never walk backwards. — Abragam Lincoln.
 
 本仓库旨在收集整理前端基础知识以及开发实践。包括前端八股，最佳实践，踩坑汇总等，既有完整的系列，也有零碎的思考。
+
+
+
+
 
 
 
@@ -232,4 +240,5 @@
 - 程序人生
   - [(译)提升你的逆向工程技能](%E7%A8%8B%E5%BA%8F%E4%BA%BA%E7%94%9F%5C(%E8%AF%91)%E6%8F%90%E5%8D%87%E4%BD%A0%E7%9A%84%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%8A%80%E8%83%BD.md)
   - [西班牙ISE2024之行](%E7%A8%8B%E5%BA%8F%E4%BA%BA%E7%94%9F%5C%E8%A5%BF%E7%8F%AD%E7%89%99ISE2024%E4%B9%8B%E8%A1%8C.md)
+  - Angular
 
