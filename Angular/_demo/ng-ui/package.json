@@ -17,9 +17,10 @@
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "jest --no-cache",
-    "storybook": "ng run taskbox:storybook",
-    "build-storybook": "ng run taskbox:build-storybook",
-    "init-msw": "msw init src/"
+    "storybook": "ng run ng-ui:storybook",
+    "build-storybook": "ng run ng-ui:build-storybook",
+    "init-msw": "msw init src/",
+    "deploy": "chmod +x ./deploy.sh && sh ./deploy.sh"
   },
   "private": true,
   "dependencies": {
