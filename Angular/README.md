@@ -10,21 +10,22 @@ Angular 不仅仅是一个用于构建 UI 的库，还包括了路由、表单�
 
 如果要用一句话对比 Angular 与 React 的话, 大概是:
 
-> Angular = React + Redux + React Router + i18n-next + Axios + ...
+> Angular = React + Redux + React Router + i18n-next + Axios + React SSR ...
 
 对于有选择困难症的人来说, 一键配置,并提供 [Best practice](https://angular.dev/style-guide) 才是最好的,
 
-比如 React, 状态管理库满天飞, API 重新学习需要花成本, 但真的解决问题或者比旧方案有显著提升了吗, 未必?
+比如 React, 状态管理库满天飞, API 重新学习需要花成本, 但真的解决问题或者比旧方案有显著提升了吗? 未必.
 
 但大而全的缺点也很明显, 比如有遇到不想用内置的 DvaJS, 或者是有要改 Webpack 配置的时候就会比较痛苦.
 
-## 为什么火不起来
+## 为什么在国内火不起来
 
 个人觉得, 火不起来的原因有以下:
 
 - AngularJS 到 Angular2 断崖式升级, 让很多开发者丧失了信心
 - 学习曲线比较陡峭, 老鸟还好, 有其他框架的使用经验, 但对新人而言概念比较多, Typescript, 依赖注入, RXJS, ZoneJS...
 - 对比 Vue 的渐进式文档, Angular 的文档还是差点. 中文文档更新不及时也将一大波国内初级开发者拒之门外
+- 基于前面的几点, 导致了国内的生态不活跃, 类似(xx 管理系统, xx 商城等, 绝大多数前端干的都是这类活), 反过来也是如此
 
 ## 如何学
 
@@ -32,12 +33,12 @@ Angular 不仅仅是一个用于构建 UI 的库，还包括了路由、表单�
 
 基础:
 
-- Angular 中的组件
-- 组件通讯
-- Angular 中的服务
-- Angular 中的指令
-- Angular18 中的 Signal
-- 项目结构
+- Component 组件
+- [Directive 指令](./Directive指令.md)
+- Pipe 管道
+- Service 服务
+- Signal
+- 依赖注入
 
 实现:
 

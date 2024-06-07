@@ -4,6 +4,8 @@
 
 使用指令的关键在于是否需要在多个地方复用某种行为、是否需要直接操作 DOM、以及是否需要在不改变组件结构的情况下添加功能。如果是这样，使用指令是合适的选择；否则，使用组件或其他方法可能更为简便和高效。
 
+Vue 中也有一样的概念, 不过是语法不同罢了
+
 ## 一个例子: scrollDirective
 
 ```ts
@@ -160,26 +162,38 @@ function App() {
 export default App;
 ```
 
+## 内置指令
+
+Angular 提供了许多内置指令，主要分为结构型指令和属性型指令.
+
+### 属性型指令
+
+属性型指令通过更改元素的行为或外观来影响元素。
+
+| 指令      | 说明                             | 示例                                                                                                     |
+| --------- | -------------------------------- | -------------------------------------------------------------------------------------------------------- |
+| `ngClass` | 动态添加或移除 CSS 类            | `<div [ngClass]="{ 'active': isActive, 'disabled': isDisabled }">Class Binding</div>`                    |
+| `ngStyle` | 动态设置内联样式                 | `<div [ngStyle]="{ 'color': isRed ? 'red' : 'blue', 'font-size': fontSize + 'px' }">Style Binding</div>` |
+| `ngModel` | 用于双向数据绑定，常用于表单元素 | `<input [(ngModel)]="username" placeholder="Enter your name">`                                           |
+
+### 结构型指令
+
+结构型指令通过添加、移除或替换 DOM 元素来改变 DOM 布局。结构型指令通常带有星号 (\*) 前缀。
+
+| 指令                 | 说明                                                | 示例                                                                                                                                     |
+| -------------------- | --------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
+| `*ngIf`              | 根据条件表达式的真假值来添加或移除元素              | `<div *ngIf="isVisible">Content is visible</div>`                                                                                        |
+| `*ngIfElse`          | 使用 `else` 模板来渲染不同的模板                    | `<div *ngIf="isVisible; else elseTemplate">Content is visible</div>` `<ng-template #elseTemplate><p>Content is hidden</p></ng-template>` |
+| `*ngFor`             | 根据集合的数据项来重复渲染元素                      | `<div *ngFor="let item of items">{{ item }}</div>`                                                                                       |
+| `ngForTrackBy`       | 提高 `*ngFor` 渲染效率，使用 `trackBy` 函数来追踪项 | `<div *ngFor="let item of items; trackBy: trackByFn">{{ item }}</div>`                                                                   |
+| `*ngSwitch`          | 根据表达式的值来显示不同的元素                      | `<div [ngSwitch]="value">`                                                                                                               |
+| `*ngSwitchCase`      | 在 `*ngSwitch` 内，指定匹配某个值时显示的元素       | `<div *ngSwitchCase="'a'">Case A</div>`                                                                                                  |
+| `*ngSwitchDefault`   | 在 `*ngSwitch` 内，指定默认显示的元素               | `<div *ngSwitchDefault>Default case</div>`                                                                                               |
+| `*ngTemplateOutlet`  | 动态渲染模板                                        | `<ng-container *ngTemplateOutlet="templateRef; context: myContext"></ng-container>`                                                      |
+| `*ngComponentOutlet` | 动态渲染组件                                        | `<ng-container *ngComponentOutlet="myComponent"></ng-container>`                                                                         |
+
+## 指令生命周期
+
+与组件的生命周期钩子类似
+
 ## 指令组合 API
-
-## 最佳实践
-
-### 如果表示逻辑中没有模板，请使用属性指令。
-
-```ts
-@Directive({
-  standalone: true,
-  selector: "[tohHighlight]",
-})
-export class HighlightDirective {
-  @HostListener("mouseover") onMouseEnter() {
-    // do highlight work
-  }
-}
-```
-
-模板使用
-
-```html
-<div tohHighlight>Bombasta</div>
-```
