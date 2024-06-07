@@ -4782,6 +4782,11 @@ mkdirp@^1.0.3:
   resolved "https://registry.npmmirror.com/mkdirp/-/mkdirp-1.0.4.tgz#3eb5ed62622756d79a5f0e2a221dfebad75c2f7e"
   integrity sha512-vVqVZQyf3WLx2Shd0qJ9xuvqgAyKPLAiqITEtqW0oIUjzo3PePDd6fW9iFz30ef7Ysp/oiWqbhszeGWW2T6Gzw==
 
+monaco-editor@^0.49.0:
+  version "0.49.0"
+  resolved "https://registry.npmmirror.com/monaco-editor/-/monaco-editor-0.49.0.tgz#4e80e9859feb2c421def3cef194d12d822606472"
+  integrity sha512-2I8/T3X/hLxB2oPHgqcNYUVdA/ZEFShT7IAujifIPMfKkNbLOqY8XCoyHCXrsdjb36dW9MwoTwBCFpXKMwNwaQ==
+
 mrmime@2.0.0:
   version "2.0.0"
   resolved "https://registry.npmmirror.com/mrmime/-/mrmime-2.0.0.tgz#151082a6e06e59a9a39b46b3e14d5cfe92b3abb4"
@@ -4858,6 +4863,13 @@ neo-async@^2.6.2:
   version "2.6.2"
   resolved "https://registry.npmmirror.com/neo-async/-/neo-async-2.6.2.tgz#b4aafb93e3aeb2d8174ca53cf163ab7d7308305f"
   integrity sha512-Yd3UES5mWCSqR+qNT93S3UoYUkqAZ9lLg8a7g9rimsWmYGK8cVToA4/sF3RrshdyV3sAGMXVUmpMYOw+dLpOuw==
+
+ngx-monaco-editor-v2@^18.0.1:
+  version "18.0.1"
+  resolved "https://registry.npmmirror.com/ngx-monaco-editor-v2/-/ngx-monaco-editor-v2-18.0.1.tgz#4935a041aa7299fd8474cfc487fcae8ef782ca2b"
+  integrity sha512-h2AGxuaCfnBnYHVbpjfP+4kC0OLf2vWdhPeULRoOcaE1yu0YxunR+r7ubYBZGQbFWGT8LVo8FR+L5CMCSOJm6A==
+  dependencies:
+    tslib "^2.1.0"
 
 nice-napi@^1.0.2:
   version "1.0.2"

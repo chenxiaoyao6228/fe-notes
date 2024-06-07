@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "monaco-editr": {
+    "monaco-editor": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -17,7 +17,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:application",
           "options": {
-            "outputPath": "dist/monaco-editr",
+            "outputPath": "dist/monaco-editor",
             "index": "src/index.html",
             "browser": "src/main.ts",
             "polyfills": [
@@ -29,12 +29,21 @@
               {
                 "glob": "**/*",
                 "input": "public"
+              },
+              {
+                "glob": "**/*",
+                "input": "node_modules/ngx-monaco-editor-v2/assets/monaco",
+                "output": "./assets/monaco/"
               }
             ],
             "styles": [
               "src/styles.scss"
             ],
-            "scripts": []
+            "scripts": [
+              "node_modules/monaco-editor/min/vs/loader.js",
+              "node_modules/monaco-editor/min/vs/editor/editor.main.nls.js",
+              "node_modules/monaco-editor/min/vs/editor/editor.main.js"
+            ]
           },
           "configurations": {
             "production": {
@@ -64,10 +73,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "monaco-editr:build:production"
+              "buildTarget": "monaco-editor:build:production"
             },
             "development": {
-              "buildTarget": "monaco-editr:build:development"
+              "buildTarget": "monaco-editor:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -87,13 +96,22 @@
             "assets": [
               {
                 "glob": "**/*",
+                "input": "node_modules/ngx-monaco-editor-v2/assets/monaco",
+                "output": "./assets/monaco/"
+              },
+              {
+                "glob": "**/*",
                 "input": "public"
               }
             ],
             "styles": [
               "src/styles.scss"
             ],
-            "scripts": []
+            "scripts": [
+              "node_modules/monaco-editor/min/vs/loader.js",
+              "node_modules/monaco-editor/min/vs/editor/editor.main.nls.js",
+              "node_modules/monaco-editor/min/vs/editor/editor.main.js"
+            ]
           }
         }
       }
