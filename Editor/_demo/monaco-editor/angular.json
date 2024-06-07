@@ -32,17 +32,12 @@
               },
               {
                 "glob": "**/*",
-                "input": "node_modules/ngx-monaco-editor-v2/assets/monaco",
-                "output": "./assets/monaco/"
+                "input": "./node_modules/monaco-editor/min/vs",
+                "output": "/assets/vs/"
               }
             ],
             "styles": [
               "src/styles.scss"
-            ],
-            "scripts": [
-              "node_modules/monaco-editor/min/vs/loader.js",
-              "node_modules/monaco-editor/min/vs/editor/editor.main.nls.js",
-              "node_modules/monaco-editor/min/vs/editor/editor.main.js"
             ]
           },
           "configurations": {
@@ -106,11 +101,6 @@
             ],
             "styles": [
               "src/styles.scss"
-            ],
-            "scripts": [
-              "node_modules/monaco-editor/min/vs/loader.js",
-              "node_modules/monaco-editor/min/vs/editor/editor.main.nls.js",
-              "node_modules/monaco-editor/min/vs/editor/editor.main.js"
             ]
           }
         }

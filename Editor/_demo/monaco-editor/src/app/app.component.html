@@ -1,4 +1,7 @@
 <div id="container">
-  <app-code-editor></app-code-editor>
+  <app-code-editor
+    [options]="{language: 'typescript'}"
+    [ngModel]="'export class Test {}'"
+  ></app-code-editor>
   <app-preview></app-preview>
 </div>
