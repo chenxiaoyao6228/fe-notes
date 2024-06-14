@@ -27,6 +27,47 @@ Angular 不仅仅是一个用于构建 UI 的库，还包括了路由、表单�
 - 对比 Vue 的渐进式文档, Angular 的文档还是差点. 中文文档更新不及时也将一大波国内初级开发者拒之门外
 - 基于前面的几点, 导致了国内的生态不活跃, 类似(xx 管理系统, xx 商城等, 绝大多数前端干的都是这类活), 反过来也是如此
 
+## 一些使用上的感受
+
+主要和 React 的对比
+
+## 语法复杂
+
+1. 在旧版本的 Angular 中新建一个组件要创建 4 个文件, 还要有 Module 的概念, 新版本引入了 standalone 组件, 但还是不方便, 各类 import, 比如一个 ngClass 之类的东西为啥就不能内置, 还得单独引入 ngClass 或者 CommonModule
+
+```ts
+@Component({
+  selector: "app-file-tree",
+  templateUrl: "./file-tree.component.html",
+  styleUrls: ["./file-tree.component.scss"],
+  standalone: true, // 去除Module, 组件也可以引入模块了
+  imports: [MatIconModule, MatTreeModule, NgClass, NgStyle], // 又或者是引入CommonModule
+  changeDetection: ChangeDetectionStrategy.OnPush, // 优化策略
+})
+export class FileTreeComponent {
+  //
+}
+```
+
+对比 React, 哪个舒服一目了然
+
+```ts
+import { Icon } from "antd";
+
+function FileTreeComponent() {
+  return <Icon />;
+}
+```
+
+### 模板与 jsx
+
+总的来说还是喜欢 JSX:
+
+- Angular 模板需要记太多语法糖, 比如新版本的 Angular 为了引进 Signal, 又添加了一套 for, if 的语法糖, 对于新旧项目都要写的人, 很蛋疼, 而 JSX 会 JS 就行
+- 组件模板是连字符的形式, 导入的模块是首字母大写的形式, 要找 Props 不太方便(比如我引入了一个三方组件, 想快捷通过 ts 类型定义找到参数不太容易)
+
+至于你说模板的性能比 Jsx 好, 我觉得快速出活对开发仔来说才是最重要的, 那点性能不值一提.
+
 ## 如何学
 
 采用基础概念 + 实践的方式, 目的是为了尽快熟悉 Angular 中的 API, 同时与其他框架(Vue, React 对比)
@@ -54,6 +95,8 @@ Angular 不仅仅是一个用于构建 UI 的库，还包括了路由、表单�
 ## 项目搭建
 
 代码还是在(\_demo)文件目录下, 脚手架用了[storybook](https://storybook.js.org/tutorials/intro-to-storybook/angular/en/get-started/)的
+
+当前 Angular 版本: 18.0.0
 
 插件安装: `Angular Language Service`
 

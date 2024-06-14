@@ -17,6 +17,40 @@
 - 两套系统的文件类型并不一致，跨系统访问和传输文件的话效率会下降很多，最好各存各的, 见 https://learn.microsoft.com/zh-cn/windows/wsl/filesystems
 - [开始通过适用于 Linux 的 Windows 子系统使用 Visual Studio Code](https://learn.microsoft.com/zh-cn/windows/wsl/tutorials/wsl-vscode)
 
+### WSL 内存配置
+
+- 打开记事本：按 Win + R 打开运行窗口，输入 notepad 并按回车。
+- 创建或编辑 .wslconfig 文件：在记事本中打开或新建位于你的用户主目录下的 .wslconfig 文件，例如 C:\Users\<YourUsername>\.wslconfig。-
+- 添加或修改内存配置：在文件中添加或修改如下内容（例如将内存增加到 8GB）
+
+```ini
+[wsl2]
+memory=8GB
+
+```
+
+- 保存文件：保存 .wslconfig 文件
+
+打开 powshell
+
+```powershell
+wsl --shutdown
+```
+
+重新打开 wsl terminal
+
+```
+free -h
+
+```
+
+效果如下
+
+>                total        used        free      shared  buff/cache   available
+>
+> Mem: 7.8Gi 7.2Gi 209Mi 0.0Ki 407Mi 344Mi
+> Swap: 2.0Gi 1.2Gi 859Mi
+
 ## windows 包管理工具(scoop)
 
 替代 mac 上的`brew`,
