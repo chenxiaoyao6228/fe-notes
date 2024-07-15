@@ -5,11 +5,13 @@
 
 
 
+
 # fe-notes(前端开发笔记)
 
 > I'm a slow walker, but I never walk backwards. — Abragam Lincoln.
 
 本仓库旨在收集整理前端基础知识以及开发实践。包括前端八股，最佳实践，踩坑汇总等，既有完整的系列，也有零碎的思考。
+
 
 
 
@@ -126,7 +128,6 @@
   - [css中的层叠,权重与继承](HTML_CSS%2Fcss%E4%B8%AD%E7%9A%84%E5%B1%82%E5%8F%A0%2C%E6%9D%83%E9%87%8D%E4%B8%8E%E7%BB%A7%E6%89%BF.md)
   - [css中的方位与顺序](HTML_CSS%2Fcss%E4%B8%AD%E7%9A%84%E6%96%B9%E4%BD%8D%E4%B8%8E%E9%A1%BA%E5%BA%8F.md)
   - [css中的线性渐变](HTML_CSS%2Fcss%E4%B8%AD%E7%9A%84%E7%BA%BF%E6%80%A7%E6%B8%90%E5%8F%98.md)
-  - [css如何实现前一个兄弟节点的选择效果](HTML_CSS%2Fcss%E5%A6%82%E4%BD%95%E5%AE%9E%E7%8E%B0%E5%89%8D%E4%B8%80%E4%B8%AA%E5%85%84%E5%BC%9F%E8%8A%82%E7%82%B9%E7%9A%84%E9%80%89%E6%8B%A9%E6%95%88%E6%9E%9C.md)
   - [css实现元素尺寸比例保持不变](HTML_CSS%2Fcss%E5%AE%9E%E7%8E%B0%E5%85%83%E7%B4%A0%E5%B0%BA%E5%AF%B8%E6%AF%94%E4%BE%8B%E4%BF%9D%E6%8C%81%E4%B8%8D%E5%8F%98.md)
   - [css实现半椭圆效果](HTML_CSS%2Fcss%E5%AE%9E%E7%8E%B0%E5%8D%8A%E6%A4%AD%E5%9C%86%E6%95%88%E6%9E%9C.md)
   - [css实现平行四边形效果](HTML_CSS%2Fcss%E5%AE%9E%E7%8E%B0%E5%B9%B3%E8%A1%8C%E5%9B%9B%E8%BE%B9%E5%BD%A2%E6%95%88%E6%9E%9C.md)
@@ -228,28 +229,16 @@
   - [ Node中事件循环](Node%2F%20Node%E4%B8%AD%E4%BA%8B%E4%BB%B6%E5%BE%AA%E7%8E%AF.md)
   - [koa源码学习笔记](Node%2Fkoa%E6%BA%90%E7%A0%81%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0.md)
 - SVG
-- 图形学
-  - [向量计算](%E5%9B%BE%E5%BD%A2%E5%AD%A6%2F%E5%90%91%E9%87%8F%E8%AE%A1%E7%AE%97.md)
-  - [矢量](%E5%9B%BE%E5%BD%A2%E5%AD%A6%2F%E7%9F%A2%E9%87%8F.md)
 - 程序人生
   - [(译)提升你的逆向工程技能](%E7%A8%8B%E5%BA%8F%E4%BA%BA%E7%94%9F%2F(%E8%AF%91)%E6%8F%90%E5%8D%87%E4%BD%A0%E7%9A%84%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%8A%80%E8%83%BD.md)
   - [西班牙ISE2024之行](%E7%A8%8B%E5%BA%8F%E4%BA%BA%E7%94%9F%2F%E8%A5%BF%E7%8F%AD%E7%89%99ISE2024%E4%B9%8B%E8%A1%8C.md)
-  - Angular
-    - AngularJS
-      - [build-your-own-angular-2-scope-inheritance](Angular%2FAngularJS%2Fbuild-your-own-angular-2-scope-inheritance.md)
-      - [build-your-own-angular-3-watch-collections](Angular%2FAngularJS%2Fbuild-your-own-angular-3-watch-collections.md)
-      - [build-your-own-angular-4-events](Angular%2FAngularJS%2Fbuild-your-own-angular-4-events.md)
-      - [build-your-own-angular-cp10-module-injection](Angular%2FAngularJS%2Fbuild-your-own-angular-cp10-module-injection.md)
-      - [build-your-own-angular-cp11-provider](Angular%2FAngularJS%2Fbuild-your-own-angular-cp11-provider.md)
-      - [build-your-own-angular-cp8-filters](Angular%2FAngularJS%2Fbuild-your-own-angular-cp8-filters.md)
-      - [build-your-own-angular-literal-expressions](Angular%2FAngularJS%2Fbuild-your-own-angular-literal-expressions.md)
-      - [build-your-own-angular-property-lookup](Angular%2FAngularJS%2Fbuild-your-own-angular-property-lookup.md)
-    - [Component组件](Angular%2FComponent%E7%BB%84%E4%BB%B6.md)
-    - [Directive指令](Angular%2FDirective%E6%8C%87%E4%BB%A4.md)
-    - [Pipe管道](Angular%2FPipe%E7%AE%A1%E9%81%93.md)
-    - [Router路由](Angular%2FRouter%E8%B7%AF%E7%94%B1.md)
-    - [RxJS入门](Angular%2FRxJS%E5%85%A5%E9%97%A8.md)
-  - Editor
-      - imgs
-    - [learn-svelte-dev是如何跑起来的](Editor%2Flearn-svelte-dev%E6%98%AF%E5%A6%82%E4%BD%95%E8%B7%91%E8%B5%B7%E6%9D%A5%E7%9A%84.md)
+  - AngularJS
+    - [build-your-own-angular-2-scope-inheritance](AngularJS%2Fbuild-your-own-angular-2-scope-inheritance.md)
+    - [build-your-own-angular-3-watch-collections](AngularJS%2Fbuild-your-own-angular-3-watch-collections.md)
+    - [build-your-own-angular-4-events](AngularJS%2Fbuild-your-own-angular-4-events.md)
+    - [build-your-own-angular-cp10-module-injection](AngularJS%2Fbuild-your-own-angular-cp10-module-injection.md)
+    - [build-your-own-angular-cp11-provider](AngularJS%2Fbuild-your-own-angular-cp11-provider.md)
+    - [build-your-own-angular-cp8-filters](AngularJS%2Fbuild-your-own-angular-cp8-filters.md)
+    - [build-your-own-angular-literal-expressions](AngularJS%2Fbuild-your-own-angular-literal-expressions.md)
+    - [build-your-own-angular-property-lookup](AngularJS%2Fbuild-your-own-angular-property-lookup.md)
 
