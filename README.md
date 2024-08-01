@@ -6,11 +6,13 @@
 
 
 
+
 # fe-notes(前端开发笔记)
 
 > I'm a slow walker, but I never walk backwards. — Abragam Lincoln.
 
 本仓库旨在收集整理前端基础知识以及开发实践。包括前端八股，最佳实践，踩坑汇总等，既有完整的系列，也有零碎的思考。
+
 
 
 
@@ -183,6 +185,7 @@
       - [git-submodule](%E5%B7%A5%E5%85%B7_%E6%95%88%E7%8E%87%2FGit%2Fgit-submodule.md)
       - [常用git命令](%E5%B7%A5%E5%85%B7_%E6%95%88%E7%8E%87%2FGit%2F%E5%B8%B8%E7%94%A8git%E5%91%BD%E4%BB%A4.md)
   - [Github](%E5%B7%A5%E5%85%B7_%E6%95%88%E7%8E%87%2FGithub.md)
+  - [acme.sh生成https证书](%E5%B7%A5%E5%85%B7_%E6%95%88%E7%8E%87%2Facme.sh%E7%94%9F%E6%88%90https%E8%AF%81%E4%B9%A6.md)
   - [clash配置指南](%E5%B7%A5%E5%85%B7_%E6%95%88%E7%8E%87%2Fclash%E9%85%8D%E7%BD%AE%E6%8C%87%E5%8D%97.md)
   - [iterms2-antigen-to-improve-your-work-experience](%E5%B7%A5%E5%85%B7_%E6%95%88%E7%8E%87%2Fiterms2-antigen-to-improve-your-work-experience.md)
   - [plantUML入门](%E5%B7%A5%E5%85%B7_%E6%95%88%E7%8E%87%2FplantUML%E5%85%A5%E9%97%A8.md)
@@ -229,6 +232,7 @@
   - [ Node中事件循环](Node%2F%20Node%E4%B8%AD%E4%BA%8B%E4%BB%B6%E5%BE%AA%E7%8E%AF.md)
   - [koa源码学习笔记](Node%2Fkoa%E6%BA%90%E7%A0%81%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0.md)
 - SVG
+- Editor
 - 程序人生
   - [(译)提升你的逆向工程技能](%E7%A8%8B%E5%BA%8F%E4%BA%BA%E7%94%9F%2F(%E8%AF%91)%E6%8F%90%E5%8D%87%E4%BD%A0%E7%9A%84%E9%80%86%E5%90%91%E5%B7%A5%E7%A8%8B%E6%8A%80%E8%83%BD.md)
   - [西班牙ISE2024之行](%E7%A8%8B%E5%BA%8F%E4%BA%BA%E7%94%9F%2F%E8%A5%BF%E7%8F%AD%E7%89%99ISE2024%E4%B9%8B%E8%A1%8C.md)
