@@ -105,7 +105,7 @@ img.crossOrigin = "anonymous";
 
 ![](https://cdn.jsdelivr.net/gh/chenxiaoyao6228/cloudimg@main/2023/tainted-canvas-error.png)
 
-完整的 demo 请看 👉 [在线效果预览](https://chenxiaoyao6228.github.io/html-preview/?https://github.com/chenxiaoyao6228/fe-notes/blob/main/Canvas/_demo/image-cross-origin/taint-canvas.html), 查看示例代码请点击[此处](./_demo/image-cross-origin/taint-canvas.html)
+完整的 demo 请看 👉 [在线效果预览](https://chenxiaoyao6228.github.io/html-preview/?https://github.com/chenxiaoyao6228/fe-notes/blob/main/Canvas/_demo/image-cross-origin/taint-canvas.html), 查看示例代码请点击[此处](https://github.com/chenxiaoyao6228/fe-notes/blob/main/Canvas/_demo/image-cross-origin/taint-canvas.html)
 
 ## Canvas 中的绘图 API
 
@@ -131,7 +131,7 @@ img.onload = function () {
 };
 ```
 
-完整的 demo 请看👉 [在线效果预览](https://chenxiaoyao6228.github.io/html-preview/?https://github.com/chenxiaoyao6228/fe-notes/blob/main/Canvas/_demo/draw-image/draw-image.html), 查看示例代码请点击[此处](./_demo/draw-image/draw-image.html)
+完整的 demo 请看👉 [在线效果预览](https://chenxiaoyao6228.github.io/html-preview/?https://github.com/chenxiaoyao6228/fe-notes/blob/main/Canvas/_demo/draw-image/draw-image.html), 查看示例代码请点击[此处](https://github.com/chenxiaoyao6228/fe-notes/blob/main/Canvas/_demo/draw-image/draw-image.html)
 
 ## Canvas 中绘制 svg
 
@@ -171,7 +171,7 @@ document.addEventListener("DOMContentLoaded", function () {
 var base64String = btoa(binaryString);
 ```
 
-完整的 demo 请看👉 [在线效果预览](https://chenxiaoyao6228.github.io/html-preview/?https://github.com/chenxiaoyao6228/fe-notes/blob/main/Canvas/_demo/draw-image/draw-svg.html), 查看示例代码请点击[此处](./_demo/draw-image/draw-svg.html)
+完整的 demo 请看👉 [在线效果预览](https://chenxiaoyao6228.github.io/html-preview/?https://github.com/chenxiaoyao6228/fe-notes/blob/main/Canvas/_demo/draw-image/draw-svg.html), 查看示例代码请点击[此处](https://github.com/chenxiaoyao6228/fe-notes/blob/main/Canvas/_demo/draw-image/draw-svg.html)
 
 ## Canvas 中绘制 canvas
 
@@ -192,7 +192,7 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 ```
 
-完整的 demo 请看👉 [在线效果预览](https://chenxiaoyao6228.github.io/html-preview/?https://github.com/chenxiaoyao6228/fe-notes/blob/main/Canvas/_demo/draw-image/draw-canvas.html), 查看示例代码请点击[此处](./_demo/draw-image/draw-canvas.html)
+完整的 demo 请看👉 [在线效果预览](https://chenxiaoyao6228.github.io/html-preview/?https://github.com/chenxiaoyao6228/fe-notes/blob/main/Canvas/_demo/draw-image/draw-canvas.html), 查看示例代码请点击[此处](https://github.com/chenxiaoyao6228/fe-notes/blob/main/Canvas/_demo/draw-image/draw-canvas.html)
 
 ## 更多阅读
 

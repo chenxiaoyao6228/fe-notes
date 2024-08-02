@@ -178,7 +178,7 @@ class ActionManager {
 
 ![](https://cdn.jsdelivr.net/gh/chenxiaoyao6228/cloudimg@main/2023/excalidraw-action-manager.gif)
 
-完整的 demo 请看 👉 [在线效果预览](https://chenxiaoyao6228.github.io/html-preview/?https://github.com/chenxiaoyao6228/fe-notes/blob/main/Canvas/_demo/excalidraw-state-management/index.html), 查看示例代码请点击[此处](./_demo/excalidraw-state-management/index.html)
+完整的 demo 请看 👉 [在线效果预览](https://chenxiaoyao6228.github.io/html-preview/?https://github.com/chenxiaoyao6228/fe-notes/blob/main/Canvas/_demo/excalidraw-state-management/index.html), 查看示例代码请点击[此处](https://github.com/chenxiaoyao6228/fe-notes/blob/main/Canvas/_demo/excalidraw-state-management/index.html)
 
 ## 协同
 

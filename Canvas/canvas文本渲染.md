@@ -48,7 +48,7 @@ ctx.fillText(text, x, y [, maxWidth])，文字的绘制坐标与(x,y)，ctx.text
 
 ![](https://cdn.jsdelivr.net/gh/chenxiaoyao6228/cloudimg@main/2023/canvas-textAlign-textBaseline.png)
 
-完整的 demo 请看👉 [在线效果预览](https://chenxiaoyao6228.github.io/html-preview/?https://github.com/chenxiaoyao6228/fe-notes/blob/main/Canvas/_demo/canvas-text/canvas-textAlign-textBaseline.html), 查看示例代码请点击[此处](./_demo/canvas-text/canvas-textAlign-textBaseline.html)。
+完整的 demo 请看👉 [在线效果预览](https://chenxiaoyao6228.github.io/html-preview/?https://github.com/chenxiaoyao6228/fe-notes/blob/main/Canvas/_demo/canvas-text/canvas-textAlign-textBaseline.html), 查看示例代码请点击[此处](https://github.com/chenxiaoyao6228/fe-notes/blob/main/Canvas/_demo/canvas-text/canvas-textAlign-textBaseline.html)。
 
 其中，黄色的小方格代表的是传入fillText的x,y坐标绘制出来的图形。 
 
@@ -61,7 +61,7 @@ ctx.fillText(text, x, y [, maxWidth])，文字的绘制坐标与(x,y)，ctx.text
 
 ![](https://cdn.jsdelivr.net/gh/chenxiaoyao6228/cloudimg@main/2023/canvas-textBase-middle-in-different-font.png)
 
-完整的 demo 请看👉 [在线效果预览](https://chenxiaoyao6228.github.io/html-preview/?https://github.com/chenxiaoyao6228/fe-notes/blob/main/Canvas/_demo/canvas-text/canvas-textBaseline-middle.html), 查看示例代码请点击[此处](./_demo/canvas-text/canvas-textBaseline-middle.html)
+完整的 demo 请看👉 [在线效果预览](https://chenxiaoyao6228.github.io/html-preview/?https://github.com/chenxiaoyao6228/fe-notes/blob/main/Canvas/_demo/canvas-text/canvas-textBaseline-middle.html), 查看示例代码请点击[此处](https://github.com/chenxiaoyao6228/fe-notes/blob/main/Canvas/_demo/canvas-text/canvas-textBaseline-middle.html)
 
 看来`textBaseline:middle`无法满足我们的需求，那么有没有其他的方法呢？
 
@@ -69,7 +69,7 @@ ctx.fillText(text, x, y [, maxWidth])，文字的绘制坐标与(x,y)，ctx.text
 
 ![](https://cdn.jsdelivr.net/gh/chenxiaoyao6228/cloudimg@main/2023/canvas-text-vertical-align-with-measure-text.png)
 
-完整的 demo 请看👉 [在线效果预览](https://chenxiaoyao6228.github.io/html-preview/?https://github.com/chenxiaoyao6228/fe-notes/blob/main/Canvas/_demo/canvas-text/vertical-align-with-text-measure.html), 查看示例代码请点击[此处](./_demo/canvas-text/vertical-align-with-text-measure.html)
+完整的 demo 请看👉 [在线效果预览](https://chenxiaoyao6228.github.io/html-preview/?https://github.com/chenxiaoyao6228/fe-notes/blob/main/Canvas/_demo/canvas-text/vertical-align-with-text-measure.html), 查看示例代码请点击[此处](https://github.com/chenxiaoyao6228/fe-notes/blob/main/Canvas/_demo/canvas-text/vertical-align-with-text-measure.html)
 
 
 

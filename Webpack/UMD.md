@@ -75,7 +75,7 @@ React 是一个流行的 JavaScript 库，用于构建用户界面。React 库�
 
 注意上述的代码中使用了 `type="text/babel"`，这是因为 React 使用了 JSX 语法，需要使用 Babel 进行转换。如果不使用 JSX 语法，可以将 `type="text/babel"` 去掉。
 
-完整的 demo 请看 👉 [在线效果预览](https://chenxiaoyao6228.github.io/html-preview/?https://github.com/chenxiaoyao6228/fe-notes/blob/main/Webpack/_demo/umd/browser-demo/react.html), 查看示例代码请点击[此处](./_demo/umd/browser-demo/react.html)
+完整的 demo 请看 👉 [在线效果预览](https://chenxiaoyao6228.github.io/html-preview/?https://github.com/chenxiaoyao6228/fe-notes/blob/main/Webpack/_demo/umd/browser-demo/react.html), 查看示例代码请点击[此处](https://github.com/chenxiaoyao6228/fe-notes/blob/main/Webpack/_demo/umd/browser-demo/react.html)
 
 回到 React， 其 UMD 模块基本结构如下：
 
@@ -147,7 +147,7 @@ function () {
  Hello.js:6 Hello!
 ```
 
-完整的 demo 请看 👉 [在线效果预览](https://chenxiaoyao6228.github.io/html-preview/?https://github.com/chenxiaoyao6228/fe-notes/blob/main/Webpack/_demo/umd/Hello-umd-test/global/index.html), 查看示例代码请点击[此处](./_demo/umd/Hello-umd-test/global/index.html)
+完整的 demo 请看 👉 [在线效果预览](https://chenxiaoyao6228.github.io/html-preview/?https://github.com/chenxiaoyao6228/fe-notes/blob/main/Webpack/_demo/umd/Hello-umd-test/global/index.html), 查看示例代码请点击[此处](https://github.com/chenxiaoyao6228/fe-notes/blob/main/Webpack/_demo/umd/Hello-umd-test/global/index.html)
 
 第三步: CommonJS 兼容
 
@@ -179,7 +179,7 @@ function () {
  Hello!
 ```
 
-查看示例代码请点击[此处](./_demo/umd/Hello-umd-test/commonjs/index.js)
+查看示例代码请点击[此处](https://github.com/chenxiaoyao6228/fe-notes/blob/main/Webpack/_demo/umd/Hello-umd-test/commonjs/index.js)
 
 第四步: AMD
 
@@ -217,7 +217,7 @@ function () {
  hello.js:17 Hello!
 ```
 
-完整的 demo 请看 👉 [在线效果预览](https://chenxiaoyao6228.github.io/html-preview/?https://github.com/chenxiaoyao6228/fe-notes/blob/main/Webpack/_demo/umd/Hello-umd-test/amd/index.html), 查看示例代码请点击[此处](./_demo/umd/Hello-umd-test/amd/index.html)
+完整的 demo 请看 👉 [在线效果预览](https://chenxiaoyao6228.github.io/html-preview/?https://github.com/chenxiaoyao6228/fe-notes/blob/main/Webpack/_demo/umd/Hello-umd-test/amd/index.html), 查看示例代码请点击[此处](https://github.com/chenxiaoyao6228/fe-notes/blob/main/Webpack/_demo/umd/Hello-umd-test/amd/index.html)
 
 第五步： CMD 支持
 
@@ -253,4 +253,4 @@ function () {
  Hello.js:17 Hello!
 ```
 
-完整的 demo 请看 👉 [在线效果预览](https://chenxiaoyao6228.github.io/html-preview/?https://github.com/chenxiaoyao6228/fe-notes/blob/main/Webpack/_demo/umd/Hello-umd-test/cmd/index.html), 查看示例代码请点击[此处](./_demo/umd/Hello-umd-test/cmd/index.html)
+完整的 demo 请看 👉 [在线效果预览](https://chenxiaoyao6228.github.io/html-preview/?https://github.com/chenxiaoyao6228/fe-notes/blob/main/Webpack/_demo/umd/Hello-umd-test/cmd/index.html), 查看示例代码请点击[此处](https://github.com/chenxiaoyao6228/fe-notes/blob/main/Webpack/_demo/umd/Hello-umd-test/cmd/index.html)

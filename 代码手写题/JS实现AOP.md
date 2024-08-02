@@ -75,4 +75,4 @@ const result3 = functionWithAfter();
 执行后置逻辑
 ```
 
-完整的 demo 请看 👉 [在线效果预览](https://chenxiaoyao6228.github.io/html-preview/?https://github.com/chenxiaoyao6228/fe-notes/blob/main/代码手写题/_demo/AOP/index.html), 查看示例代码请点击[此处](./_demo/AOP/index.html)
+完整的 demo 请看 👉 [在线效果预览](https://chenxiaoyao6228.github.io/html-preview/?https://github.com/chenxiaoyao6228/fe-notes/blob/main/代码手写题/_demo/AOP/index.html), 查看示例代码请点击[此处](https://github.com/chenxiaoyao6228/fe-notes/blob/main/代码手写题/_demo/AOP/index.html)

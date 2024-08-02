@@ -1,11 +1,10 @@
 ---
-permalink: 2023-05-01--canvas-infinite-canvas
-title: canvas 实现无限画布
-date: 2023-05-01
-categories:
-  - tech
-tags:
-  - canvas
+title: "canvas 实现无限画布"
+date: "2023-05-01"
+summary: "本文介绍如如何实现无限画布的定点缩放以及绘制矩形的功能"
+tags: ["canvas"]
+draft: false
+authors: ["default"]
 ---
 
 ## 前言
@@ -76,7 +75,7 @@ ctxWithTransform.rotate(-Math.PI / 4);
 
 ![](https://cdn.jsdelivr.net/gh/chenxiaoyao6228/cloudimg@main/2023/canvas-translate.png)
 
-完整的 demo 请看 👉 [在线效果预览](https://chenxiaoyao6228.github.io/html-preview/?https://github.com/chenxiaoyao6228/fe-notes/blob/main/Canvas/_demo/canvas-translate/index.html), 查看示例代码请点击[此处](./_demo/canvas-translate/index.html)
+完整的 demo 请看 👉 [在线效果预览](https://chenxiaoyao6228.github.io/html-preview/?https://github.com/chenxiaoyao6228/fe-notes/blob/main/Canvas/_demo/canvas-translate/index.html), 查看示例代码请点击[此处](https://github.com/chenxiaoyao6228/fe-notes/blob/main/Canvas/_demo/canvas-translate/index.html)
 
 ### context.scale
 
@@ -106,7 +105,7 @@ function drawSquare() {
 
 ![](https://cdn.jsdelivr.net/gh/chenxiaoyao6228/cloudimg@main/2023/canvas-scale.png)
 
-完整的 demo 请看 👉 [在线效果预览](https://chenxiaoyao6228.github.io/html-preview/?https://github.com/chenxiaoyao6228/fe-notes/blob/main/Canvas/_demo/canvas-scale/index.html), 查看示例代码请点击[此处](./_demo/canvas-scale/index.html)
+完整的 demo 请看 👉 [在线效果预览](https://chenxiaoyao6228.github.io/html-preview/?https://github.com/chenxiaoyao6228/fe-notes/blob/main/Canvas/_demo/canvas-scale/index.html), 查看示例代码请点击[此处](https://github.com/chenxiaoyao6228/fe-notes/blob/main/Canvas/_demo/canvas-scale/index.html)
 
 ## 实现无限画布
 
@@ -163,7 +162,7 @@ function drawElements() {
 }
 ```
 
-完整的 demo 请看 👉 [在线效果预览](https://chenxiaoyao6228.github.io/html-preview/?https://github.com/chenxiaoyao6228/fe-notes/blob/main/Canvas/_demo/infinite-canvas/pan.html), 查看示例代码请点击[此处](./_demo/infinite-canvas/pan.html)
+完整的 demo 请看 👉 [在线效果预览](https://chenxiaoyao6228.github.io/html-preview/?https://github.com/chenxiaoyao6228/fe-notes/blob/main/Canvas/_demo/infinite-canvas/pan.html), 查看示例代码请点击[此处](https://github.com/chenxiaoyao6228/fe-notes/blob/main/Canvas/_demo/infinite-canvas/pan.html)
 
 当然，我们也可以使用 ctx.translate 来简化我们的计算
 
@@ -182,7 +181,7 @@ function drawElements() {
 }
 ```
 
-完整的 demo 请看 👉 [在线效果预览](https://chenxiaoyao6228.github.io/html-preview/?https://github.com/chenxiaoyao6228/fe-notes/blob/main/Canvas/_demo/infinite-canvas/pan-with-translate.html), 查看示例代码请点击[此处](./_demo/infinite-canvas/pan-with-translate.html)
+完整的 demo 请看 👉 [在线效果预览](https://chenxiaoyao6228.github.io/html-preview/?https://github.com/chenxiaoyao6228/fe-notes/blob/main/Canvas/_demo/infinite-canvas/pan-with-translate.html), 查看示例代码请点击[此处](https://github.com/chenxiaoyao6228/fe-notes/blob/main/Canvas/_demo/infinite-canvas/pan-with-translate.html)
 
 ## 实现无限画布的定点缩放
 
@@ -213,6 +212,7 @@ const nextAppState = {
   zoom: nextZoom,
 };
 ```
+
 在绘制的时候进行下列的操作即可
 
 ```js
@@ -220,7 +220,7 @@ ctx.translate(element.x + appState.scrollX, element.y + appState.scrollY); // �
 ctx.fillRect(0, 0, element.width, element.height); // 我们的目的是保持元素的相对，避免过多的计算
 ```
 
-完整的 demo 请看👉 [在线效果预览](https://chenxiaoyao6228.github.io/html-preview/?https://github.com/chenxiaoyao6228/fe-notes/blob/main/Canvas/_demo/infinite-canvas/zoom.html), 查看示例代码请点击[此处](./_demo/infinite-canvas/zoom.html)
+完整的 demo 请看 👉 [在线效果预览](https://chenxiaoyao6228.github.io/html-preview/?https://github.com/chenxiaoyao6228/fe-notes/blob/main/Canvas/_demo/infinite-canvas/zoom.html), 查看示例代码请点击[此处](https://github.com/chenxiaoyao6228/fe-notes/blob/main/Canvas/_demo/infinite-canvas/zoom.html)
 
 ### 加入鼠标滚动
 
@@ -228,9 +228,6 @@ ctx.fillRect(0, 0, element.width, element.height); // 我们的目的是保持�
 
 ![](https://cdn.jsdelivr.net/gh/chenxiaoyao6228/cloudimg@main/2023/infinite-scroll.gif)
 
-完整的 demo 请看👉 [在线效果预览](https://chenxiaoyao6228.github.io/html-preview/?https://github.com/chenxiaoyao6228/fe-notes/blob/main/Canvas/_demo/infinite-canvas/index.html), 查看示例代码请点击[此处](./_demo/infinite-canvas/index.html)
+完整的 demo 请看 👉 [在线效果预览](https://chenxiaoyao6228.github.io/html-preview/?https://github.com/chenxiaoyao6228/fe-notes/blob/main/Canvas/_demo/infinite-canvas/index.html), 查看示例代码请点击[此处](https://github.com/chenxiaoyao6228/fe-notes/blob/main/Canvas/_demo/infinite-canvas/index.html)
 
-
- 
- 
- > 本文首发于个人博客[前端开发笔记](https://github.com/chenxiaoyao6228/fe-notes)，由于笔者能力有限，文章难免有疏漏之处，欢迎指正
+> 本文首发于个人博客[前端开发笔记](https://github.com/chenxiaoyao6228/fe-notes)，由于笔者能力有限，文章难免有疏漏之处，欢迎指正

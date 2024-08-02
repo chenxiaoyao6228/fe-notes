@@ -1,13 +1,3 @@
----
-permalink: 2019-11-28-react-fiber-first-glace
-title: React中的fiber架构初探
-date: 2019-11-28
-categories:
-  - tech
-tags:
-  - react
----
-
 ## 一.前言
 
 > Update: 这是几年前的旧文，对 React fiber 架构做了简要的介绍，最新的 React 18 的架构分析请翻翻其他的文章
@@ -485,7 +475,4 @@ function updateFunctionalComponent(fiber) {
 
 [A Cartoon Intro to Fiber - React Conf 2017](https://www.youtube.com/watch?v=ZCuYPiUIONs)
 
-
- 
- 
- > 本文首发于个人博客[前端开发笔记](https://github.com/chenxiaoyao6228/fe-notes)，由于笔者能力有限，文章难免有疏漏之处，欢迎指正
+> 本文首发于个人博客[前端开发笔记](https://github.com/chenxiaoyao6228/fe-notes)，由于笔者能力有限，文章难免有疏漏之处，欢迎指正

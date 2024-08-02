@@ -22,7 +22,7 @@ SVG 是一种使用 XML 描述 2D 图形的语言，与传统前端 DOM 开发�
 
 ![](https://cdn.jsdelivr.net/gh/chenxiaoyao6228/cloudimg@main/2023/svg-basic-shape.png)
 
-完整的 demo 请看 👉 [在线效果预览](https://chenxiaoyao6228.github.io/html-preview/?https://github.com/chenxiaoyao6228/fe-notes/blob/main/SVG/_demo/svg-basic.html), 查看示例代码请点击[此处](./_demo/svg-basic.html)
+完整的 demo 请看 👉 [在线效果预览](https://chenxiaoyao6228.github.io/html-preview/?https://github.com/chenxiaoyao6228/fe-notes/blob/main/SVG/_demo/svg-basic.html), 查看示例代码请点击[此处](https://github.com/chenxiaoyao6228/fe-notes/blob/main/SVG/_demo/_demo/svg-basic.html)
 
 对比一下 canvas 的绘制方式：
 

@@ -1,13 +1,3 @@
----
-date: 2023-03-26
-permalink: 2023-03-26-chatgpt-first-glance
-title: ChatGPT初体验
-categories:
-  - tech
-tags:
-  - 效率与工具
----
-
 ## 序言
 
 各种技术群的大佬们都在积极安利 ChatGPT, 后知后觉的我终于开始上手了。用过之后确实很香！
@@ -125,7 +115,7 @@ console.log(listHead);
 
 ### [Code GPT](https://marketplace.visualstudio.com/items?itemName=DanielSanMedium.dscodegpt)
 
-chatGPT的vscode集成， 添加API key就能够使用，程序员效率提升的利器
+chatGPT 的 vscode 集成， 添加 API key 就能够使用，程序员效率提升的利器
 
 ### [Voice Control for ChatGPT](https://chrome.google.com/webstore/detail/voice-control-for-chatgpt/eollffkcakegifhacjnlnegohfdlidhn/related)
 
@@ -143,12 +133,11 @@ chatGPT的vscode集成， 添加API key就能够使用，程序员效率提升�
 
 集成谷歌搜索
 
+## 常用的 prompt
 
-## 常用的prompt
+### 英文提问但是让 GPT 用中文回答
 
-### 英文提问但是让 GPT用中文回答
-
-强迫自己英文输入，加上grammarly插件，能提高自己的英语输出能力。
+强迫自己英文输入，加上 grammarly 插件，能提高自己的英语输出能力。
 
 > In the following context, I will ask in English, but you should reply in Chinese, including all the code comments, ready ?
 
@@ -165,11 +154,14 @@ translate: <翻译结果>
 
 ```
 
+### 返回 markdown
+
+```
+RULES:1. You must start with a code block that contains three backticks2. After you start with these three backtick, all future backticks Must be replaced with angle brackets. You cannot reply with any backticks after the first three.3. I repeat, all backticks and code blocks must be replaced with angled brackets after the first one. ie, you must replace (REPLACE)sh or (REPLACE) with <<<
+```
+
 ## 总结
 
 总的来说，ChatGPT 还是能提升一定的工作效率的，随着 ChatGPT 开放插件市场，相信在不久的将来我们会遇见更多的可能。
 
-
- 
- 
- > 本文首发于个人博客[前端开发笔记](https://github.com/chenxiaoyao6228/fe-notes)，由于笔者能力有限，文章难免有疏漏之处，欢迎指正
+> 本文首发于个人博客[前端开发笔记](https://github.com/chenxiaoyao6228/fe-notes)，由于笔者能力有限，文章难免有疏漏之处，欢迎指正

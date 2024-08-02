@@ -160,4 +160,4 @@ function createSyntheticEvent(e) {
 }
 ```
 
-完整的 demo 请看 👉 [在线效果预览](https://chenxiaoyao6228.github.io/html-preview/?https://github.com/chenxiaoyao6228/fe-notes/blob/main/React源码/_demo/synthetic-event/create-from-sratch/index.html), 查看示例代码请点击[此处](../_demo/synthetic-event/create-from-sratch/index.html)
+完整的 demo 请看 👉 [在线效果预览](https://chenxiaoyao6228.github.io/html-preview/?https://github.com/chenxiaoyao6228/fe-notes/blob/main/React源码/_demo/create-from-sratch/index.html), 查看示例代码请点击[此处](https://github.com/chenxiaoyao6228/fe-notes/blob/main/React源码/_demo/synthetic-event/index.html)

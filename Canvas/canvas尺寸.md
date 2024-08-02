@@ -1,13 +1,3 @@
----
-permalink: 2023-05-01-canvas-size
-title: canvas 尺寸
-date: 2023-05-01
-categories:
-  - tech
-tags:
-  - canvas
----
-
 ## 前言
 
 本文大纲：
@@ -113,7 +103,4 @@ ctx.scale(scale, scale); // 缩放修正
 - [半深入理解 CSS3 object-position/object-fit 属性](https://www.zhangxinxu.com/wordpress/2015/03/css3-object-position-object-fit)
 - [Window: devicePixelRatio property](https://developer.mozilla.org/en-US/docs/Web/API/Window/devicePixelRatio)
 
-
- 
- 
- > 本文首发于个人博客[前端开发笔记](https://github.com/chenxiaoyao6228/fe-notes)，由于笔者能力有限，文章难免有疏漏之处，欢迎指正
+> 本文首发于个人博客[前端开发笔记](https://github.com/chenxiaoyao6228/fe-notes)，由于笔者能力有限，文章难免有疏漏之处，欢迎指正

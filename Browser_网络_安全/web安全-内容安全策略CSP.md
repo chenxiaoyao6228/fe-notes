@@ -49,7 +49,7 @@ Content-Security-Policy: directive1 value1; directive2 value2;
 
 ![](https://cdn.jsdelivr.net/gh/chenxiaoyao6228/cloudimg@main/2023/content-security-policy-1.png)
 
-完整的 demo 请看 👉 [在线效果预览](https://chenxiaoyao6228.github.io/html-preview/?https://github.com/chenxiaoyao6228/fe-notes/blob/main/Browser_网络_安全/_demo/csp/1.html), 查看示例代码请点击[此处](./_demo/csp/1.html)
+完整的 demo 请看 👉 [在线效果预览](https://chenxiaoyao6228.github.io/html-preview/?https://github.com/chenxiaoyao6228/fe-notes/blob/main/Browser_网络_安全/_demo/csp/1.html), 查看示例代码请点击[此处](https://github.com/chenxiaoyao6228/fe-notes/blob/main/Browser_网络_安全/_demo/csp/1.html)
 
 
 ## CSP指令详解

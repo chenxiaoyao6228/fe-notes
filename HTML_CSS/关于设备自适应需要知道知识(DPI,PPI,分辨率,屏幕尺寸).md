@@ -1,11 +1,10 @@
 ---
-permalink: 2023-05-01-css-dpi-ppi-screen-size
-title: 关于关于设备自适应需要知道知识(DPI,PPI,分辨率,屏幕尺寸)
-date: 2023-05-01
-categories:
-  - tech
-tags:
-  - css
+title: "关于关于设备自适应需要知道知识(DPI,PPI,分辨率,屏幕尺寸)"
+summary: "本文总结设备自适应相关的知识点"
+date: "2023-05-01"
+tags: ["css"]
+draft: false
+authors: ["default"]
 ---
 
 ## 前言
@@ -118,7 +117,4 @@ dpi 可通过`window.devicePixelRatio`获取.
 
 - https://juejin.cn/post/6918323869824909319
 
-
- 
- 
- > 本文首发于个人博客[前端开发笔记](https://github.com/chenxiaoyao6228/fe-notes)，由于笔者能力有限，文章难免有疏漏之处，欢迎指正
+> 本文首发于个人博客[前端开发笔记](https://github.com/chenxiaoyao6228/fe-notes)，由于笔者能力有限，文章难免有疏漏之处，欢迎指正

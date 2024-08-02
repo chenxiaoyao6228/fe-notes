@@ -1,11 +1,10 @@
 ---
-permalink: 2022-01-02-webrtc-first-glance
-title: WebRTC 初探
-date: 2022-01-02
-categories:
-  - tech
-tags:
-  - webrtc
+title: "WebRTC 初探"
+date: "2022-01-02"
+tags: ["webrtc"]
+summary: "项目中有局域网投屏与文件传输的需求，所以研究了一下 webRTC，这里记录一下学习过程"
+draft: false
+authors: ["default"]
 ---
 
 ## 前言
@@ -199,7 +198,4 @@ peer.on("signal", (data) => {
 
 - [从 0 打造音视频直播系统](https://time.geekbang.org/column/article/107916)
 
-
- 
- 
- > 本文首发于个人博客[前端开发笔记](https://github.com/chenxiaoyao6228/fe-notes)，由于笔者能力有限，文章难免有疏漏之处，欢迎指正
+> 本文首发于个人博客[前端开发笔记](https://github.com/chenxiaoyao6228/fe-notes)，由于笔者能力有限，文章难免有疏漏之处，欢迎指正

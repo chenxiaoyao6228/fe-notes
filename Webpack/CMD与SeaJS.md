@@ -300,4 +300,4 @@ seaJs 的操作确实有点骚，简易好好看下下面的实现代码
 })();
 ```
 
-查看示例代码请点击[此处](./_demo/mini-cmd-seaJS/examples/index.html)
+查看示例代码请点击[此处](https://github.com/chenxiaoyao6228/fe-notes/blob/main/Webpack/_demo/mini-cmd-seaJS/examples/index.html)

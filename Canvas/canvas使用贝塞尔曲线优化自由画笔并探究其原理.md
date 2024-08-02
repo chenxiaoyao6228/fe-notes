@@ -1,11 +1,10 @@
 ---
-permalink: 2023-09-01-canvas使用贝塞尔曲线优化自由画笔并探究其原理
-title: canvas使用贝塞尔曲线优化自由画笔并探究其原理
-date: 2023-09-01
-categories:
-  - tech
-tags:
-  - canvas
+title: "canvas使用贝塞尔曲线优化自由画笔并探究其原理"
+date: "2023-09-01"
+tags: ["canvas"]
+summary: "贝塞尔曲线的原理，控制点，曲线方程，二次与三次贝塞尔曲线的推导实现"
+draft: false
+authors: ["default"]
 ---
 
 ## 前言
@@ -41,7 +40,6 @@ y(t) = r * sin(t)
 
 **在这里，(x(t), y(t)) 表示圆上的点的坐标，r 是圆的半径，t 是参数，通常在 0 到 2π（一圈）之间变化。 这个参数方程描述了圆上的点如何根据参数 t 和半径 r 来变化。**
 
-
 ## 贝塞尔曲线
 
 贝塞尔曲线（Bezier Curve）是一种数学曲线，它由法国工程师皮埃尔·贝塞尔（Pierre Bézier）在 20 世纪上半叶首次引入。
@@ -67,7 +65,7 @@ y(t) = r * sin(t)
 
 ![](https://cdn.jsdelivr.net/gh/chenxiaoyao6228/cloudimg@main/2023/bezier-curve-pull.gif)
 
-完整的 demo 请看 👉 [在线效果预览](https://chenxiaoyao6228.github.io/html-preview/?https://github.com/chenxiaoyao6228/fe-notes/blob/main/Canvas/_demo/freedraw/qudraic-bezier-visulizer.html), 查看示例代码请点击[此处](./_demo/freedraw/qudraic-bezier-visulizer.html)
+完整的 demo 请看 👉 [在线效果预览](https://chenxiaoyao6228.github.io/html-preview/?https://github.com/chenxiaoyao6228/fe-notes/blob/main/Canvas/_demo/freedraw/qudraic-bezier-visulizer.html), 查看示例代码请点击[此处](https://github.com/chenxiaoyao6228/fe-notes/blob/main/Canvas/_demo/freedraw/qudraic-bezier-visulizer.html)
 
 ![](https://cdn.jsdelivr.net/gh/chenxiaoyao6228/cloudimg@main/2023/bezier-curve-line-2.png)
 
@@ -80,7 +78,6 @@ y(t) = r * sin(t)
 - 0 个控制点的贝塞尔曲线称为线性贝塞尔曲线(linear Bézier curve)
 - 1 个控制点的贝塞尔曲线称为二次贝塞尔曲线(quadratic Bézier curve)
 - 2 个控制点的贝塞尔曲线称为三次贝塞尔曲线(cubic Bézier curve)
-
 
 ### 线性贝塞尔曲线
 
@@ -132,7 +129,7 @@ renderScene();
 
 ![](https://cdn.jsdelivr.net/gh/chenxiaoyao6228/cloudimg@main/2023/linear-lerp.gif)
 
-完整的 demo 请看 👉 [在线效果预览](https://chenxiaoyao6228.github.io/html-preview/?https://github.com/chenxiaoyao6228/fe-notes/blob/main/Canvas/_demo/freedraw/linear-bezier-curve.html), 查看示例代码请点击[此处](./_demo/freedraw/linear-bezier-curve.html)
+完整的 demo 请看 👉 [在线效果预览](https://chenxiaoyao6228.github.io/html-preview/?https://github.com/chenxiaoyao6228/fe-notes/blob/main/Canvas/_demo/freedraw/linear-bezier-curve.html), 查看示例代码请点击[此处](https://github.com/chenxiaoyao6228/fe-notes/blob/main/Canvas/_demo/freedraw/linear-bezier-curve.html)
 
 ### 二次贝塞尔曲线
 
@@ -187,7 +184,7 @@ function renderScene(step) {
 
 ![](https://cdn.jsdelivr.net/gh/chenxiaoyao6228/cloudimg@main/2023/quadratic-bezier-curve-2.png)
 
-完整的 demo 请看 👉 [在线效果预览](https://chenxiaoyao6228.github.io/html-preview/?https://github.com/chenxiaoyao6228/fe-notes/blob/main/Canvas/_demo/freedraw/quadratic-bezier-curve.html), 查看示例代码请点击[此处](./_demo/freedraw/quadratic-bezier-curve.html)
+完整的 demo 请看 👉 [在线效果预览](https://chenxiaoyao6228.github.io/html-preview/?https://github.com/chenxiaoyao6228/fe-notes/blob/main/Canvas/_demo/freedraw/quadratic-bezier-curve.html), 查看示例代码请点击[此处](https://github.com/chenxiaoyao6228/fe-notes/blob/main/Canvas/_demo/freedraw/quadratic-bezier-curve.html)
 
 ### 三次贝塞尔曲线
 
@@ -211,7 +208,7 @@ function quadratic(p0, p1, p2, t) {
 
 ![](https://cdn.jsdelivr.net/gh/chenxiaoyao6228/cloudimg@main/2023/quadratic-bezier-curve.gif)
 
-完整的 demo 请看 👉 [在线效果预览](https://chenxiaoyao6228.github.io/html-preview/?https://github.com/chenxiaoyao6228/fe-notes/blob/main/Canvas/_demo/freedraw/cubic-bezier-curve.html), 查看示例代码请点击[此处](./_demo/freedraw/cubic-bezier-curve.html)
+完整的 demo 请看 👉 [在线效果预览](https://chenxiaoyao6228.github.io/html-preview/?https://github.com/chenxiaoyao6228/fe-notes/blob/main/Canvas/_demo/freedraw/cubic-bezier-curve.html), 查看示例代码请点击[此处](https://github.com/chenxiaoyao6228/fe-notes/blob/main/Canvas/_demo/freedraw/cubic-bezier-curve.html)
 
 我们可以抽取出一个对应的 cubic 函数
 
@@ -283,7 +280,7 @@ function renderFreedraw(ctx, points) {
 }
 ```
 
-完整的 demo 请看 👉 [在线效果预览](https://chenxiaoyao6228.github.io/html-preview/?https://github.com/chenxiaoyao6228/fe-notes/blob/main/Canvas/_demo/freedraw/freedraw.html), 查看示例代码请点击[此处](./_demo/freedraw/freedraw.html)
+完整的 demo 请看 👉 [在线效果预览](https://chenxiaoyao6228.github.io/html-preview/?https://github.com/chenxiaoyao6228/fe-notes/blob/main/Canvas/_demo/freedraw/freedraw.html), 查看示例代码请点击[此处](https://github.com/chenxiaoyao6228/fe-notes/blob/main/Canvas/_demo/freedraw/freedraw.html)
 
 ps: 注意例子中用了两层画布去优化性能, 避免了重复绘制已有但未变化的图形。
 
@@ -320,7 +317,7 @@ function renderFreedraw(ctx, points) {
 
 可以看到，经过贝塞尔曲线拟合的曲线更加平滑了。
 
-完整的 demo 请看 👉 [在线效果预览](https://chenxiaoyao6228.github.io/html-preview/?https://github.com/chenxiaoyao6228/fe-notes/blob/main/Canvas/_demo/freedraw/freedraw-with-bezier.html), 查看示例代码请点击[此处](./_demo/freedraw/freedraw-with-bezier.html)
+完整的 demo 请看 👉 [在线效果预览](https://chenxiaoyao6228.github.io/html-preview/?https://github.com/chenxiaoyao6228/fe-notes/blob/main/Canvas/_demo/freedraw/freedraw-with-bezier.html), 查看示例代码请点击[此处](https://github.com/chenxiaoyao6228/fe-notes/blob/main/Canvas/_demo/freedraw/freedraw-with-bezier.html)
 
 **将两个点的中点作为控制点的选择通常用于创建平滑的曲线**，该方法可以确保曲线通过两个点并且在两个点之间有一个平滑的拐角。方法的依据是曲线的切线在控制点处与曲线的切线在两个点的中点处平行，从而使曲线过渡更加平滑。
 
@@ -332,10 +329,6 @@ function renderFreedraw(ctx, points) {
 
 - [MDN cubic-bezier_function](https://developer.mozilla.org/zh-CN/docs/Web/CSS/easing-function#using_the_cubic-bezier_function)
 
-
 由于笔者能力有限，文章难免有疏漏之处，欢迎指正, 查看更多文章欢迎关注[前端开发笔记](https://github.com/chenxiaoyao6228/fe-notes)，一起交流学习
 
-
- 
- 
- > 本文首发于个人博客[前端开发笔记](https://github.com/chenxiaoyao6228/fe-notes)，由于笔者能力有限，文章难免有疏漏之处，欢迎指正
+> 本文首发于个人博客[前端开发笔记](https://github.com/chenxiaoyao6228/fe-notes)，由于笔者能力有限，文章难免有疏漏之处，欢迎指正

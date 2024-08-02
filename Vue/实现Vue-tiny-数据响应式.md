@@ -1,11 +1,10 @@
 ---
-permalink: 2020-01-24-vue-tiny-reactive-and-setup
-date: 2020-01-24
-title: 实现Vue-tiny-数据响应式
-categories:
-  - tech
-tags:
-  - vue
+title: "实现Vue-tiny-数据响应式"
+date: "2020-01-24"
+summary: "响应式视图更新的基本原理是什么呢? 本文一起来探究"
+tags: ["Vue"]
+draft: false
+authors: ["default"]
 ---
 
 ## 前言
@@ -308,7 +307,4 @@ createApp(App).mount(document.querySelector("#root"));
 
 至此,我们的数据更新到模板更新就基本完成了
 
-
- 
- 
- > 本文首发于个人博客[前端开发笔记](https://github.com/chenxiaoyao6228/fe-notes)，由于笔者能力有限，文章难免有疏漏之处，欢迎指正
+> 本文首发于个人博客[前端开发笔记](https://github.com/chenxiaoyao6228/fe-notes)，由于笔者能力有限，文章难免有疏漏之处，欢迎指正

@@ -1,11 +1,10 @@
 ---
-permalink: 2020-01-31-vue-tiny-diff-algorithm
-date: 2020-01-31
-title: 实现Vue-tiny-dom-diff算法
-categories:
-  - tech
-tags:
-  - vue
+title: "实现Vue-tiny-dom-diff算法"
+date: " 2020-01-31"
+summary: "前面我们实现了基本的数据更新到视图渲染的逻辑,但是这种方式(innerHTML)是极其低效的, 因此,我们相应引入 dom 和 diff 算法"
+tags: ["Vue"]
+draft: false
+authors: ["default"]
 ---
 
 ## 前言
@@ -235,7 +234,4 @@ if (oldChildren.length > newChildren.length) {
 }
 ```
 
-
- 
- 
- > 本文首发于个人博客[前端开发笔记](https://github.com/chenxiaoyao6228/fe-notes)，由于笔者能力有限，文章难免有疏漏之处，欢迎指正
+> 本文首发于个人博客[前端开发笔记](https://github.com/chenxiaoyao6228/fe-notes)，由于笔者能力有限，文章难免有疏漏之处，欢迎指正

@@ -34,7 +34,7 @@ ASCII（美国标准信息交换码）是最早的字符编码，将每个字符
 - 图像数据： 后续的字节代表实际的像素数据。
 - 文件结束标志： 最后的 12 个字节 [73, 69, 78, 68, 174, 66, 96, 130] 代表 IEND 块，表示 PNG 文件的结束
 
-完整的 demo 请看 👉 [在线效果预览](https://chenxiaoyao6228.github.io/html-preview/?https://github.com/chenxiaoyao6228/fe-notes/blob/main/Javascript/_demo/binary/data-representation.html), 查看示例代码请点击[此处](./_demo/binary/data-representation.html)
+完整的 demo 请看 👉 [在线效果预览](https://chenxiaoyao6228.github.io/html-preview/?https://github.com/chenxiaoyao6228/fe-notes/blob/main/Javascript/_demo/binary/data-representation.html), 查看示例代码请点击[此处](https://github.com/chenxiaoyao6228/fe-notes/blob/main/Javascript/_demo/binary/data-representation.html)
 
 而对于相机拍摄的照片，其二进制数据会更加复杂，因为其包含了更多的元数据。通常包括拍摄日期、相机型号、曝光时间、光圈、ISO 设置等。些元信息遵循了 EXIF（Exchangeable Image File Format）标准，并且通常被嵌入在常见的图像格式（如 JPEG）中。
 
@@ -150,7 +150,7 @@ URL.createObjectURL(selectedFile);
 
 ![](https://cdn.jsdelivr.net/gh/chenxiaoyao6228/cloudimg@main/2023/file-createObjectURL.png)
 
-完整的 demo 请看 👉 [在线效果预览](https://chenxiaoyao6228.github.io/html-preview/?https://github.com/chenxiaoyao6228/fe-notes/blob/main/Javascript/_demo/binary/url.html), 查看示例代码请点击[此处](./_demo/binary/url.html)
+完整的 demo 请看 👉 [在线效果预览](https://chenxiaoyao6228.github.io/html-preview/?https://github.com/chenxiaoyao6228/fe-notes/blob/main/Javascript/_demo/binary/url.html), 查看示例代码请点击[此处](https://github.com/chenxiaoyao6228/fe-notes/blob/main/Javascript/_demo/binary/url.html)
 
 ### Canvas.toDataUrl 和 Canvas.toBlob
 
@@ -174,7 +174,7 @@ canvas.toBlob((blob) => {
 
 ![](https://cdn.jsdelivr.net/gh/chenxiaoyao6228/cloudimg@main/2023/canvas-toDataUrl.png)
 
-完整的 demo 请看 👉 [在线效果预览](https://chenxiaoyao6228.github.io/html-preview/?https://github.com/chenxiaoyao6228/fe-notes/blob/main/Javascript/_demo/binary/canvas-toDataUrl.html), 查看示例代码请点击[此处](./_demo/binary/canvas-toDataUrl.html)
+完整的 demo 请看 👉 [在线效果预览](https://chenxiaoyao6228.github.io/html-preview/?https://github.com/chenxiaoyao6228/fe-notes/blob/main/Javascript/_demo/binary/canvas-toDataUrl.html), 查看示例代码请点击[此处](https://github.com/chenxiaoyao6228/fe-notes/blob/main/Javascript/_demo/binary/canvas-toDataUrl.html)
 
 ## FormData 与 File 与文件上传
 

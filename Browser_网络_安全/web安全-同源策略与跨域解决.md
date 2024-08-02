@@ -204,7 +204,7 @@ app.listen(PORT, () => {
 
 ![](https://cdn.jsdelivr.net/gh/chenxiaoyao6228/cloudimg@main/2023/cors-request-demo.png)
 
-查看示例代码请点击[此处](./_demo/same-origin/cors/client.html)
+查看示例代码请点击[此处](https://github.com/chenxiaoyao6228/fe-notes/blob/main/Browser_网络_安全/_demo/same-origin/cors/client.html)
 
 上述代码有一个问题就是，每次请求都会发送一个预检请求，这样就会造成性能问题，所以对于复杂请求，我们需要在服务端设置对应的响应头，告诉浏览器，这个请求是允许的，不需要再发送预检请求了
 
