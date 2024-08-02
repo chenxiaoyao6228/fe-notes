@@ -198,3 +198,8 @@ peer.on("signal", (data) => {
 - [Simple-peer](https://www.npmjs.com/package/simple-peer)
 
 - [从 0 打造音视频直播系统](https://time.geekbang.org/column/article/107916)
+
+
+ 
+ 
+ > 本文首发于个人博客[前端开发笔记](https://github.com/chenxiaoyao6228/fe-notes)，由于笔者能力有限，文章难免有疏漏之处，欢迎指正

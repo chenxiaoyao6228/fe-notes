@@ -307,3 +307,8 @@ createApp(App).mount(document.querySelector("#root"));
 ```
 
 至此,我们的数据更新到模板更新就基本完成了
+
+
+ 
+ 
+ > 本文首发于个人博客[前端开发笔记](https://github.com/chenxiaoyao6228/fe-notes)，由于笔者能力有限，文章难免有疏漏之处，欢迎指正

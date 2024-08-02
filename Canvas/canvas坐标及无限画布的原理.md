@@ -229,3 +229,8 @@ ctx.fillRect(0, 0, element.width, element.height); // 我们的目的是保持�
 ![](https://cdn.jsdelivr.net/gh/chenxiaoyao6228/cloudimg@main/2023/infinite-scroll.gif)
 
 完整的 demo 请看👉 [在线效果预览](https://chenxiaoyao6228.github.io/html-preview/?https://github.com/chenxiaoyao6228/fe-notes/blob/main/Canvas/_demo/infinite-canvas/index.html), 查看示例代码请点击[此处](./_demo/infinite-canvas/index.html)
+
+
+ 
+ 
+ > 本文首发于个人博客[前端开发笔记](https://github.com/chenxiaoyao6228/fe-notes)，由于笔者能力有限，文章难免有疏漏之处，欢迎指正

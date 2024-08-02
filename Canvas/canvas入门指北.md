@@ -78,3 +78,8 @@ canvas.toBlob: 创建一个用于表示此canvas元素图像文件的blob
 * GUI架构的两种模式与四种更新页面的手法: https://www.jianshu.com/p/65189d9d7b89
 * https://games.greggman.com/game/imgui-future/
 * https://developer.mozilla.org/zh-CN/docs/Web/API/CanvasRenderingContext2D/save
+
+
+ 
+ 
+ > 本文首发于个人博客[前端开发笔记](https://github.com/chenxiaoyao6228/fe-notes)，由于笔者能力有限，文章难免有疏漏之处，欢迎指正

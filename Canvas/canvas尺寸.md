@@ -112,3 +112,8 @@ ctx.scale(scale, scale); // 缩放修正
 
 - [半深入理解 CSS3 object-position/object-fit 属性](https://www.zhangxinxu.com/wordpress/2015/03/css3-object-position-object-fit)
 - [Window: devicePixelRatio property](https://developer.mozilla.org/en-US/docs/Web/API/Window/devicePixelRatio)
+
+
+ 
+ 
+ > 本文首发于个人博客[前端开发笔记](https://github.com/chenxiaoyao6228/fe-notes)，由于笔者能力有限，文章难免有疏漏之处，欢迎指正

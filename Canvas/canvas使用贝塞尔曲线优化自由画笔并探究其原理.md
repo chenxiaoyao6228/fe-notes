@@ -334,3 +334,8 @@ function renderFreedraw(ctx, points) {
 
 
 由于笔者能力有限，文章难免有疏漏之处，欢迎指正, 查看更多文章欢迎关注[前端开发笔记](https://github.com/chenxiaoyao6228/fe-notes)，一起交流学习
+
+
+ 
+ 
+ > 本文首发于个人博客[前端开发笔记](https://github.com/chenxiaoyao6228/fe-notes)，由于笔者能力有限，文章难免有疏漏之处，欢迎指正
