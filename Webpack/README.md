@@ -14,10 +14,10 @@
 - [webpack 中的 tapable 库, 实现 mini-tapable](./3-webpack中的tabpable.md)
 - webpack 中的 plugin
 - webpack 中 dev-server 的工作原理
-- [webpack 热更新原理](./webpack-hmr.md)
+- webpack 热更新原理
 - webpack 模块联邦
 - [angularJS 是如何实现模块与依赖注入的](../AngularJS/build-your-own-angular-cp10-module-injection.md)
-- [tree-shaking 的工作原理](./tree-shaking.md)
+- tree-shaking 的工作原理
 - rollup 的工作原理
 - SystemJs 的实现流程
 - 微前端框架的工作原理

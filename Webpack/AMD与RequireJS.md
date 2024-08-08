@@ -1,8 +1,19 @@
+---
+title: "深入理解AMD规范与RequireJS"
+date: "2024-08-08"
+summary: "本文介绍了AMD规范及其在RequireJS中的实现，包括模块定义、引用、标识符以及一个常规RequireJS项目的实现和Webpack中加载AMD模块的方法。"
+tags: ["前端", "模块化", "JavaScript", "AMD", "RequireJS"]
+draft: false
+authors: ["default"]
+---
+
 ## AMD 与 RequireJS
 
 CommonJS 规范加载模块是同步的，也就是说，只有加载完成，才能执行后面的操作。由于 Node.js 主要用于服务器编程，模块文件一般都已经存在于本地硬盘，所以加载起来比较快，不用考虑非同步加载的方式，所以 CommonJS 规范比较适用。
 
 但是如果是浏览器环境，要从服务器端加载模块，这时就必须采用非同步模式，AMD 规范是其中比较成熟的一个。
+
+> 对应的代码在 [\_demo/mini-amd-requireJS](https://github.com/chenxiaoyao6228/fe-notes/tree/main/Webpack/_demo/mini-amd-requireJS) 目录下
 
 ## AMD 规范
 
@@ -202,7 +213,7 @@ define([], function () {
 })(window);
 ```
 
-> 对应的代码在 \_demo/mini-amd-requireJS 目录下， 除了 Promise 版本的实现，还有回调版本的实现，可以自行查看
+> 对应的代码在 [\_demo/mini-amd-requireJS](https://github.com/chenxiaoyao6228/fe-notes/tree/main/Webpack/_demo/mini-amd-requireJS) 目录下， 除了 Promise 版本的实现，还有回调版本的实现，可以自行查看
 
 ## Webpack 中加载 amd
 
@@ -233,3 +244,5 @@ module.exports = {
   },
 };
 ```
+
+> 本文首发于个人 Github[前端开发笔记](https://github.com/chenxiaoyao6228/fe-notes)，由于笔者能力有限，文章难免有疏漏之处，欢迎指正

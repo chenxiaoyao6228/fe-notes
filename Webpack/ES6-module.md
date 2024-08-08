@@ -1,6 +1,17 @@
+---
+title: "深入理解ESM规范"
+date: "2023-12-12"
+summary: "本文总结了ESM（ES6 Module）的相关知识点，包括基本语法、浏览器加载过程、Node.js中的处理以及与CommonJS模块的差异和兼容。"
+tags: ["前端", "模块化", "JavaScript", "ESM", "ES6 Module"]
+draft: false
+authors: ["default"]
+---
+
 ## 前言
 
 本文总结下 ESM(ES6 Module) 的相关知识点
+
+> 本节对应的所有 demo 在[此处](https://github.com/chenxiaoyao6228/fe-notes/blob/main/Webpack/_demo/esm)
 
 ## ESM 的基本语法
 
@@ -127,7 +138,7 @@ button.onclick = logMsg;
 document.body.appendChild(button);
 ```
 
-具体代码在[这里](./_demo/esm/browser-load/)
+具体代码在[这里](https://github.com/chenxiaoyao6228/fe-notes/blob/main/Webpack/_demo//esm/browser-load/)
 
 页面加载顺序如下:
 
@@ -182,7 +193,7 @@ Node.js 利用 V8 引擎的支持，实现了对 ECMAScript 模块的解析和�
 
 > foo-bar
 
-具体代码在[这里](./_demo/esm/node-mjs/)
+具体代码在[这里](https://github.com/chenxiaoyao6228/fe-notes/blob/main/Webpack/_demo/esm/node-mjs/)
 
 或者在 package.json 中的 "type" 字段中设置为 "module"：
 
@@ -207,3 +218,5 @@ Node.js 利用 V8 引擎的支持，实现了对 ECMAScript 模块的解析和�
 ### ES6 模块加载 CommonJS 模块
 
 ### 如何同时支持
+
+> 本文首发于个人 Github[前端开发笔记](https://github.com/chenxiaoyao6228/fe-notes)，由于笔者能力有限，文章难免有疏漏之处，欢迎指正

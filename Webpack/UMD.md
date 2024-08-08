@@ -1,8 +1,19 @@
+---
+title: "深入理解UMD规范及其实现"
+date: "2023-12-12"
+summary: "本文介绍了UMD规范及其在不同环境中的应用，包括React中的UMD模块使用以及手动实现一个UMD模块的详细步骤。"
+tags: ["前端", "模块化", "JavaScript", "UMD", "React"]
+draft: false
+authors: ["default"]
+---
+
 ## 前言
 
 UMD（Universal Module Definition）是一种通用的模块定义规范，旨在使同一个模块能够在不同的环境中使用，包括浏览器、Node.js 等。它采用一种灵活的方式，既支持类似 CommonJS 的模块加载方式，也支持类似 AMD 的异步加载方式，同时兼容浏览器全局变量的使用。
 
 UMD 模块通常通过一定的判断逻辑来确定当前的模块加载环境，从而决定采用何种加载方式。这种灵活性使得开发者能够编写一次模块代码，然后在不同的环境中使用，无需修改代码。
+
+> 本节对应的所有 demo 在[此处](https://github.com/chenxiaoyao6228/fe-notes/blob/main/Webpack/_demo/umd)
 
 ## UMD 模块的基本结构
 
@@ -254,3 +265,5 @@ function () {
 ```
 
 完整的 demo 请看 👉 [在线效果预览](https://chenxiaoyao6228.github.io/html-preview/?https://github.com/chenxiaoyao6228/fe-notes/blob/main/Webpack/_demo/umd/Hello-umd-test/cmd/index.html), 查看示例代码请点击[此处](https://github.com/chenxiaoyao6228/fe-notes/blob/main/Webpack/_demo/umd/Hello-umd-test/cmd/index.html)
+
+> 本文首发于个人 Github[前端开发笔记](https://github.com/chenxiaoyao6228/fe-notes)，由于笔者能力有限，文章难免有疏漏之处，欢迎指正

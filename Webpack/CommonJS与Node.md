@@ -1,8 +1,19 @@
+---
+title: "深入理解CommonJS模块化规范与Node.js实现"
+date: "2023-12-12"
+summary: "本文介绍了CommonJS规范及其在Node.js中的实现，包括模块定义、引用、标识和编译执行的过程，并探讨了模块缓存、路径分析及循环依赖问题。"
+tags: ["前端", "模块化", "JavaScript", "CommonJS", "Node.js"]
+draft: false
+authors: ["default"]
+---
+
 ## 前言
 
 在其他高级语言中，Java 有类文件，Python 有 import 机制，Ruby 有 require,PHP 有 include 和 require。而 JavaScripti 通过`<script>`标签引入代码的方式显得杂乱无章.CommonJS 规范为 JavaScriptf 制定了一个美好的愿景一希望 JavaScript 能够在任何地方运行。
 
 本节主要介绍 CommonJS 规范，以及 Node.js 中的实现。
+
+> 本节所有代码在[此处](https://github.com/chenxiaoyao6228/fe-notes/tree/main/Webpack/_demo/commonJS)
 
 ## CommonJS 基本语法
 
@@ -458,7 +469,7 @@ npx browserify src/main.js -o dist/bundle.js --debug
 );
 ```
 
-代码在： Webpack/\_demo/commonJS/\_others/browserify
+> 代码在：[ Webpack/\_demo/commonJS/\_others/browserify](https://github.com/chenxiaoyao6228/fe-notes/tree/main/Webpack/_demo/commonJS/_others/browserify)
 
 #### Browserify 打包的基本原理:
 
@@ -468,3 +479,5 @@ npx browserify src/main.js -o dist/bundle.js --debug
 - 输出： 最终，Browserify 生成一个可以在浏览器中运行的 JavaScript 文件。你可以在 HTML 文件中引入这个生成的文件，使得你的 CommonJS 模块能够在浏览器中正常工作。
 
 其实可以看到，无论是 browserify, webpack 还是 rollup， 打包的基本原理都是一样的，只是实现的方式不同。
+
+> 本文首发于个人 Github[前端开发笔记](https://github.com/chenxiaoyao6228/fe-notes)，由于笔者能力有限，文章难免有疏漏之处，欢迎指正

@@ -1,3 +1,12 @@
+---
+title: "深入理解package.json中的模块化配置"
+date: "2023-12-12"
+summary: "本文总结了package.json中与模块化相关的配置，包括main、browser、type、module、jsnext:main以及exports字段的用途和使用方法。"
+tags: ["前端", "模块化", "JavaScript", "package.json"]
+draft: false
+authors: ["default"]
+---
+
 ## 前言
 
 本文总结 package.json 中与模块化相关的，包括：
@@ -83,3 +92,5 @@ exports 字段的优先级高于 main、module 字段，如果同时存在，exp
 ```
 
 在这个例子中，.（点）子字段指定了默认的导出方式，根据导入方式选择不同的文件。同时，还为特定的路径 ./helpers 和 ./utils 指定了导出方式。
+
+> 本文首发于个人 Github[前端开发笔记](https://github.com/chenxiaoyao6228/fe-notes)，由于笔者能力有限，文章难免有疏漏之处，欢迎指正

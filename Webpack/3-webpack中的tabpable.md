@@ -1,3 +1,12 @@
+---
+title: "深入理解Tapable与Webpack中的Hooks"
+date: "2023-12-12"
+summary: "本文详细介绍了Tapable库及其在Webpack中的应用，涵盖了核心概念、Hook类型及其用途，并通过代码示例展示了各种Hook的实现和使用方法。"
+tags: ["前端", "Webpack", "Tapable", "JavaScript", "插件开发"]
+draft: false
+authors: ["default"]
+---
+
 ## 前言
 
 Webpack 中的核心架构是基于 Tapable 实现的，Tapable 是一个类似于 Node.js 的 EventEmitter 的库，专门用于实现发布-订阅模式。Webpack 中的核心组件 Compiler、Compilation、Module、Chunk、ChunkGroup、Dependency、Template 都是通过 Tapable 实现的。
@@ -5,6 +14,8 @@ Webpack 中的核心架构是基于 Tapable 实现的，Tapable 是一个类似�
 Tappable 主要负责管理 Hooks，Hooks 是一系列具有特定生命周期的事件。通过 Tappable，Webpack 中的不同部分可以创建和触发 Hooks，而插件可以监听这些 Hooks，在适当的时机执行自定义的逻辑。这种设计模式使得插件开发更加灵活，能够介入 Webpack 构建流程的不同阶段。
 
 Tappable 可以被视为 Webpack 插件系统的基石。它提供了一种机制，使得插件可以注册自己的逻辑，而这些逻辑可以被集中执行，而不需要硬编码到 Webpack 的核心逻辑中。这种松耦合的设计让插件开发者更容易理解和维护自己的代码，也让整个插件系统更容易扩展。
+
+> 本节对应的 demo 可以在[这里](https://github.com/chenxiaoyao6228/fe-notes/tree/main/Webpack/_demo/mini-tapable)找到。
 
 ## Tapable 中的核心概念
 
@@ -687,9 +698,9 @@ asyncSeriesWaterfallHook
   });
 ```
 
-所有代码参见 \_demo/mini-tabpable
-
 ## 参考
 
 - [tabpable](https://www.npmjs.com/package/tapable)
 - [强大的异步流程控制库 Async.js](https://caolan.github.io/async/v3/)
+
+> 本文首发于个人 Github[前端开发笔记](https://github.com/chenxiaoyao6228/fe-notes)，由于笔者能力有限，文章难免有疏漏之处，欢迎指正

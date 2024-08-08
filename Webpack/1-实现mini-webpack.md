@@ -1,6 +1,17 @@
+---
+title: "实现一个简单的打包器mini-webpack"
+date: "2023-12-12"
+summary: "本文详细介绍了如何实现一个简单的打包器mini-webpack，包括需求分析、代码实现、AssetsMap的生成与esm支持等步骤，帮助读者理解打包器的基本原理和实现方法。"
+tags: ["前端", "打包器", "JavaScript", "webpack"]
+draft: false
+authors: ["default"]
+---
+
 ## 前言
 
 本文总结如何实现一个简单的打包器 mini-webpack
+
+> 本节对应的 demo 可以在[这里](https://github.com/chenxiaoyao6228/fe-notes/tree/main/Webpack/_demo/mini-webpack)找到。
 
 ## 需求分析
 
@@ -275,4 +286,4 @@ miniWebpack({
 });
 ```
 
-> 对应代码在`_demo/mini-webpack`中
+> 本文首发于个人 Github[前端开发笔记](https://github.com/chenxiaoyao6228/fe-notes)，由于笔者能力有限，文章难免有疏漏之处，欢迎指正

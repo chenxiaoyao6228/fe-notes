@@ -143,3 +143,5 @@ __webpack_require__.l = (url, done, key, chunkId) => {
 ```
 
 本节对应的代码在 `_demo/_webpack/dynamic-import` 目录下
+
+> 本文首发于个人Github[前端开发笔记](https://github.com/chenxiaoyao6228/fe-notes)，由于笔者能力有限，文章难免有疏漏之处，欢迎指正

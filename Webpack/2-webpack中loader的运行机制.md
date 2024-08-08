@@ -1,6 +1,17 @@
+---
+title: "深入理解 Webpack Loader 的工作原理和实现"
+date: "2024-01-06"
+tags: ["Webpack", "Bundler", "Loader"]
+summary: "本文详细探讨了 Webpack 中 Loader 的基本原理和实现细节。内容包括 Loader 的定义、常见类型及其作用，Loader 与 Plugin 的区别，Loader 的输入和输出方式，如何编写同步和异步 Loader，以及 Loader 的执行顺序。"
+draft: false
+authors: ["default"]
+---
+
 ## 前言
 
 本节主要介绍这些插件的基本原理并手写一些常用的 Loader。
+
+> 本节对应的 demo 可以在[这里](https://github.com/chenxiaoyao6228/fe-notes/tree/main/Webpack/_demo/mini-webpack-loaders)找到。
 
 ## 什么是 Loader
 
@@ -40,6 +51,7 @@
 默认情况下，资源文件会被转化为 UTF-8 字符串，然后传给 loader。通过设置 raw 为 true，loader 可以接收原始的 Buffer。
 
 ```js
+// loader.js
 module.exports = function (content) {
   // 对输入源进行处理，这里简单地在源代码前面添加一行注释
   const processedSource = `// This is a custom loader\n${source}`;
@@ -298,7 +310,9 @@ module.exports = {
 
 首先需要安装 less 包：
 
-> npm install less
+```bash
+ npm install less
+```
 
 主要代码如下：
 
@@ -459,3 +473,5 @@ config.module
   .before("css-loader")
   .loader(path.resolve(__dirname, "./rm-selection-loader.js"));
 ```
+
+> 本文首发于个人 Github[前端开发笔记](https://github.com/chenxiaoyao6228/fe-notes)，由于笔者能力有限，文章难免有疏漏之处，欢迎指正

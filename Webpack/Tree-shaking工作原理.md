@@ -397,3 +397,5 @@ lib/Compilation.js （部分代码） 在 编译阶段 中将分析所得 的 mo
 ## 参考
 
 - https://webpack.js.org/guides/tree-shaking/
+
+> 本文首发于个人Github[前端开发笔记](https://github.com/chenxiaoyao6228/fe-notes)，由于笔者能力有限，文章难免有疏漏之处，欢迎指正

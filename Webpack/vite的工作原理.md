@@ -1,8 +1,17 @@
+---
+title: "Vite 的工作原理和实现细节"
+date: "2024-01-06"
+tags: ["Vite", "ES imports"]
+summary: "本文总结了 Vite 的工作原理，包括项目搭建、实现 CLI、启动静态服务器、处理 index.html 和 JS 文件、引入 node_modules、拆分中间件、处理 React 文件等步骤，并介绍了一些实现细节。"
+draft: false
+authors: ["default"]
+---
+
 ## 前言
 
 本文总结了一些关于 Vite 的工作原理，以及一些实现细节。
 
-> 本节对应的 demo 在\_demo/mini-vite 目录下
+> 本节对应的 demo 可以在[这里](https://github.com/chenxiaoyao6228/fe-notes/tree/main/Webpack/_demo/mini-vite)找到。
 
 ## 什么是 Vite
 
@@ -129,7 +138,7 @@ yarn add nodemon -D
 
 现在我们已经可以返回静态文件了，但是在返回 index.html 中后，浏览器随即发起了 src/main.jsx 的请求
 
-```html
+```
 <script type="module" src="/src/main.jsx"></script>
 ```
 
@@ -357,7 +366,7 @@ if (process.env.NODE_ENV === "production") {
 - 1. 找一个有 esm 的版本，比如 https://github.com/esm-bundle/react
 - 2. 还是原来的包，但是需要在服务端做一些处理，将 cjs 的包转换成 esm 的包
 
-看看 vite-plugin-react 是如何这个问题的, 还是回到浏览器，查看正常 vite 打包出来的文件
+看看 `vite-plugin-react` 是如何这个问题的, 还是回到浏览器，查看正常 vite 打包出来的文件
 
 ```js
 import __vite__cjsImport0_react_jsxDevRuntime from "/node_modules/.vite/deps/react_jsx-dev-runtime.js?v=78b1e259";
@@ -374,7 +383,7 @@ import App from "/src/App.jsx";
 // ReactDOM.createRoot(document.getElementById("root")).render
 ```
 
-看了下 node_modules/.vite/deps/react.js，确实是把代码 copy 了一份，然后把 cjs 的包转换成了 esm 的包，这个过程在 vite 中称为 optimizeDeps
+看了下 `node_modules/.vite/deps/react.js`，确实是把代码 copy 了一份，然后把 cjs 的包转换成了 esm 的包，这个过程在 vite 中称为 optimizeDeps
 
 ![](https://cdn.jsdelivr.net/gh/chenxiaoyao6228/cloudimg@main/2024/mini-vite-react-plugin-import.png)
 
@@ -537,3 +546,5 @@ mapping = {
 ## 参考
 
 - [vite-plugin-react](https://github.com/vitejs/vite-plugin-react)
+
+> 本文首发于个人Github[前端开发笔记](https://github.com/chenxiaoyao6228/fe-notes)，由于笔者能力有限，文章难免有疏漏之处，欢迎指正

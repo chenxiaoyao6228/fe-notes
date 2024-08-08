@@ -1,6 +1,17 @@
+---
+title: "深入理解CMD规范与SeaJS"
+date: "2023-12-12"
+summary: "本文介绍了CMD规范及其在SeaJS中的实现，包括模块定义、引用、标识符以及与其他规范的区别，并探讨了SeaJS的关键原理和实现。"
+tags: ["前端", "模块化", "JavaScript", "CMD", "SeaJS"]
+draft: false
+authors: ["default"]
+---
+
 ## 前言
 
 CMD 规范专门用于浏览器端，模块的加载是异步的，模块使用时才会加载执行。CMD 规范整合了 CommonJS 和 AMD 规范的特点。
+
+> 查看示例代码请点击[此处](https://github.com/chenxiaoyao6228/fe-notes/blob/main/Webpack/_demo/mini-cmd-seaJS/examples/index.html)
 
 ## CMD 规范
 
@@ -121,7 +132,7 @@ console.log("libA", libA); // 如何保证libA已经加载完成了呢？
 
 ### 实现
 
-seaJs 的操作确实有点骚，简易好好看下下面的实现代码
+seaJs 的操作确实有点骚，建议好好看下下面的实现代码
 
 ```js
 (function () {
@@ -300,4 +311,4 @@ seaJs 的操作确实有点骚，简易好好看下下面的实现代码
 })();
 ```
 
-查看示例代码请点击[此处](https://github.com/chenxiaoyao6228/fe-notes/blob/main/Webpack/_demo/mini-cmd-seaJS/examples/index.html)
+> 本文首发于个人 Github[前端开发笔记](https://github.com/chenxiaoyao6228/fe-notes)，由于笔者能力有限，文章难免有疏漏之处，欢迎指正
