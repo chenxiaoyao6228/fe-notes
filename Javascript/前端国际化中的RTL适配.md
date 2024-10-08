@@ -66,19 +66,19 @@ dir 用于设置文本的书写方向, dir 属性是继承的，这意味着如�
 
 通过测试可以发现 direction 只能改变 display: flex/inline-block 元素的书写方向，对于 float/绝对定位等布局就无能为力
 
-- [inline-block 布局](https://chenxiaoyao6228.github.io/html-preview/?https://github.com/chenxiaoyao6228/fe-notes/blob/main/业务相关/_demo/css-direction/direction-inline-block.html)
+- [inline-block 布局](https://chenxiaoyao6228.github.io/html-preview/?https://github.com/chenxiaoyao6228/fe-notes/blob/main/Javascript/_demo/css-direction/direction-inline-block.html)
 
-- [flex 布局](https://chenxiaoyao6228.github.io/html-preview/?https://github.com/chenxiaoyao6228/fe-notes/blob/main/业务相关/_demo/css-direction/direction-flex.html)
+- [flex 布局](https://chenxiaoyao6228.github.io/html-preview/?https://github.com/chenxiaoyao6228/fe-notes/blob/main/Javascript/_demo/css-direction/direction-flex.html)
 
-- [float 布局](https://chenxiaoyao6228.github.io/html-preview/?https://github.com/chenxiaoyao6228/fe-notes/blob/main/业务相关/_demo/css-direction/direction-float.html)
+- [float 布局](https://chenxiaoyao6228.github.io/html-preview/?https://github.com/chenxiaoyao6228/fe-notes/blob/main/Javascript/_demo/css-direction/direction-float.html)
 
-- [绝对定位布局](https://chenxiaoyao6228.github.io/html-preview/?https://github.com/chenxiaoyao6228/fe-notes/blob/main/业务相关/_demo/css-direction/direction-positioned.html)
+- [绝对定位布局](https://chenxiaoyao6228.github.io/html-preview/?https://github.com/chenxiaoyao6228/fe-notes/blob/main/Javascript/_demo/css-direction/direction-positioned.html)
 
 另外 direction 无法改变 margin, padding, border 的水平方向，也就是说除非你的元素是居中的，否则当你的元素是不对称的话，即使你改变了元素的书写方向和顺序，margin-left 还是指向左边的，它并不会留出右边的空白。
 
 ![](https://cdn.jsdelivr.net/gh/chenxiaoyao6228/cloudimg@main/2023/rtl-css-direction-margin-padding-border.png)
 
-[在线效果预览](https://chenxiaoyao6228.github.io/html-preview/?https://github.com/chenxiaoyao6228/fe-notes/blob/main/业务相关/_demo/css-direction/direction-border-margin-padding.html)
+[在线效果预览](https://chenxiaoyao6228.github.io/html-preview/?https://github.com/chenxiaoyao6228/fe-notes/blob/main/Javascript/_demo/css-direction/direction-border-margin-padding.html)
 
 #### css 逻辑属性
 
@@ -103,7 +103,7 @@ margin-inline-start 属性在 LTR 布局中为 margin-left，在 RTL 布局中�
 
 bidi 是"bidirectional"的缩写，表示双向文字，即一段文字包含两种不同方向的文字。Unicode 双向算法是处理这种文字的常见方法，而 unicode-bidi 属性用于重写此算法。
 
-[在线效果预览](https://chenxiaoyao6228.github.io/html-preview/?https://github.com/chenxiaoyao6228/fe-notes/blob/main/业务相关/_demo/css-direction/unicode-bidi.html)
+[在线效果预览](https://chenxiaoyao6228.github.io/html-preview/?https://github.com/chenxiaoyao6228/fe-notes/blob/main/Javascript/_demo/css-direction/unicode-bidi.html)
 
 #### transform: scaleX(-1)
 
@@ -554,7 +554,7 @@ if (layout === "rtl") {
 }
 ```
 
-[在线效果预览](https://chenxiaoyao6228.github.io/html-preview/?https://github.com/chenxiaoyao6228/fe-notes/blob/main/业务相关/_demo/css-direction/boundingClientRect.html)
+[在线效果预览](https://chenxiaoyao6228.github.io/html-preview/?https://github.com/chenxiaoyao6228/fe-notes/blob/main/Javascript/_demo/css-direction/boundingClientRect.html)
 
 #### 三方依赖的处理
 
