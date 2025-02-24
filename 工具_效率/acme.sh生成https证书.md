@@ -33,6 +33,12 @@ ACME（Automatic Certificate Management Environment）协议是一种自动化�
 
 ## 为 idea.chenxiaoyao.cn 添加证书
 
+>🚧: update:  由于部份操作需要sudo, 建议切换到root用户
+
+```bash
+sudo su - root
+```
+
 下面用真实项目解释流程, 项目基本信息如下:
 
 > idea.chenxiaoyao.cn # 项目域名, docker 部署, 3000 端口
@@ -41,6 +47,47 @@ ACME（Automatic Certificate Management Environment）协议是一种自动化�
 服务器为 aws 免费使用版(一年), 操作系统为 Ubuntu
 
 域名在腾讯云上申请并使用, OSS 服务使用了阿里云
+
+
+#### 服务器本地访问
+
+首先启动服务, 确保可以访问
+
+```bash
+docker run -d --name idea -p 3000:3000 idea.chenxiaoyao.cn
+```
+`服务器`中使用curl测试
+
+```bash
+curl -I localhost:3000
+```
+
+> 确保你的安全组组允许3000端口, 否则需要添加
+
+如果服务器配置了防火墙, 需要开放3000端口
+
+ 查看防火墙状态: `sudo ufw status`
+
+ 如果需要开放端口: `sudo ufw allow 3000/tcp`
+
+#### 公网ip+端口访问
+
+```bash
+curl -I 13.57.xxx.xx:3000
+```
+
+#### 公网域名+端口访问
+
+通过公网 ip+端口访问项目, 确保可以可以通过`域名+端口`访问
+
+在腾讯云添加 A 记录值, 地址: https://console.cloud.tencent.com/cns
+
+![https://github.com/chenxiaoyao6228/cloudimg/2024/acme-domain-a-record.png](https://cdn.jsdelivr.net/gh/chenxiaoyao6228/cloudimg@main/2024/acme-domain-a-record.png)
+
+添加完之后尝试使用域名+端口访问项目, 比如
+
+> http://idea.chenxiaoyao.cn:3000
+
 
 ### 服务器 acme.sh 安装
 
@@ -55,7 +102,7 @@ ssh -i "xxxx.pem" ubuntu@xxxx.us-west-1.compute.amazonaws.com
 安装 acme.sh, github 地址: https://github.com/acmesh-official/acme.sh
 
 ```sh
-curl https://get.acme.sh | sh -s email=my@example.com
+curl https://get.acme.sh | sh -s email=yorkchan6228@gmail.com
 ```
 
 安装完成根目录会出现.acme.sh 文件夹，里面有一个文件，用于配置证书
@@ -106,17 +153,6 @@ nslookup -q=txt _acme-challenge.idea.chenxiaoyao.cn
 结果类似下图
 ![https://github.com/chenxiaoyao6228/cloudimg/2024/acme-cert-text-record.png](https://cdn.jsdelivr.net/gh/chenxiaoyao6228/cloudimg@main/2024/acme-cert-text-record.png)
 
-### 域名添加 A 记录
-
-通过公网 ip+端口访问项目, 确保可以访问
-
-在腾讯云添加 A 记录值
-
-![https://github.com/chenxiaoyao6228/cloudimg/2024/acme-domain-a-record.png](https://cdn.jsdelivr.net/gh/chenxiaoyao6228/cloudimg@main/2024/acme-domain-a-record.png)
-
-添加完之后尝试使用域名+端口访问项目, 比如
-
-> http://idea.chenxiaoyao.cn:3000
 
 ### nginx 部署证书
 
@@ -131,7 +167,16 @@ sudo apt install nginx
 
 > /etc/nginx/nginx.conf
 
-使用`vi /etc/nginx/nginx.conf`编辑配置, 如何没有权限的话加上`sudo`
+使用`vi /etc/nginx/nginx.conf`编辑配置, 或者使用`vscode ssh`, 更加方便
+
+```bash
+mkdir -p /etc/nginx/ssl
+
+~/.acme.sh/acme.sh --install-cert -d idea.chenxiaoyao.cn \
+--key-file       /etc/nginx/ssl/idea.chenxiaoyao.cn.key  \
+--fullchain-file /etc/nginx/ssl/idea.chenxiaoyao.cn.cer
+```
+
 
 在`http{}`中添加以下配置, server1 是保证可以通过 http 访问, server2 是保证可以通过 https 访问
 
@@ -150,8 +195,8 @@ server {
     listen 443 ssl;
     server_name idea.chenxiaoyao.cn;
 
-    ssl_certificate /etc/ssl/idea.chenxiaoyao.cn/fullchain.cer;
-    ssl_certificate_key /etc/ssl/idea.chenxiaoyao.cn/idea.chenxiaoyao.cn.key;
+    ssl_certificate /etc/nginx/ssl/idea.chenxiaoyao.cn.cer;
+    ssl_certificate_key /etc/nginx/ssl/idea.chenxiaoyao.cn.key;
 
     location / {
         proxy_pass http://localhost:3000;
@@ -165,7 +210,6 @@ server {
 }
 
 ```
-
 配置完成后重启 nginx
 
 ```sh
@@ -234,10 +278,12 @@ acme.sh --issue --dns dns_tencent -d assets.chenxiaoyao.cn
 ```bash
 #!/usr/bin/env bash
 
-# 替换为您的证书文件路径
-CERT_FULLCHAIN_PATH="$HOME/.acme.sh/assets.chenxiaoyao.cn_ecc/fullchain.cer"
-CERT_KEY_PATH="$HOME/.acme.sh/assets.chenxiaoyao.cn_ecc/assets.chenxiaoyao.cn.key"
+# 域名变量
 DOMAIN="assets.chenxiaoyao.cn"
+
+# 替换为您的证书文件路径
+CERT_FULLCHAIN_PATH="$HOME/.acme.sh/${DOMAIN}_ecc/fullchain.cer"
+CERT_KEY_PATH="$HOME/.acme.sh/${DOMAIN}_ecc/${DOMAIN}.key"
 
 # 获取证书内容的自定义函数
 get_cert() {
@@ -255,7 +301,7 @@ CERT_NAME="${DOMAIN//./_}-$(date +%s)"
 
 # 需要更新证书的 CDN 域名列表
 DOMAIN_LIST=(
-    "assets.chenxiaoyao.cn"
+    "$DOMAIN"
 )
 
 # 设置 CDN 域名列表使用新的证书
@@ -276,7 +322,7 @@ chmod +x upload_cert_to_aliyun.sh
 上传完成, 到控制台去看, 发现已经有了
 
 ![https://github.com/chenxiaoyao6228/cloudimg/2024/aliyun-https-cdn-success.png](https://cdn.jsdelivr.net/gh/chenxiaoyao6228/cloudimg@main/2024/aliyun-https-cdn-success.png)
-
+ 
 上传图片测试, 可以看到 https 已经启用了
 
 ![https://github.com/chenxiaoyao6228/cloudimg/2024/aliyun-https-cdn-success-cat-test.png](https://cdn.jsdelivr.net/gh/chenxiaoyao6228/cloudimg@main/2024/aliyun-https-cdn-success-cat-test.png)
@@ -288,3 +334,9 @@ chmod +x upload_cert_to_aliyun.sh
 ```bash
 sudo systemctl restart nginx
 ```
+
+## 参考
+
+[acme.sh](https://github.com/acmesh-official/acme.sh)
+
+[aliyun cli](https://github.com/aliyun/aliyun-cli?tab=readme-ov-file)

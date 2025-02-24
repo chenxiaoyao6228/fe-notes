@@ -63,7 +63,6 @@
   - [canvas 画布擦除功能](Canvas%2Fcanvas%E7%94%BB%E5%B8%83%E6%93%A6%E9%99%A4%E5%8A%9F%E8%83%BD.md)
 - 性能优化
   - [0-README](%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96%2F0-README.md)
-  - [CSS 优化](%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96%2FCSS%E4%BC%98%E5%8C%96.md)
   - [GPU 加速](%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96%2FGPU%E5%8A%A0%E9%80%9F.md)
   - [Gzip 工作原理](%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96%2FGzip%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86.md)
   - [React profile 优化 React 应用](%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96%2FReact%20profile%E4%BC%98%E5%8C%96React%E5%BA%94%E7%94%A8.md)
