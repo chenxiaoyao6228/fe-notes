@@ -67,8 +67,6 @@ y(t) = r * sin(t)
 
 完整的 demo 请看 👉 [在线效果预览](https://chenxiaoyao6228.github.io/html-preview/?https://github.com/chenxiaoyao6228/fe-notes/blob/main/Canvas/_demo/freedraw/qudraic-bezier-visulizer.html), 查看示例代码请点击[此处](https://github.com/chenxiaoyao6228/fe-notes/blob/main/Canvas/_demo/freedraw/qudraic-bezier-visulizer.html)
 
-![](https://cdn.jsdelivr.net/gh/chenxiaoyao6228/cloudimg@main/2023/bezier-curve-line-2.png)
-
 控制可以有多个，比如我们可以在 AD 之间去点 B C 作为控制点，然后画出曲线 ABCD。
 
 ![](https://cdn.jsdelivr.net/gh/chenxiaoyao6228/cloudimg@main/2023/bezier-curve-line-3.png)
@@ -328,7 +326,5 @@ function renderFreedraw(ctx, points) {
 - [Wikipedia Bézier_curve](https://en.wikipedia.org/wiki/B%C3%A9zier_curve)
 
 - [MDN cubic-bezier_function](https://developer.mozilla.org/zh-CN/docs/Web/CSS/easing-function#using_the_cubic-bezier_function)
-
-由于笔者能力有限，文章难免有疏漏之处，欢迎指正, 查看更多文章欢迎关注[前端开发笔记](https://github.com/chenxiaoyao6228/fe-notes)，一起交流学习
 
 > 本文首发于个人博客[前端开发笔记](https://github.com/chenxiaoyao6228/fe-notes)，由于笔者能力有限，文章难免有疏漏之处，欢迎指正
